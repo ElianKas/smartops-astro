@@ -23,6 +23,10 @@ import Geo2 from '../Svg/Background/geo2.astro';
 	import { gsap } from 'gsap';
 
 	let tl1 = gsap.timeline({
+		paused: true,
+		onStart: () => {
+			document.body.style.overflow = 'hidden';
+		},
 		onComplete: () => {
 			document.addEventListener('wheel', () => {
 				tl2.play();
@@ -54,18 +58,22 @@ import Geo2 from '../Svg/Background/geo2.astro';
 	});
 	tl2.add(
 		gsap.to('.gsap-landing-container', {
-			duration: 3,
+			duration: 2,
 			yPercent: -100,
 			ease: 'power2.out',
-			onStart: () => {
-				document.body.style.overflow = 'hidden';
-			},
 			onComplete: () => {
 				document.body.style.overflow = 'auto';
 			},
 		})
 	);
-	document.addEventListener('DOMContentLoaded', () => {
-		document.body.style.overflow = 'hidden';
-	});
+	if (window.scrollY === 0) {
+		tl1.play();
+	} else {
+		const landingContainer = document.querySelector<HTMLElement>(
+			'.gsap-landing-container'
+		);
+		if (landingContainer) {
+			landingContainer.style.display = 'none';
+		}
+	}
 </script>
