@@ -1,20 +1,56 @@
 <section
-	class='py-lg px-sm flex flex-col items-center justify-between gap-xl'>
+	class='py-lg px-sm flex flex-col items-center justify-between gap-xl gsap-kpi-container'>
 	<h2 class='subtitle'>Unsere KPI's</h2>
 	<div
 		class='max-w-normal w-full mx-auto flex justify-between gap-sm'>
 		<div class='flex flex-col gap-xs'>
-			<div class='title'>50+</div>
+			<div class='title gsap-kpi-numbers'>50+</div>
 			<div>Länder</div>
 		</div>
 		<div class='flex flex-col gap-xs'>
-			<div class='title'>800+</div>
+			<div class='title gsap-kpi-numbers'>800+</div>
 			<div>Erneuerbare Energieprojekte</div>
 		</div>
 		<div class='flex flex-col gap-xs'>
-			<div class='title'>2.000+</div>
+			<div class='title gsap-kpi-numbers'>2.000+</div>
 			<div>Realisierte Anschlussleistung in MW</div>
 		</div>
 	</div>
 	<div></div>
 </section>
+
+<script>
+	import { gsap } from 'gsap';
+	const numbers = document.querySelectorAll('.gsap-kpi-numbers');
+
+	const tl = gsap.timeline({
+		scrollTrigger: {
+			trigger: '.gsap-kpi-container',
+			start: 'center 80%',
+			markers: true,
+		},
+	});
+	tl.add(
+		gsap.to(numbers[0], {
+			duration: 3,
+			textContent: 50,
+			ease: 'power2.out',
+		})
+	)
+		.add(
+			gsap.to(numbers[1], {
+				duration: 3,
+				textContent: 800,
+				ease: 'power2.out',
+			}),
+			'<'
+		)
+		.add(
+			gsap.to(numbers[2], {
+				duration: 3,
+				textContent: 2000,
+				ease: 'power2.out',
+			}),
+			'<'
+		);
+</script>
