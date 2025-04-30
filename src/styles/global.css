@@ -5,7 +5,9 @@
     --text-title: 56px;
     --text-subtitle: 22px;
     --text-body: 16px;
+    --conotainer-paragraph: 600px;
     --container-normal: 1100px;
+    --container-big: 1300px;
     --color-dark: #0F2333;
     --color-light: #fff;
     --color-green: #0DD127;
@@ -13,7 +15,7 @@
     --spacing-sm: 1rem;
     --spacing-md: 2rem;
     --spacing-lg: 5rem;
-    --spacing-xl: 10rem;
+    --spacing-xl: 15rem;
 }
 
 @layer components {
