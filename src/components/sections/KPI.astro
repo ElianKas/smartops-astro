@@ -4,15 +4,24 @@
 	<div
 		class='max-w-normal w-full mx-auto flex justify-between gap-sm'>
 		<div class='flex flex-col gap-xs'>
-			<div class='title gsap-kpi-numbers'>50+</div>
+			<div class='flex title'>
+				<div class='gsap-kpi-numbers'>50</div>
+				<div>+</div>
+			</div>
 			<div>Länder</div>
 		</div>
 		<div class='flex flex-col gap-xs'>
-			<div class='title gsap-kpi-numbers'>800+</div>
+			<div class='flex title'>
+				<div class='gsap-kpi-numbers'>800</div>
+				<div>+</div>
+			</div>
 			<div>Erneuerbare Energieprojekte</div>
 		</div>
 		<div class='flex flex-col gap-xs'>
-			<div class='title gsap-kpi-numbers'>2.000+</div>
+			<div class='flex title'>
+				<div class='title gsap-kpi-numbers'>2000</div>
+				<div>+</div>
+			</div>
 			<div>Realisierte Anschlussleistung in MW</div>
 		</div>
 	</div>
@@ -21,36 +30,24 @@
 
 <script>
 	import { gsap } from 'gsap';
-	const numbers = document.querySelectorAll('.gsap-kpi-numbers');
 
-	const tl = gsap.timeline({
-		scrollTrigger: {
-			trigger: '.gsap-kpi-container',
-			start: 'center 80%',
-			markers: true,
-		},
-	});
-	tl.add(
-		gsap.to(numbers[0], {
-			duration: 3,
-			textContent: 50,
-			ease: 'power2.out',
-		})
-	)
-		.add(
-			gsap.to(numbers[1], {
+	const numbers = document.querySelectorAll('.gsap-kpi-numbers');
+	numbers.forEach((el, i) => {
+		gsap.fromTo(
+			el,
+			{
+				textContent: 0,
+			},
+			{
 				duration: 3,
-				textContent: 800,
+				textContent: i === 0 ? 50 : i == 1 ? 800 : 2000,
 				ease: 'power2.out',
-			}),
-			'<'
-		)
-		.add(
-			gsap.to(numbers[2], {
-				duration: 3,
-				textContent: 2000,
-				ease: 'power2.out',
-			}),
-			'<'
+				snap: { textContent: 1 },
+				scrollTrigger: {
+					trigger: '.gsap-kpi-container',
+					start: 'center 70%',
+				},
+			}
 		);
+	});
 </script>
