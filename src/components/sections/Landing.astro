@@ -1,3 +1,71 @@
-<section class='h-screen grid place-items-center'>
-	<h1>Title</h1>
-</section>
+---
+import Geo1 from '../Svg/Background/geo1.astro';
+import Geo2 from '../Svg/Background/geo2.astro';
+---
+
+<div class='h-screen relative'>
+	<section class='h-full grid place-items-center'>
+		<h1 class='title'>SmartOPS</h1>
+	</section>
+	<section
+		class='gsap-landing-container h-full bg-dark grid place-items-center text-light absolute inset-0'>
+		<h1 class='title gsap-landing-element'>SmartOPS</h1>
+		<Geo1
+			class='gsap-landing-element-bg absolute top-[5%] left-[60%] h-[30%] w-auto'
+		/>
+		<Geo2
+			class='gsap-landing-element-bg absolute bottom-[8%] left-[50%] h-[50%] w-auto'
+		/>
+	</section>
+</div>
+
+<script>
+	import { gsap } from 'gsap';
+
+	let tl1 = gsap.timeline({
+		onComplete: () => {
+			document.addEventListener('wheel', () => {
+				tl2.play();
+			});
+		},
+	});
+	tl1
+		.add(
+			gsap.from('.gsap-landing-element-bg', {
+				duration: 1,
+				opacity: 0,
+				y: 50,
+				stagger: 0.2,
+				ease: 'power2.out',
+			})
+		)
+		.add(
+			gsap.from('.gsap-landing-element', {
+				duration: 1,
+				opacity: 0,
+				y: 50,
+				stagger: 0.2,
+				ease: 'power2.out',
+			})
+		);
+
+	let tl2 = gsap.timeline({
+		paused: true,
+	});
+	tl2.add(
+		gsap.to('.gsap-landing-container', {
+			duration: 3,
+			yPercent: -100,
+			ease: 'power2.out',
+			onStart: () => {
+				document.body.style.overflow = 'hidden';
+			},
+			onComplete: () => {
+				document.body.style.overflow = 'auto';
+			},
+		})
+	);
+	document.addEventListener('DOMContentLoaded', () => {
+		document.body.style.overflow = 'hidden';
+	});
+</script>
