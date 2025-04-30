@@ -7,15 +7,15 @@ import Contact from '../Svg/Icons/Contact.astro';
 <footer
 	class='gsap-footer-container px-sm py-lg bg-dark text-light relative'>
 	<div class='max-w-big mx-auto flex flex-col justify-between gap-xl'>
-		<div class='self-center'>logo</div>
+		<div class='self-center gsap-footer-element'>logo</div>
 		<div class='flex flex-col gap-md'>
-			<Contact class='h-[50px] w-auto' />
+			<Contact class='gsap-footer-element' />
 			<a
-				class='title font-normal'
+				class='title font-normal gsap-footer-element'
 				href='mailto:info@smartops.de'
 				>info@smartops.de</a
 			>
-			<p class='max-w-[500px]'>
+			<p class='max-w-[500px] gsap-footer-element'>
 				Ob erste Fragen oder konkrete Ideen – wir freuen uns darauf,
 				gemeinsam mit Ihnen die nächsten Schritte zu planen!
 			</p>
@@ -24,8 +24,8 @@ import Contact from '../Svg/Icons/Contact.astro';
 	</div>
 	<div
 		class='absolute bottom-sm left-[50%] translate-x-[-50%] flex gap-sm'>
-		<div>Impressum</div>
-		<div>Datenschutz</div>
+		<div class='gsap-footer-element'>Impressum</div>
+		<div class='gsap-footer-element'>Datenschutz</div>
 	</div>
 	<Geo1
 		class='gsap-footer-svg absolute top-[5%] left-[60%] h-[30%] w-auto'
@@ -47,6 +47,14 @@ import Contact from '../Svg/Icons/Contact.astro';
 	});
 	tl.add(
 		gsap.from('.gsap-footer-svg', {
+			duration: 1,
+			opacity: 0,
+			y: 50,
+			stagger: 0.2,
+			ease: 'power2.out',
+		})
+	).add(
+		gsap.from('.gsap-footer-element', {
 			duration: 1,
 			opacity: 0,
 			y: 50,
