@@ -69,14 +69,16 @@ import Geo2 from '../Svg/Background/geo2.astro';
 			},
 		})
 	);
-	if (window.scrollY === 0) {
-		tl1.play();
-	} else {
-		const landingContainer = document.querySelector<HTMLElement>(
-			'.gsap-landing-container'
-		);
-		if (landingContainer) {
-			landingContainer.style.display = 'none';
+	document.addEventListener('DOMContentLoaded', () => {
+		if (window.scrollY === 0) {
+			tl1.play();
+		} else {
+			const landingContainer = document.querySelector<HTMLElement>(
+				'.gsap-landing-container'
+			);
+			if (landingContainer) {
+				landingContainer.style.display = 'none';
+			}
 		}
-	}
+	});
 </script>
