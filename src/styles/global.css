@@ -37,3 +37,10 @@ html, body {
     line-height: var(--leading);
     color: var(--color-dark);
 }
+
+@media screen and (max-width: 768px) {
+    :root {
+        --text-title: 32px;
+    }
+    
+}
