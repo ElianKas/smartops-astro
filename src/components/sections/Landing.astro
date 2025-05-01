@@ -71,9 +71,11 @@ import Geo2 from '../Svg/Background/geo2.astro';
 	);
 	if (window.scrollY === 0) {
 		tl1.revert();
+		tl2.revert();
 		tl1.play();
 	} else {
 		tl1.revert();
+		tl2.revert();
 		const landingContainer = document.querySelector<HTMLElement>(
 			'.gsap-landing-container'
 		);
