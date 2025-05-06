@@ -17,46 +17,29 @@ import Lightning from '../Svg/Icons/Lightning.astro';
 </aside>
 <script>
 	import { gsap } from 'gsap';
-	let isRight = false;
 	const btn = document.getElementById('energy-activate-button');
 	const switchIcon = document.getElementById(
 		'energy-activate-switch'
 	);
 	const footer = document.getElementById('index-footer');
 	if (btn && switchIcon && footer) {
+		const timeline = gsap.timeline({
+			defaults: { duration: 0.1, ease: 'power2.out' },
+		});
+
 		btn.addEventListener('click', () => {
-			if (!isRight) {
-				gsap.to(switchIcon, {
-					right: 0,
-					left: 'auto',
-					duration: 0.1,
-					ease: 'power2.out',
-				});
-				gsap.to(btn, {
-					backgroundColor: 'var(--color-green)',
-					duration: 0.1,
-					ease: 'power2.out',
-				});
-				footer.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-					inline: 'nearest',
-				});
-				isRight = true;
-			} else {
-				gsap.to(switchIcon, {
-					right: 'auto',
-					left: 0,
-					duration: 0.1,
-					ease: 'power2.out',
-				});
-				gsap.to(btn, {
-					backgroundColor: 'transparent',
-					duration: 0.1,
-					ease: 'power2.out',
-				});
-				isRight = false;
-			}
+			timeline
+				.to(switchIcon, { right: 0, left: 'auto' })
+				.to(btn, { backgroundColor: 'var(--color-green)' }, '<')
+				.call(() => {
+					footer.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start',
+						inline: 'nearest',
+					});
+				})
+				.to(switchIcon, { right: 'auto', left: 0 }, '+=1')
+				.to(btn, { backgroundColor: 'transparent' });
 		});
 	}
 </script>
