@@ -1,22 +1,21 @@
 <div
 	id='logo-animation-sprite'
-	class='w-[1500px] h-[300px] border'>
+	class='w-[90vw] sm:w-[70vw] lg:w-[50vw]'>
 </div>
 <script>
-	const img = document.querySelector<HTMLImageElement>(
-		'#logo-sprite-animation'
+	import lottie from 'lottie-web';
+
+	const logoAnimation = document.querySelector<HTMLElement>(
+		'#logo-animation-sprite'
 	);
-	let spriteCounter = 1000;
-	const animation = () => {
-		if (spriteCounter < 1167) {
-			spriteCounter++;
-			if (img) {
-				img.src = `/images/logo_animation_sequences/version ${spriteCounter}.png`;
-			}
-		} else {
-			spriteCounter = 1000;
-		}
-		requestAnimationFrame(animation);
-	};
-	//requestAnimationFrame(animation);
+	if (logoAnimation) {
+		console.log('Logo animation loaded');
+		lottie.loadAnimation({
+			container: logoAnimation, // the dom element that will contain the animation
+			renderer: 'svg',
+			loop: true,
+			autoplay: true,
+			path: '/lottie/15breitloop_zipped.json', // the path to the animation json
+		});
+	}
 </script>
