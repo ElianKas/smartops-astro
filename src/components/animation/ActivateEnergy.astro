@@ -6,14 +6,14 @@ import Lightning from '../Svg/Icons/Lightning.astro';
 	class='fixed bottom-sm right-sm flex flex-col items-center gap-xs z-[9]'>
 	<div
 		id='energy-activate-button'
-		class='border rounded-full border-green h-[2.5rem] w-[5rem] relative cursor-pointer group'>
+		class='border rounded-full border-green backdrop-blur-lg h-[2.5rem] w-[5rem] relative cursor-pointer group'>
 		<div
 			id='energy-activate-switch'
 			class='absolute left-0 top-0 h-full aspect-square bg-green rounded-full grid place-items-center group-hover:scale-[1.3] transition-all duration-100 ease-in-out'>
 			<Lightning />
 		</div>
 	</div>
-	<div class='text-green'>Energie aktivieren!</div>
+	<div class='text-green font-bold'>Energie aktivieren!</div>
 </aside>
 <script>
 	import { gsap } from 'gsap';
