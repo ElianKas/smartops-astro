@@ -2,12 +2,18 @@
 import Geo1 from '../Svg/Background/geo1.astro';
 import Geo2 from '../Svg/Background/geo2.astro';
 import Contact from '../Svg/Icons/Contact.astro';
+import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
+import Solar from '../Svg/Icons/Solar.astro';
+import Wind from '../Svg/Icons/Wind.astro';
 ---
 
 <footer
-	class='gsap-footer-container px-sm py-lg bg-dark text-light relative overflow-hidden'>
-	<div class='max-w-big mx-auto flex flex-col justify-between gap-xl'>
-		<div class='self-center gsap-footer-element'>logo</div>
+	class='gsap-footer-container px-sm py-lg bg-dark text-light relative overflow-hidden min-h-[100vh] flex'>
+	<div
+		class='max-w-big mx-auto w-full flex flex-col justify-between gap-xl'>
+		<div class='self-center gsap-footer-element'>
+			<SmartopsWhite class='w-[300px] h-auto' />
+		</div>
 		<div class='flex flex-col gap-md'>
 			<Contact class='gsap-footer-element' />
 			<a
@@ -33,6 +39,10 @@ import Contact from '../Svg/Icons/Contact.astro';
 	<Geo2
 		class='gsap-footer-svg absolute bottom-[8%] left-[50%] h-[50%] w-auto'
 	/>
+	<Solar class='gsap-footer-svg absolute top-[15%] left-[75%]' />
+	<Solar class='gsap-footer-svg absolute top-[25%] left-[85%]' />
+	<Wind class='gsap-footer-svg absolute top-[40%] left-[72%]' />
+	<Wind class='gsap-footer-svg absolute top-[50%] left-[60%]' />
 </footer>
 
 <script>

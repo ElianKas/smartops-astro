@@ -1,15 +1,23 @@
 ---
 import Geo1 from '../Svg/Background/geo1.astro';
 import Geo2 from '../Svg/Background/geo2.astro';
+import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
 ---
 
 <div class='h-screen relative overflow-x-hidden'>
+	<img
+		src='https://a.storyblok.com/f/316521/3600x2400/0884c00b35/smartops_bg_wind.jpeg'
+		alt='Windkraftanlage in den Bergen, SmartOps Referenz, Windpark'
+		class='absolute inset-0 w-full h-full object-cover z-[-1]'
+	/>
 	<section class='h-full grid place-items-center'>
 		<h1 class='title'>SmartOPS</h1>
 	</section>
 	<section
 		class='gsap-landing-container h-[100dvh] bg-dark grid place-items-center text-light absolute inset-0'>
-		<h1 class='title gsap-landing-element'>SmartOPS</h1>
+		<h1 class='title gsap-landing-element z-[1]'>
+			<SmartopsWhite class='w-[90vw] sm:w-[70vw] h-auto' />
+		</h1>
 		<Geo1
 			class='gsap-landing-element-bg absolute top-[5%] left-[60%] h-[30%] w-auto'
 		/>
