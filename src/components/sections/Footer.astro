@@ -11,10 +11,10 @@ import Wind from '../Svg/Icons/Wind.astro';
 	class='gsap-footer-container px-sm py-lg bg-dark text-light relative overflow-hidden min-h-[100vh] flex'>
 	<div
 		class='max-w-big mx-auto w-full flex flex-col justify-between gap-xl'>
-		<div class='self-center gsap-footer-element'>
+		<div class='self-center gsap-footer-element z-[1]'>
 			<SmartopsWhite class='w-[300px] h-auto' />
 		</div>
-		<div class='flex flex-col gap-md'>
+		<div class='flex flex-col gap-md z-[1]'>
 			<Contact class='gsap-footer-element' />
 			<a
 				class='title font-normal gsap-footer-element'
@@ -25,11 +25,17 @@ import Wind from '../Svg/Icons/Wind.astro';
 				Ob erste Fragen oder konkrete Ideen – wir freuen uns darauf,
 				gemeinsam mit Ihnen die nächsten Schritte zu planen!
 			</p>
+			<div class='lg:hidden flex gap-sm items-center'>
+				<div class='pt-[7px]'>
+					<Solar class='gsap-footer-element' />
+				</div>
+				<Wind class='gsap-footer-element' />
+			</div>
 		</div>
 		<div class='h-sm'></div>
 	</div>
 	<div
-		class='absolute bottom-sm left-[50%] translate-x-[-50%] flex gap-sm'>
+		class='absolute bottom-sm left-[50%] translate-x-[-50%] flex gap-sm z-[1]'>
 		<div class='gsap-footer-element'>Impressum</div>
 		<div class='gsap-footer-element'>Datenschutz</div>
 	</div>
