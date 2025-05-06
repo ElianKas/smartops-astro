@@ -15,9 +15,14 @@ import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
 	</section>
 	<section
 		class='gsap-landing-container h-[100dvh] bg-dark grid place-items-center text-light absolute inset-0'>
-		<h1 class='title gsap-landing-element z-[1]'>
-			<SmartopsWhite class='w-[90vw] sm:w-[70vw] h-auto' />
-		</h1>
+		<div class='z-[1] flex flex-col items-center gap-lg'>
+			<SmartopsWhite
+				class='gsap-landing-element w-[90vw] sm:w-[70vw] h-auto'
+			/>
+			<h1 class='subtitle gsap-landing-element text-center'>
+				NACHHALTIGE ENERGIEVERSORGUNG
+			</h1>
+		</div>
 		<Geo1
 			class='gsap-landing-element-bg absolute top-[5%] left-[60%] h-[30%] w-auto'
 		/>
