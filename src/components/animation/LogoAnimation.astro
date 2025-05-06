@@ -1,0 +1,24 @@
+<img
+	id='logo-sprite-animation'
+	class='w-[90vw] lg:w-[50vw]'
+	src='/images/logo_animation_sequences/version 1000.png'
+	alt=''
+/>
+<script>
+	const img = document.querySelector<HTMLImageElement>(
+		'#logo-sprite-animation'
+	);
+	let spriteCounter = 1000;
+	const animation = () => {
+		if (spriteCounter < 1167) {
+			spriteCounter++;
+			if (img) {
+				img.src = `/images/logo_animation_sequences/version ${spriteCounter}.png`;
+			}
+		} else {
+			spriteCounter = 1000;
+		}
+		requestAnimationFrame(animation);
+	};
+	animation();
+</script>
