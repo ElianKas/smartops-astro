@@ -1,3 +1,7 @@
+---
+import Info from '../Svg/Icons/Info.astro';
+---
+
 <section
 	class='py-lg px-sm flex flex-col items-center justify-between gap-md md:gap-lg lg:gap-xl gsap-kpi-container relative text-light min-h-[100vh]'>
 	<div class='absolute inset-0 w-full h-full bg-black z-[-1]'>
@@ -17,9 +21,12 @@
 				<div class='gsap-kpi-numbers'>50</div>
 				<div>+</div>
 			</div>
-			<div>Länder</div>
+			<div class='flex gap-xs items-center'>
+				<div>Länder</div>
+				<Info class='cursor-pointer' />
+			</div>
 			<div
-				class='text-[12px] leading-normal hidden group-focus:block group-hover:block bg-dark rounded p-[.3rem]'>
+				class='text-[12px] leading-normal hidden group-focus:block bg-dark rounded p-[.3rem]'>
 				(internationales Know-how für Ihr Projekt vor-Ort)
 			</div>
 		</div>
@@ -30,9 +37,12 @@
 				<div class='gsap-kpi-numbers'>800</div>
 				<div>+</div>
 			</div>
-			<div>Erneuerbare Energieprojekte</div>
+			<div class='flex gap-xs items-center'>
+				<div>Erneuerbare Energieprojekte</div>
+				<Info class='cursor-pointer' />
+			</div>
 			<div
-				class='text-[12px] leading-normal hidden group-focus:block group-hover:block bg-dark rounded p-[.3rem]'>
+				class='text-[12px] leading-normal hidden group-focus:block bg-dark rounded p-[.3rem]'>
 				(Teilleistungen oder Begleitung von A-Z)
 			</div>
 		</div>
@@ -43,9 +53,12 @@
 				<div class='title gsap-kpi-numbers'>2000</div>
 				<div>+</div>
 			</div>
-			<div>Realisierte Anschlussleistung in MW</div>
+			<div class='flex gap-xs items-center'>
+				<div>Realisierte Anschlussleistung in MW</div>
+				<Info class='cursor-pointer' />
+			</div>
 			<div
-				class='text-[12px] leading-normal hidden group-focus:block group-hover:block bg-dark rounded p-[.3rem]'>
+				class='text-[12px] leading-normal hidden group-focus:block bg-dark rounded p-[.3rem]'>
 				(Projektgrößen von wenigen kW bis einigen 100 MW)
 			</div>
 		</div>
