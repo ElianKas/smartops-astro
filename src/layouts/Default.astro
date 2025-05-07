@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Footer from '../components/sections/Footer.astro';
 import Gsap from '../components/scripts/gsap.astro';
 import ActivateEnergy from '../components/animation/ActivateEnergy.astro';
+import Seo from '../components/scripts/seo.astro';
 ---
 
 <!doctype html>
@@ -15,14 +16,15 @@ import ActivateEnergy from '../components/animation/ActivateEnergy.astro';
 		/>
 		<link
 			rel='icon'
-			type='image/svg+xml'
-			href='/favicon.svg'
+			type='image/png'
+			sizes='32x32'
+			href='/favicon-32x32.png'
 		/>
 		<meta
 			name='generator'
 			content={Astro.generator}
 		/>
-		<title>SmartOPS</title>
+		<Seo />
 		<Gsap />
 	</head>
 	<body>
