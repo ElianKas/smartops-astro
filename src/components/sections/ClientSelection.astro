@@ -27,13 +27,13 @@ import { clientLogos } from '../../utils/useClientLogos';
 		document.querySelector<HTMLElement>('.logo-container');
 	const imageObjects = container?.querySelectorAll('div');
 
-	let containerOverflowPercentage = 200; // Adjust this when adding more logos
+	let containerOverflowPercentage = 180; // Adjust this when adding more logos
 
 	const setInitialPosition = () => {
 		if (window.innerWidth < 768) {
-			containerOverflowPercentage = 400;
+			containerOverflowPercentage = 350;
 		} else if (window.innerWidth < 1024) {
-			containerOverflowPercentage = 300;
+			containerOverflowPercentage = 250;
 		}
 		container?.style.setProperty(
 			'width',
@@ -65,6 +65,4 @@ import { clientLogos } from '../../utils/useClientLogos';
 
 	setInitialPosition();
 	requestAnimationFrame(animation);
-
-	window.addEventListener('resize', setInitialPosition);
 </script>
