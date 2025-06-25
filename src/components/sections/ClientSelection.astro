@@ -1,140 +1,70 @@
+---
+import { clientLogos } from '../../utils/useClientLogos';
+---
+
 <section class='px-sm py-lg'>
-	<div class='max-w-normal mx-auto flex flex-col gap-md'>
-		<h2 class='text-center subtitle'>Auswahl unserer Kunden</h2>
-		<div class='flex gap-md'>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/483x104/1e7ed904cf/bild16.jpg'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/327x154/4280b4d652/bild11.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/348x106/14a7999bd0/bild18.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/468x107/01c27cdee7/bild13.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/389x130/e8ebedf1f4/bild4.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/301x167/982d7c50df/bild14.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/1480x376/580f31b4a4/bild5.jpg'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/268x188/ea3abe2255/bild12.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/300x168/b350da6607/bild10.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/318x159/9cc43507b4/bild8.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/300x168/7839b3cc33/bild9.jpg'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/225x225/62694276b8/bild6.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/170x170/530a56ba9c/bild15.jpg'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/484x104/7ab321ccf2/bild19.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/190x44/3701a5e389/bild7.jpg'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/345x205/e501724570/bild17.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/288x84/376f87f282/bild3.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/422x119/91a789a0ef/bild20.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
-			<div class='w-full aspect-video'>
-				<img
-					src='https://a.storyblok.com/f/316521/1890x657/f81aec4877/bild2.png'
-					alt='SmartOps Kunde, Logo'
-					class='w-full h-full object-contain'
-				/>
-			</div>
+	<div
+		class='max-w-big mx-auto flex flex-col items-center gap-md overflow-x-hidden'>
+		<h2 class='subtitle'>Auswahl unserer Kunden</h2>
+		<div class='logo-container relative h-[200px]'>
+			{
+				clientLogos.map((logo) => (
+					<div class='h-full aspect-video absolute'>
+						<img
+							src={logo.src}
+							alt={logo.alt}
+							class='w-full h-full object-contain'
+						/>
+					</div>
+				))
+			}
 		</div>
 	</div>
 </section>
+
+<script>
+	const container =
+		document.querySelector<HTMLElement>('.logo-container');
+	const imageObjects = container?.querySelectorAll('div');
+
+	let containerOverflowPercentage = 200; // Adjust this when adding more logos
+
+	const setInitialPosition = () => {
+		if (window.innerWidth < 768) {
+			containerOverflowPercentage = 400;
+		} else if (window.innerWidth < 1024) {
+			containerOverflowPercentage = 300;
+		}
+		container?.style.setProperty(
+			'width',
+			`${100 + containerOverflowPercentage}%`
+		);
+		imageObjects?.forEach((imgObj, i) => {
+			imgObj.style.setProperty(
+				'left',
+				`${((100 + containerOverflowPercentage) / imageObjects.length) * i}%`
+			);
+		});
+	};
+	const animation = () => {
+		imageObjects?.forEach((imgObj, i) => {
+			const leftValue = parseFloat(
+				imgObj.style.getPropertyValue('left')
+			);
+			if (leftValue <= 0) {
+				imgObj.style.setProperty(
+					'left',
+					`${100 + containerOverflowPercentage}%`
+				);
+			} else {
+				imgObj.style.setProperty('left', `${leftValue - 0.1}%`);
+			}
+		});
+		requestAnimationFrame(animation);
+	};
+
+	setInitialPosition();
+	requestAnimationFrame(animation);
+
+	window.addEventListener('resize', setInitialPosition);
+</script>
