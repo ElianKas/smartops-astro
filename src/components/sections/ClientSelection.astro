@@ -26,13 +26,20 @@ import { clientLogos } from '../../utils/useClientLogos';
 		document.querySelector<HTMLElement>('.logo-container');
 	const imageObjects = container?.querySelectorAll('div');
 
-	let containerOverflowPercentage = 180; // Adjust this when adding more logos
+	let containerOverflowPercentage = 180;
 
 	const setInitialPosition = () => {
+		// Adjust this when adding more logos
 		if (window.innerWidth < 768) {
 			containerOverflowPercentage = 350;
 		} else if (window.innerWidth < 1024) {
 			containerOverflowPercentage = 250;
+		} else if (window.innerWidth < 1280) {
+			containerOverflowPercentage = 200;
+		} else if (window.innerWidth < 1920) {
+			containerOverflowPercentage = 150;
+		} else {
+			containerOverflowPercentage = 100;
 		}
 		container?.style.setProperty(
 			'width',
