@@ -2,9 +2,8 @@
 import { clientLogos } from '../../utils/useClientLogos';
 ---
 
-<section class='px-sm py-lg'>
-	<div
-		class='max-w-big mx-auto flex flex-col items-center gap-md overflow-x-hidden'>
+<section class='py-lg'>
+	<div class='flex flex-col items-center gap-md overflow-x-hidden'>
 		<h2 class='subtitle'>Auswahl unserer Kunden</h2>
 		<div class='logo-container relative h-[150px]'>
 			{
@@ -48,7 +47,7 @@ import { clientLogos } from '../../utils/useClientLogos';
 	};
 
 	let lastTime = 0;
-	const speed = 5; // pixels per second
+	const speed = 2; // pixels per second
 	const animation = (currentTime: any) => {
 		if (!lastTime) lastTime = currentTime;
 		const deltaTime = (currentTime - lastTime) / 1000; // convert to seconds
