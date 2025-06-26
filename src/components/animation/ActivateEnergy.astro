@@ -3,6 +3,7 @@ import Lightning from '../Svg/Icons/Lightning.astro';
 ---
 
 <aside
+	id='energise-button-group'
 	class='fixed bottom-sm right-sm flex flex-col items-center gap-xs z-[9]'>
 	<div
 		id='energy-activate-button'
@@ -17,11 +18,14 @@ import Lightning from '../Svg/Icons/Lightning.astro';
 </aside>
 <script>
 	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 	const btn = document.getElementById('energy-activate-button');
 	const switchIcon = document.getElementById(
 		'energy-activate-switch'
 	);
 	const footer = document.getElementById('index-footer');
+
 	if (btn && switchIcon && footer) {
 		const timeline = gsap.timeline({
 			defaults: { duration: 0.1, ease: 'power2.out' },
@@ -41,5 +45,20 @@ import Lightning from '../Svg/Icons/Lightning.astro';
 				.to(switchIcon, { right: 'auto', left: 0 }, '+=1')
 				.to(btn, { backgroundColor: 'transparent' });
 		});
+
+		const btnGroup = document.getElementById('energise-button-group');
+		if (btnGroup) {
+			ScrollTrigger.create({
+				trigger: footer,
+				start: 'top bottom', // when footer enters the viewport from the bottom
+				end: 'bottom bottom', // until footer is fully in view
+				onEnter: () => {
+					btnGroup.style.display = 'none';
+				},
+				onLeaveBack: () => {
+					btnGroup.style.display = 'flex';
+				},
+			});
+		}
 	}
 </script>
