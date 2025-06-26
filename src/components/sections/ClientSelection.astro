@@ -46,20 +46,33 @@ import { clientLogos } from '../../utils/useClientLogos';
 			);
 		});
 	};
-	const animation = () => {
+
+	let lastTime = 0;
+	const speed = 5; // pixels per second
+	const animation = (currentTime: any) => {
+		if (!lastTime) lastTime = currentTime;
+		const deltaTime = (currentTime - lastTime) / 1000; // convert to seconds
+		lastTime = currentTime;
+
 		imageObjects?.forEach((imgObj, i) => {
 			const leftValue = parseFloat(
 				imgObj.style.getPropertyValue('left')
 			);
+			const moveAmount = speed * deltaTime; // consistent movement regardless of frame rate
+
 			if (leftValue <= 0) {
 				imgObj.style.setProperty(
 					'left',
 					`${100 + containerOverflowPercentage}%`
 				);
 			} else {
-				imgObj.style.setProperty('left', `${leftValue - 0.1}%`);
+				imgObj.style.setProperty(
+					'left',
+					`${leftValue - moveAmount}%`
+				);
 			}
 		});
+
 		requestAnimationFrame(animation);
 	};
 
