@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
-import Analytics from '@vercel/analytics/astro';
 import Meta from '../components/scripts/meta.astro';
+import Header from '../components/sections/Header.astro';
 import Footer from '../components/sections/Footer.astro';
 import Gsap from '../components/scripts/gsap.astro';
 import ActivateEnergy from '../components/animation/ActivateEnergy.astro';
@@ -12,11 +12,11 @@ import Seo from '../components/scripts/seo.astro';
 <html lang='de'>
 	<head>
 		<Meta />
-		<Analytics />
 		<Seo />
 		<Gsap />
 	</head>
 	<body class='relative'>
+		<Header />
 		<ActivateEnergy />
 		<main>
 			<slot />

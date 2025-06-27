@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
-    "astro": "^5.7.9",
+    "@vercel/analytics": "^1.5.0",
+    "astro": "^5.10.1",
     "gsap": "^3.12.7",
     "lottie-web": "^5.12.2",
     "tailwindcss": "^4.1.4"
