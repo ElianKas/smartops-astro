@@ -1,5 +1,5 @@
 ---
-import { clientLogos } from '../../utils/useClientLogos';
+import { clientLogos } from '../../../utils/useClientLogos';
 ---
 
 <section class='py-lg'>
@@ -22,8 +22,7 @@ import { clientLogos } from '../../utils/useClientLogos';
 </section>
 
 <script>
-	const container =
-		document.querySelector<HTMLElement>('.logo-container');
+	const container = document.querySelector<HTMLElement>('.logo-container');
 	const imageObjects = container?.querySelectorAll('div');
 
 	let containerOverflowPercentage = 180;
@@ -41,10 +40,7 @@ import { clientLogos } from '../../utils/useClientLogos';
 		} else {
 			containerOverflowPercentage = 100;
 		}
-		container?.style.setProperty(
-			'width',
-			`${100 + containerOverflowPercentage}%`
-		);
+		container?.style.setProperty('width', `${100 + containerOverflowPercentage}%`);
 		imageObjects?.forEach((imgObj, i) => {
 			imgObj.style.setProperty(
 				'left',
@@ -61,21 +57,13 @@ import { clientLogos } from '../../utils/useClientLogos';
 		lastTime = currentTime;
 
 		imageObjects?.forEach((imgObj, i) => {
-			const leftValue = parseFloat(
-				imgObj.style.getPropertyValue('left')
-			);
+			const leftValue = parseFloat(imgObj.style.getPropertyValue('left'));
 			const moveAmount = speed * deltaTime; // consistent movement regardless of frame rate
 
 			if (leftValue <= 0) {
-				imgObj.style.setProperty(
-					'left',
-					`${100 + containerOverflowPercentage}%`
-				);
+				imgObj.style.setProperty('left', `${100 + containerOverflowPercentage}%`);
 			} else {
-				imgObj.style.setProperty(
-					'left',
-					`${leftValue - moveAmount}%`
-				);
+				imgObj.style.setProperty('left', `${leftValue - moveAmount}%`);
 			}
 		});
 

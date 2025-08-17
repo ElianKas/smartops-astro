@@ -1,8 +1,8 @@
 ---
-import Geo1 from '../Svg/Background/geo1.astro';
-import Geo2 from '../Svg/Background/geo2.astro';
-import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
-import LogoAnimation from '../animation/LogoAnimation.astro';
+import Geo1 from '../../Svg/Background/geo1.astro';
+import Geo2 from '../../Svg/Background/geo2.astro';
+import SmartopsWhite from '../../Svg/Logos/SmartopsWhite.astro';
+import LogoAnimation from '../../animation/LogoAnimation.astro';
 ---
 
 <div class='h-screen relative overflow-hidden'>
@@ -17,19 +17,11 @@ import LogoAnimation from '../animation/LogoAnimation.astro';
 	<section
 		class='gsap-landing-container h-[100dvh] bg-dark grid place-items-center text-light absolute inset-0 z-[99]'>
 		<div class='z-[1] flex flex-col items-center gap-lg px-sm'>
-			<SmartopsWhite
-				class='gsap-landing-element w-[90vw] sm:w-[70vw] h-auto'
-			/>
-			<h1 class='subtitle gsap-landing-element text-center'>
-				SMARTE ENERGIEVERSORGUNG
-			</h1>
+			<SmartopsWhite class='gsap-landing-element w-[90vw] sm:w-[70vw] h-auto' />
+			<h1 class='subtitle gsap-landing-element text-center'>SMARTE ENERGIEVERSORGUNG</h1>
 		</div>
-		<Geo1
-			class='gsap-landing-element-bg absolute top-[5%] left-[60%] h-[30%] w-auto'
-		/>
-		<Geo2
-			class='gsap-landing-element-bg absolute bottom-[8%] left-[50%] h-[50%] w-auto'
-		/>
+		<Geo1 class='gsap-landing-element-bg absolute top-[5%] left-[60%] h-[30%] w-auto' />
+		<Geo2 class='gsap-landing-element-bg absolute bottom-[8%] left-[50%] h-[50%] w-auto' />
 	</section>
 </div>
 
@@ -87,9 +79,7 @@ import LogoAnimation from '../animation/LogoAnimation.astro';
 		if (scrollY === 0) {
 			tl1.play();
 		} else {
-			const landingContainer = document.querySelector<HTMLElement>(
-				'.gsap-landing-container'
-			);
+			const landingContainer = document.querySelector<HTMLElement>('.gsap-landing-container');
 			if (landingContainer) {
 				landingContainer.style.display = 'none';
 			}
