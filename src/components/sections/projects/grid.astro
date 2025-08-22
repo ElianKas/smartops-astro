@@ -1,0 +1,33 @@
+---
+import type { Story } from '../../../utils/useSchemas';
+
+interface Props {
+	projects: Story[];
+}
+const { projects } = Astro.props;
+---
+
+<div class='grid grid-cols-3 w-full gap-xs'>
+	{
+		projects.map((project) => (
+			<div class='w-full h-full relative group text-white cursor-pointer'>
+				<img
+					loading='lazy'
+					class='w-full h-full object-cover'
+					src={project.content.project_image.filename}
+					alt={project.content.project_image.alt}
+				/>
+				<div class='hidden group-hover:block absolute inset-0 bg-black opacity-30 ' />
+				<div class='hidden group-hover:block absolute inset-0 backdrop-blur' />
+				<div class='absolute left-sm bottom-sm bg-black  px-xs '>
+					{project.content.project_title}
+				</div>
+				<div class='hidden group-hover:flex absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
+					{project.content.project_categories.map((category) => (
+						<div>{category}</div>
+					))}
+				</div>
+			</div>
+		))
+	}
+</div>

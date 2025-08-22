@@ -1,0 +1,15 @@
+---
+import type { Story } from '../../../utils/useSchemas';
+import Bar from './bar.astro';
+import Grid from './grid.astro';
+
+interface Props {
+	projects: Story[];
+}
+const { projects } = Astro.props;
+---
+
+<article class='max-w-normal mx-auto flex flex-col gap-lg'>
+	<Bar />
+	<Grid projects={projects} />
+</article>

@@ -1,0 +1,25 @@
+---
+import { useStoryblokApi } from '@storyblok/astro';
+import Default from '../layouts/Default.astro';
+import Projects from '../components/sections/projects/index.astro';
+export const prerender = false;
+
+const url = Astro.url;
+const filter = url.searchParams.get('filter') || '';
+
+const { data } = await useStoryblokApi().get('cdn/stories', {
+	content_type: 'smartops_project',
+	per_page: 100,
+	sort_by: 'content.project_title:asc',
+	filter_query: {
+		project_categories: {
+			all_in_array: filter,
+		},
+	},
+	//search_term: filter,
+});
+---
+
+<Default>
+	<Projects projects={data.stories} />
+</Default>
