@@ -1,3 +1,7 @@
-<div class='rounded-full bg-green px-md py-xs text-light'>
+---
+const { class: className } = Astro.props;
+---
+
+<div class={`rounded-full px-md py-xs ${className}`}>
 	<slot />
 </div>

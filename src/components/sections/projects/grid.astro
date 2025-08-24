@@ -1,5 +1,6 @@
 ---
 import type { Story } from '../../../utils/useSchemas';
+import { projectCategories } from '../../../utils/useLists';
 
 interface Props {
 	projects: Story[];
@@ -7,10 +8,12 @@ interface Props {
 const { projects } = Astro.props;
 ---
 
-<div class='grid grid-cols-3 w-full gap-xs'>
+<div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-xs'>
 	{
 		projects.map((project) => (
-			<div class='w-full h-full relative group text-white cursor-pointer'>
+			<a
+				href={`/${project.full_slug}`}
+				class='w-full h-full relative group text-white cursor-pointer'>
 				<img
 					loading='lazy'
 					class='w-full h-full object-cover'
@@ -22,12 +25,17 @@ const { projects } = Astro.props;
 				<div class='absolute left-sm bottom-sm bg-black  px-xs '>
 					{project.content.project_title}
 				</div>
-				<div class='hidden group-hover:flex absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
+				<div class='hidden group-hover:flex gap-xs absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
 					{project.content.project_categories.map((category) => (
-						<div>{category}</div>
+						<div>
+							{project.content.project_categories[project.content.project_categories.length - 1] !==
+							category
+								? projectCategories.find((cat) => cat.value === category)?.name + ' |'
+								: projectCategories.find((cat) => cat.value === category)?.name}
+						</div>
 					))}
 				</div>
-			</div>
+			</a>
 		))
 	}
 </div>

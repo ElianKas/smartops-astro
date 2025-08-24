@@ -1,7 +1,35 @@
 ---
+import type { SmartopsProject } from '../utils/useSchemas';
+import { projectCategories } from '../utils/useLists';
+import TechnologyButton from '../components/reusable/TechnologyButton.astro';
+
+interface Props {
+	blok: SmartopsProject;
+}
+
 const { blok } = Astro.props;
 ---
 
-<div>
-	<h1>{blok.project_title}</h1>
+<div class='relative'>
+	<div class='h-screen w-full'>
+		<img
+			class='h-full w-full object-cover'
+			src={blok.project_image.filename}
+			alt={blok.project_image.alt}
+		/>
+		<h1 class='absolute left-md bottom-[15%] right-0 max-w-normal mx-auto text-light title'>
+			{blok.project_title}
+		</h1>
+	</div>
+	<div class='flex flex-col gap-sm px-md'>
+		<div class='max-w-normal mx-auto flex gap-sm w-full'>
+			{
+				blok.project_categories.map((category) => (
+					<TechnologyButton class='bg-dark text-white'>
+						{projectCategories.find((c) => c.value === category)?.name}
+					</TechnologyButton>
+				))
+			}
+		</div>
+	</div>
 </div>

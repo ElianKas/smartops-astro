@@ -22,5 +22,7 @@ const { data } = await useStoryblokApi().get('cdn/stories', {
 ---
 
 <Default>
-	<Projects projects={data.stories} />
+	<div class='px-sm py-md lg:py-lg'>
+		<Projects projects={data.stories} />
+	</div>
 </Default>
