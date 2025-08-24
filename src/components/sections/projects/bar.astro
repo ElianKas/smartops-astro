@@ -1,34 +1,57 @@
 ---
 import Close from '../../Svg/Icons/Close.astro';
 let searchInput = Astro.url.searchParams.get('search') || '';
+const filter = Astro.url.searchParams.get('filter') || '';
+
+const technologies = [
+	{ name: 'Solar', filter: 'technology_solar' },
+	{ name: 'Wind', filter: 'technology_wind' },
+	{ name: 'Speicher', filter: 'technology_speicher' },
+	{ name: 'ESYS', filter: 'technology_esys' },
+	{ name: 'eMobil', filter: 'technology_emobil' },
+];
 ---
 
-<div class='flex items-center gap-lg relative mt-lg flex-wrap'>
-	<h1 class='subtitle'>Referenzen</h1>
-	<div class='flex gap-lg items-center flex-wrap font-bold text-gray'>
-		<a href='/referenzen/?filter=technology_solar'>Solar</a>
-		<a href='/referenzen/?filter=technology_wind'>Wind</a>
-		<a href='/referenzen/?filter=technology_speicher'>Speicher</a>
-		<a href='/referenzen/?filter=technology_esys'>ESYS</a>
-		<a href='/referenzen/?filter=technology_emobil'>eMobil</a>
-		<div class='relative'>
-			<input
-				id='search-input'
-				type='text'
-				value={searchInput}
-				placeholder='Suche'
-				class='border rounded-full pl-xs pr-md w-[200px] font-normal'
-			/>
-			{
-				searchInput && (
+<div class='flex items-center gap-md xl:gap-lg relative mt-lg flex-wrap'>
+	<h1 class='subtitle'>
+		<a href='/referenzen/'>Referenzen</a>
+	</h1>
+	<div class='flex gap-md xl:gap-lg items-center flex-wrap font-bold text-gray'>
+		{
+			technologies.map((tech) => (
+				<div class='relative'>
+					<a
+						class:list={[{ 'text-dark': filter === tech.filter }]}
+						href={`/referenzen/?filter=${tech.filter}`}>
+						{tech.name}
+					</a>
 					<div
-						id='clear-search'
-						class='absolute right-[2px] top-[50%] translate-y-[-50%] cursor-pointer rounded-full'>
-						<Close />
-					</div>
-				)
-			}
-		</div>
+						class:list={[
+							'absolute w-full bottom-0 h-[2px] bg-green',
+							{ hidden: filter !== tech.filter },
+						]}
+					/>
+				</div>
+			))
+		}
+	</div>
+	<div class='relative'>
+		<input
+			id='search-input'
+			type='text'
+			value={searchInput}
+			placeholder='Suche'
+			class='border rounded-full pl-xs pr-md w-[200px] font-normal'
+		/>
+		{
+			searchInput && (
+				<div
+					id='clear-search'
+					class='absolute right-[2px] top-[50%] translate-y-[-50%] cursor-pointer rounded-full'>
+					<Close />
+				</div>
+			)
+		}
 	</div>
 </div>
 <script>
