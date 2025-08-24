@@ -19,11 +19,15 @@ let searchInput = Astro.url.searchParams.get('search') || '';
 				placeholder='Suche'
 				class='border rounded-full pl-xs pr-md w-[200px] font-normal'
 			/>
-			<div
-				id='clear-search'
-				class='absolute right-[2px] top-[50%] translate-y-[-50%] cursor-pointer rounded-full'>
-				<Close />
-			</div>
+			{
+				searchInput && (
+					<div
+						id='clear-search'
+						class='absolute right-[2px] top-[50%] translate-y-[-50%] cursor-pointer rounded-full'>
+						<Close />
+					</div>
+				)
+			}
 		</div>
 	</div>
 </div>
