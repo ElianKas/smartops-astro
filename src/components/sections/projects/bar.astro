@@ -1,3 +1,8 @@
+---
+import Close from '../../Svg/Icons/Close.astro';
+let searchInput = Astro.url.searchParams.get('search') || '';
+---
+
 <div class='flex items-center gap-lg relative mt-lg flex-wrap'>
 	<h1 class='subtitle'>Referenzen</h1>
 	<div class='flex gap-lg items-center flex-wrap font-bold text-gray'>
@@ -6,5 +11,42 @@
 		<a href='/referenzen/?filter=technology_speicher'>Speicher</a>
 		<a href='/referenzen/?filter=technology_esys'>ESYS</a>
 		<a href='/referenzen/?filter=technology_emobil'>eMobil</a>
+		<div class='relative'>
+			<input
+				id='search-input'
+				type='text'
+				value={searchInput}
+				placeholder='Suche'
+				class='border rounded-full pl-xs pr-md w-[200px] font-normal'
+			/>
+			<div
+				id='clear-search'
+				class='absolute right-[2px] top-[50%] translate-y-[-50%] cursor-pointer rounded-full'>
+				<Close />
+			</div>
+		</div>
 	</div>
 </div>
+<script>
+	document.getElementById('search-input')?.addEventListener('change', handleSearch);
+
+	function handleSearch(event: Event) {
+		const value = (event.target as HTMLInputElement).value;
+		const url = new URL(window.location.href);
+		if (value.trim()) {
+			url.searchParams.set('search', value);
+		} else {
+			url.searchParams.delete('search');
+		}
+		window.location.href = url.toString();
+	}
+</script>
+<script>
+	document.getElementById('clear-search')?.addEventListener('click', clearSearch);
+
+	function clearSearch() {
+		const url = new URL(window.location.href);
+		url.searchParams.delete('search');
+		window.location.href = url.toString();
+	}
+</script>
