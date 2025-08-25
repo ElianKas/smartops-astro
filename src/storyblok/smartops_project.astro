@@ -3,20 +3,20 @@ import type { SmartopsProject } from '../utils/useSchemas';
 import { projectCategories } from '../utils/useLists';
 import TechnologyButton from '../components/reusable/TechnologyButton.astro';
 import { renderRichText } from '@storyblok/astro';
+import { resizeImage } from '../utils/useImageOptimization';
 
 interface Props {
 	blok: SmartopsProject;
 }
 
 const { blok } = Astro.props;
-console.log(blok.project_image);
 ---
 
 <div class='relative flex flex-col gap-sm pb-sm'>
 	<div class='h-screen relative w-full flex items-end px-md pb-[10%]'>
 		<img
 			class='absolute inset-0 h-screen w-full object-cover z-[-1]'
-			src={blok.project_image.filename}
+			src={resizeImage(blok.project_image.filename)}
 			alt={blok.project_image.alt}
 		/>
 		<h1 class='max-w-normal mx-auto text-light title w-full'>
@@ -55,16 +55,16 @@ console.log(blok.project_image);
 						<div class='max-w-normal mx-auto w-full flex flex-col gap-xs'>
 							<img
 								id='project-image-display'
-								class='w-full h-auto'
-								src={section.section_assets[0].filename}
+								class='w-full h-auto cursor-pointer'
+								src={resizeImage(section.section_assets[0].filename)}
 								alt={section.section_assets[0].alt}
 							/>
 							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
 								{section.section_assets.map((asset) => (
 									<img
 										id={`project-image-${asset.id}`}
-										class='project-image-preview w-full h-auto object-cover cursor-pointer'
-										src={asset.filename}
+										class='project-image-preview w-full aspect-[4/3] object-cover cursor-pointer'
+										src={resizeImage(asset.filename)}
 										alt={asset.alt}
 									/>
 								))}
@@ -85,7 +85,19 @@ console.log(blok.project_image);
 			if (displayImage && displayImage.src !== preview.src) {
 				displayImage.src = preview.src;
 				displayImage.alt = preview.alt;
+				displayImage.classList.add('opacity-0');
 			}
 		});
+	});
+
+	displayImage?.addEventListener('click', () => {
+		if (displayImage) {
+			const imageWindow = window.open(displayImage.src, '_blank');
+			imageWindow?.focus();
+		}
+	});
+
+	displayImage?.addEventListener('load', () => {
+		displayImage.classList.remove('opacity-0');
 	});
 </script>
