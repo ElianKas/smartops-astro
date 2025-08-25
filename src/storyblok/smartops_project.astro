@@ -2,34 +2,90 @@
 import type { SmartopsProject } from '../utils/useSchemas';
 import { projectCategories } from '../utils/useLists';
 import TechnologyButton from '../components/reusable/TechnologyButton.astro';
+import { renderRichText } from '@storyblok/astro';
 
 interface Props {
 	blok: SmartopsProject;
 }
 
 const { blok } = Astro.props;
+console.log(blok.project_image);
 ---
 
-<div class='relative'>
-	<div class='h-screen w-full'>
+<div class='relative flex flex-col gap-sm pb-sm'>
+	<div class='h-screen relative w-full flex items-end px-md pb-[10%]'>
 		<img
-			class='h-full w-full object-cover'
+			class='absolute inset-0 h-screen w-full object-cover z-[-1]'
 			src={blok.project_image.filename}
 			alt={blok.project_image.alt}
 		/>
-		<h1 class='absolute left-md bottom-[15%] right-0 max-w-normal mx-auto text-light title'>
+		<h1 class='max-w-normal mx-auto text-light title w-full'>
 			{blok.project_title}
 		</h1>
 	</div>
-	<div class='flex flex-col gap-sm px-md'>
+	<div class='flex flex-col gap-lg px-md'>
 		<div class='max-w-normal mx-auto flex gap-sm w-full'>
 			{
 				blok.project_categories.map((category) => (
-					<TechnologyButton class='bg-dark text-white'>
+					<TechnologyButton
+						class:list={[
+							'text-white',
+							{ 'bg-green': category.includes('technology') },
+							{ 'bg-dark': !category.includes('technology') },
+						]}>
 						{projectCategories.find((c) => c.value === category)?.name}
 					</TechnologyButton>
 				))
 			}
 		</div>
+		{
+			blok.project_sections.map((section) => {
+				if (section.component === 'project_section_text') {
+					return (
+						<div class='max-w-normal mx-auto w-full subtitle font-normal'>
+							<div
+								class='flex flex-col gap-xs'
+								set:html={renderRichText(section.section_richtext)}
+							/>
+						</div>
+					);
+				}
+				if (section.component === 'project_section_assets') {
+					return (
+						<div class='max-w-normal mx-auto w-full flex flex-col gap-xs'>
+							<img
+								id='project-image-display'
+								class='w-full h-auto'
+								src={section.section_assets[0].filename}
+								alt={section.section_assets[0].alt}
+							/>
+							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
+								{section.section_assets.map((asset) => (
+									<img
+										id={`project-image-${asset.id}`}
+										class='project-image-preview w-full h-auto object-cover cursor-pointer'
+										src={asset.filename}
+										alt={asset.alt}
+									/>
+								))}
+							</div>
+						</div>
+					);
+				}
+			})
+		}
 	</div>
 </div>
+<script>
+	const imagePreviews = document.querySelectorAll<HTMLImageElement>('.project-image-preview');
+	const displayImage = document.getElementById('project-image-display') as HTMLImageElement | null;
+
+	imagePreviews.forEach((preview) => {
+		preview.addEventListener('click', () => {
+			if (displayImage && displayImage.src !== preview.src) {
+				displayImage.src = preview.src;
+				displayImage.alt = preview.alt;
+			}
+		});
+	});
+</script>
