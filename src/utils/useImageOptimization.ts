@@ -1,5 +1,4 @@
 export const resizeImage = (url: string) => {
-	console.log(url);
 	const indices: number[] = [];
 	for (let i = 0; i < url.length; i++) {
 		if (url[i] === '/') {

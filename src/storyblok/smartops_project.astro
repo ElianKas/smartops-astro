@@ -24,7 +24,7 @@ const { blok } = Astro.props;
 		</h1>
 	</div>
 	<div class='flex flex-col gap-lg px-md'>
-		<div class='max-w-normal mx-auto flex gap-sm w-full'>
+		<div class='max-w-normal mx-auto flex flex-wrap gap-sm w-full'>
 			{
 				blok.project_categories.map((category) => (
 					<TechnologyButton
@@ -53,12 +53,18 @@ const { blok } = Astro.props;
 				if (section.component === 'project_section_assets') {
 					return (
 						<div class='max-w-normal mx-auto w-full flex flex-col gap-xs'>
-							<img
-								id='project-image-display'
-								class='w-full h-auto cursor-pointer'
-								src={resizeImage(section.section_assets[0].filename)}
-								alt={section.section_assets[0].alt}
-							/>
+							<div class='w-full'>
+								<img
+									id='project-image-display'
+									class='w-full h-auto cursor-pointer'
+									src={resizeImage(section.section_assets[0].filename)}
+									alt={section.section_assets[0].alt}
+								/>
+								<div
+									id='project-image-progress'
+									class='w-0 h-[4px] bg-green'
+								/>
+							</div>
 							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
 								{section.section_assets.map((asset) => (
 									<img
@@ -77,17 +83,25 @@ const { blok } = Astro.props;
 	</div>
 </div>
 <script>
-	const imagePreviews = document.querySelectorAll<HTMLImageElement>('.project-image-preview');
+	import gsap from 'gsap';
+
+	const imagePreviews = document.querySelectorAll(
+		'.project-image-preview'
+	) as NodeListOf<HTMLImageElement>;
 	const displayImage = document.getElementById('project-image-display') as HTMLImageElement | null;
+	const progressBar = document.getElementById('project-image-progress') as HTMLDivElement | null;
+
+	const changeDisplayImage = (preview: HTMLImageElement) => {
+		if (displayImage && displayImage.src !== preview.src) {
+			displayImage.src = preview.src;
+			displayImage.alt = preview.alt;
+			displayImage.classList.add('opacity-0');
+			progressBar?.classList.add('opacity-0');
+		}
+	};
 
 	imagePreviews.forEach((preview) => {
-		preview.addEventListener('click', () => {
-			if (displayImage && displayImage.src !== preview.src) {
-				displayImage.src = preview.src;
-				displayImage.alt = preview.alt;
-				displayImage.classList.add('opacity-0');
-			}
-		});
+		preview.addEventListener('click', () => changeDisplayImage(preview));
 	});
 
 	displayImage?.addEventListener('click', () => {
@@ -99,5 +113,26 @@ const { blok } = Astro.props;
 
 	displayImage?.addEventListener('load', () => {
 		displayImage.classList.remove('opacity-0');
+		progressBar?.classList.remove('opacity-0');
+		anim.restart();
 	});
+
+	const anim = gsap.fromTo(
+		'#project-image-progress',
+		{ width: 0 },
+		{
+			width: '100%',
+			duration: 8,
+			ease: 'linear',
+			onComplete: () => {
+				let nextIndex =
+					Array.from(imagePreviews).findIndex((preview) => preview.src === displayImage?.src) + 1;
+				if (nextIndex >= imagePreviews.length) {
+					nextIndex = 0;
+				}
+				const nextDisplayImage = imagePreviews[nextIndex];
+				changeDisplayImage(nextDisplayImage);
+			},
+		}
+	);
 </script>
