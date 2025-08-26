@@ -2,7 +2,7 @@
 import { useStoryblokApi } from '@storyblok/astro';
 import Default from '../../layouts/Default.astro';
 import Projects from '../../components/sections/projects/index.astro';
-export const prerender = false;
+export const prerender = false; // for handling search params
 
 const url = Astro.url;
 const filter = url.searchParams.get('filter') || '';
