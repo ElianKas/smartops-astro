@@ -1,3 +1,5 @@
+// -----------------------------------------------------------------------------------------
+
 export interface Story {
 	name: string;
 	uuid: string;
@@ -27,4 +29,13 @@ export interface SmartopsProjectImage {
 	id: number;
 	alt: string;
 	filename: string;
+}
+
+// -----------------------------------------------------------------------------------------
+
+export interface SmartopsPage {
+	page_title: string;
+	page_meta_description: string;
+	page_showcase_project: SmartopsProject;
+	page_blocks: Array<any>;
 }
