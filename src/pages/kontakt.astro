@@ -1,0 +1,92 @@
+---
+import Default from '../layouts/Default.astro';
+import ContactDark from '../components/Svg/Icons/ContactDark.astro';
+---
+
+<Default>
+	<div class='px-sm py-md min-h-screen flex items-center'>
+		<div class='max-w-big mx-auto w-full flex max-xl:flex-col justify-between gap-lg'>
+			<div class='flex flex-col gap-sm'>
+				<h3 class='font-bold text-green'>Energie die inspiriert</h3>
+				<p class='subtitle font-normal max-w-paragraph'>
+					Ob erste Fragen oder konkrete Ideen – wir freuen uns darauf, gemeinsam mit Ihnen die
+					nächsten Schritte zu gehen!
+				</p>
+			</div>
+			<div class='flex flex-col gap-sm'>
+				<h1 class='font-bold text-green'>Kontakt</h1>
+				<div class='flex gap-lg max-sm:flex-col'>
+					<div class='flex flex-col gap-md'>
+						<h2 class='font-bold'>smartOPS GmbH</h2>
+						<div class='flex flex-col gap-xs'>
+							<div>Breitscheidstraße 6</div>
+							<div>34119 Kassel</div>
+						</div>
+						<div class='flex gap-sm'>
+							<div class='flex flex-col gap-sm'>
+								<div>E-Mail</div>
+								<div>Telefon</div>
+							</div>
+							<div class='flex flex-col gap-sm font-bold'>
+								<a href='mailto:info@smartops.de'>info@smartops.de</a>
+								<a href='tel:+4956134337'>0561 - 34337</a>
+							</div>
+						</div>
+						<div class='grow flex items-center'>
+							<ContactDark class='w-[100px] h-auto' />
+						</div>
+					</div>
+					<form class='flex flex-col gap-md'>
+						<h2 class='font-bold'>Kontaktformular</h2>
+						<div class='flex flex-col gap-sm'>
+							<input
+								required
+								class='border-b border-beige pb-sm pt-0'
+								type='text'
+								placeholder='* Name'
+							/>
+							<input
+								required
+								class='border-b border-beige pb-sm pt-0'
+								type='email'
+								placeholder='* E-Mail'
+							/>
+							<input
+								required
+								class='border-b border-beige pb-sm pt-0'
+								type='tel'
+								placeholder='* Telefon'
+							/>
+							<input
+								required
+								class='border-b border-beige pb-sm pt-0'
+								type='text'
+								placeholder='* Firma'
+							/>
+							<textarea
+								required
+								rows='1'
+								class='border-b border-beige pb-sm pt-0'
+								placeholder='* Nachricht'
+							></textarea>
+						</div>
+						<p class='text-sm text-gray'>
+							Mit Absenden des Formulars erklären Sie sich damit einverstanden, dass wir Ihre Daten
+							zur Bearbeitung speichern und verarbeiten. Details zum Umgang mit Ihren Daten finden
+							Sie in unserer <a
+								href='/datenschutz'
+								target='_blank'
+								class='text-blue'
+								>Datenschutzerklärung</a
+							>.
+						</p>
+						<button
+							class='border border-dark text-dark px-md py-xs rounded-full self-start hover:bg-dark hover:text-light cursor-pointer'
+							>Senden</button
+						>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</Default>

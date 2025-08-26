@@ -1,47 +1,50 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-    --leading: calc(1em + 15px);
-    --text-title: 56px;
-    --text-subtitle: 22px;
-    --text-body: 16px;
-    --conotainer-paragraph: 600px;
-    --container-normal: 1100px;
-    --container-big: 1300px;
-    --color-dark: #0F2333;
-    --color-light: #fff;
-    --color-green: #0DD127;
-    --color-gray: #818181;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 2rem;
-    --spacing-lg: 5rem;
-    --spacing-xl: 15rem;
+	--leading: calc(1em + 15px);
+	--text-title: 56px;
+	--text-subtitle: 22px;
+	--text-body: 16px;
+	--text-sm: 12px;
+	--conotainer-paragraph: 600px;
+	--container-normal: 1100px;
+	--container-big: 1300px;
+	--color-dark: #0f2333;
+	--color-light: #fff;
+	--color-green: #0dd127;
+	--color-gray: #818181;
+	--color-beige: #d2cbc6;
+	--color-blue: #1f5dd1;
+	--spacing-xs: 0.5rem;
+	--spacing-sm: 1rem;
+	--spacing-md: 2rem;
+	--spacing-lg: 5rem;
+	--spacing-xl: 15rem;
 }
 
 @layer components {
-    .title {
-        font-size: var(--text-title);
-        line-height: var(--leading);
-        font-weight: bold;
-    }
-    .subtitle {
-        font-size: var(--text-subtitle);
-        line-height: var(--leading);
-        font-weight: bold;
-    }
+	.title {
+		font-size: var(--text-title);
+		line-height: var(--leading);
+		font-weight: bold;
+	}
+	.subtitle {
+		font-size: var(--text-subtitle);
+		line-height: var(--leading);
+		font-weight: bold;
+	}
 }
 
-html, body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: var(--text-body);
-    line-height: var(--leading);
-    color: var(--color-dark);
+html,
+body {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: var(--text-body);
+	line-height: var(--leading);
+	color: var(--color-dark);
 }
 
 @media screen and (max-width: 639px) {
-    :root {
-        --text-title: 32px;
-    }
-    
+	:root {
+		--text-title: 32px;
+	}
 }
