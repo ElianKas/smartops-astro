@@ -52,23 +52,18 @@ const { blok } = Astro.props;
 				}
 				if (section.component === 'project_section_assets') {
 					return (
-						<div class='max-w-normal mx-auto w-full flex flex-col gap-xs'>
+						<div class='project-image-section max-w-normal mx-auto w-full flex flex-col gap-xs'>
 							<div class='w-full relative rounded-tl-2xl rounded-br-2xl overflow-hidden'>
 								<img
-									id='project-image-display'
-									class='w-full h-auto cursor-pointer rounded-tl-2xl rounded-br-2xl'
+									class='project-image-display w-full h-auto cursor-pointer rounded-tl-2xl rounded-br-2xl'
 									src={resizeImage(section.section_assets[0].filename)}
 									alt={section.section_assets[0].alt}
 								/>
-								<div
-									id='project-image-progress'
-									class='w-0 h-[4px] bg-green absolute bottom-0 left-0'
-								/>
+								<div class='project-image-progress w-0 h-[4px] bg-green absolute bottom-0 left-0' />
 							</div>
 							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
 								{section.section_assets.map((asset) => (
 									<img
-										id={`project-image-${asset.id}`}
 										class='project-image-preview w-full aspect-[4/3] object-cover cursor-pointer rounded-tl-lg rounded-br-lg'
 										src={resizeImage(asset.filename)}
 										alt={asset.alt}
@@ -88,51 +83,61 @@ const { blok } = Astro.props;
 	const imagePreviews = document.querySelectorAll(
 		'.project-image-preview'
 	) as NodeListOf<HTMLImageElement>;
-	const displayImage = document.getElementById('project-image-display') as HTMLImageElement | null;
-	const progressBar = document.getElementById('project-image-progress') as HTMLDivElement | null;
 
-	const changeDisplayImage = (preview: HTMLImageElement) => {
-		if (displayImage && displayImage.src !== preview.src) {
-			displayImage.src = preview.src;
-			displayImage.alt = preview.alt;
-			displayImage.classList.add('opacity-0');
-			progressBar?.classList.add('opacity-0');
-		}
-	};
+	// todo: instead of imagePreviews.forEach -> loop by sections and collect all previews inside each section loop
+	const imageSections = document.querySelectorAll('.project-image-section');
+	imageSections.forEach((section) => {
+		const previews = section.querySelectorAll(
+			'.project-image-preview'
+		) as NodeListOf<HTMLImageElement>;
+		const displayImage = section.querySelector('.project-image-display') as HTMLImageElement | null;
+		const progressBar = section.querySelector('.project-image-progress');
 
-	imagePreviews.forEach((preview) => {
-		preview.addEventListener('click', () => changeDisplayImage(preview));
+		const changeDisplayImage = (preview: HTMLImageElement) => {
+			if (displayImage && displayImage.src !== preview.src) {
+				displayImage.src = preview.src;
+				displayImage.alt = preview.alt;
+				displayImage.classList.add('opacity-0');
+				progressBar?.classList.add('opacity-0');
+			}
+		};
+
+		previews.forEach((preview) => {
+			preview.addEventListener('click', () => {
+				changeDisplayImage(preview);
+			});
+		});
+
+		displayImage?.addEventListener('load', () => {
+			displayImage.classList.remove('opacity-0');
+			progressBar?.classList.remove('opacity-0');
+			anim.restart();
+		});
+
+		displayImage?.addEventListener('click', () => {
+			if (displayImage) {
+				const imageWindow = window.open(displayImage.src, '_blank');
+				imageWindow?.focus();
+			}
+		});
+
+		const anim = gsap.fromTo(
+			progressBar,
+			{ width: 0 },
+			{
+				width: '100%',
+				duration: 8,
+				ease: 'linear',
+				onComplete: () => {
+					let nextIndex =
+						Array.from(previews).findIndex((preview) => preview.src === displayImage?.src) + 1;
+					if (nextIndex >= previews.length) {
+						nextIndex = 0;
+					}
+					const nextDisplayImage = previews[nextIndex];
+					changeDisplayImage(nextDisplayImage);
+				},
+			}
+		);
 	});
-
-	displayImage?.addEventListener('click', () => {
-		if (displayImage) {
-			const imageWindow = window.open(displayImage.src, '_blank');
-			imageWindow?.focus();
-		}
-	});
-
-	displayImage?.addEventListener('load', () => {
-		displayImage.classList.remove('opacity-0');
-		progressBar?.classList.remove('opacity-0');
-		anim.restart();
-	});
-
-	const anim = gsap.fromTo(
-		'#project-image-progress',
-		{ width: 0 },
-		{
-			width: '100%',
-			duration: 8,
-			ease: 'linear',
-			onComplete: () => {
-				let nextIndex =
-					Array.from(imagePreviews).findIndex((preview) => preview.src === displayImage?.src) + 1;
-				if (nextIndex >= imagePreviews.length) {
-					nextIndex = 0;
-				}
-				const nextDisplayImage = imagePreviews[nextIndex];
-				changeDisplayImage(nextDisplayImage);
-			},
-		}
-	);
 </script>
