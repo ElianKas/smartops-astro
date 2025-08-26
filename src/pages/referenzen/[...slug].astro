@@ -11,16 +11,14 @@ export async function getStaticPaths() {
 		starts_with: 'referenzen/',
 	});
 
-	return data.stories
-		.filter((story: any) => story.slug !== 'referenzen') // Exclude the folder itself
-		.map((story: any) => ({
-			params: {
-				slug: story.slug.replace('referenzen/', ''), // Remove folder prefix for URL
-			},
-			props: {
-				story,
-			},
-		}));
+	return data.stories.map((story: any) => ({
+		params: {
+			slug: story.slug,
+		},
+		props: {
+			story,
+		},
+	}));
 }
 interface Props {
 	story: any;
