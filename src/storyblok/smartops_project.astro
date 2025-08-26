@@ -53,23 +53,23 @@ const { blok } = Astro.props;
 				if (section.component === 'project_section_assets') {
 					return (
 						<div class='max-w-normal mx-auto w-full flex flex-col gap-xs'>
-							<div class='w-full'>
+							<div class='w-full relative rounded-tl-2xl rounded-br-2xl overflow-hidden'>
 								<img
 									id='project-image-display'
-									class='w-full h-auto cursor-pointer'
+									class='w-full h-auto cursor-pointer rounded-tl-2xl rounded-br-2xl'
 									src={resizeImage(section.section_assets[0].filename)}
 									alt={section.section_assets[0].alt}
 								/>
 								<div
 									id='project-image-progress'
-									class='w-0 h-[4px] bg-green'
+									class='w-0 h-[4px] bg-green absolute bottom-0 left-0'
 								/>
 							</div>
 							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
 								{section.section_assets.map((asset) => (
 									<img
 										id={`project-image-${asset.id}`}
-										class='project-image-preview w-full aspect-[4/3] object-cover cursor-pointer'
+										class='project-image-preview w-full aspect-[4/3] object-cover cursor-pointer rounded-tl-lg rounded-br-lg'
 										src={resizeImage(asset.filename)}
 										alt={asset.alt}
 									/>
