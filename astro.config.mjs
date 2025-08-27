@@ -20,6 +20,7 @@ export default defineConfig({
 			},
 			components: {
 				smartops_project: 'storyblok/smartops_project',
+				smartops_page: 'storyblok/smartops_page',
 			},
 		}),
 	],

@@ -1,1 +1,33 @@
-<!-- todo: copy from referenzen/[...slug].astro -->
+---
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import Default from '../../layouts/Default.astro';
+import Landing from '../../components/sections/sparring/landing.astro';
+
+export async function getStaticPaths() {
+	const storyblokApi = useStoryblokApi();
+
+	const { data } = await storyblokApi.get('cdn/stories', {
+		starts_with: 'sparring/',
+	});
+
+	return data.stories.map((story: any) => ({
+		params: {
+			slug: story.slug,
+		},
+		props: {
+			story,
+		},
+	}));
+}
+interface Props {
+	story: any;
+}
+
+const { story } = Astro.props;
+---
+
+<Default>
+	<Landing content={story.content} />
+	<StoryblokComponent blok={story.content} />
+</Default>
