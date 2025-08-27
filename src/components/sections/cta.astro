@@ -1,0 +1,28 @@
+---
+import type { SmartopsPage } from '../../utils/useSchemas';
+import ContactDark from '../Svg/Icons/ContactDark.astro';
+
+interface Props {
+	story: {
+		full_slug: string;
+		content: SmartopsPage;
+	};
+}
+const { story } = Astro.props;
+const cuttedSlug = story.full_slug.split('/')[0];
+const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
+---
+
+<aside class='px-sm'>
+	<div class='max-w-paragraph mx-auto flex gap-lg items-start'>
+		<ContactDark />
+		<div class='flex flex-col gap-md'>
+			<div>{slug}</div>
+			<div>{story.content.page_title}</div>
+			<div>
+				Nutzen Sie unsere Expertise, um Ihre Ideen voranzubringen. Kontaktieren Sie uns jetzt und
+				erleben Sie, wie wir gemeinsam zuverlässige Lösungen entwickeln!
+			</div>
+		</div>
+	</div>
+</aside>
