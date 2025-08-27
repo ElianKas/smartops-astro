@@ -15,14 +15,23 @@ const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 
 <aside class='px-sm'>
 	<div class='max-w-paragraph mx-auto flex gap-lg items-start'>
-		<ContactDark />
+		<ContactDark class='w-[100px] h-auto shrink-0' />
 		<div class='flex flex-col gap-md'>
-			<div>{slug}</div>
-			<div>{story.content.page_title}</div>
+			<div class='flex flex-col gap-sm'>
+				<div class='font-bold text-gray'>{slug}</div>
+				<div class='subtitle'>{story.content.page_title}</div>
+			</div>
 			<div>
 				Nutzen Sie unsere Expertise, um Ihre Ideen voranzubringen. Kontaktieren Sie uns jetzt und
 				erleben Sie, wie wir gemeinsam zuverlässige Lösungen entwickeln!
 			</div>
+			<span>
+				<a
+					href='/kontakt'
+					class='font-bold'
+					>Kontakt</a
+				>
+			</span>
 		</div>
 	</div>
 </aside>
