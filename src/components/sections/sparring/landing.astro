@@ -5,6 +5,7 @@ import Camera from '../../Svg/Icons/Camera.astro';
 import ShortArrow from '../../Svg/Icons/ShortArrow.astro';
 import Geo1 from '../../Svg/Background/geo1.astro';
 import Geo2 from '../../Svg/Background/geo2.astro';
+import { resizeImage } from '../../../utils/useImageOptimization';
 
 interface Props {
 	content: SmartopsPage;
@@ -35,7 +36,7 @@ const { content } = Astro.props;
 			</div>
 			<img
 				class='w-full aspect-[2/3] my-auto object-cover mask-[url(/masks/mask1.svg)] mask-contain mask-center mask-no-repeat'
-				src={content.page_showcase_project[0].content.project_image.filename}
+				src={resizeImage(content.page_showcase_project[0].content.project_image.filename)}
 				alt={content.page_showcase_project[0].content.project_image.alt}
 			/>
 			<div class='w-full h-full flex items-center max-xl:hidden'>

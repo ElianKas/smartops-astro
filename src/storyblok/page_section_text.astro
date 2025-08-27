@@ -1,0 +1,11 @@
+---
+import { renderRichText } from '@storyblok/astro';
+const { blok } = Astro.props;
+---
+
+<div class='max-w-big mx-auto w-full'>
+	<div
+		class='flex flex-col gap-xs subtitle font-normal max-w-lg-paragraph'
+		set:html={renderRichText(blok.section_description)}
+	/>
+</div>

@@ -6,7 +6,7 @@ import { renderRichText } from '@storyblok/astro';
 import { resizeImage } from '../utils/useImageOptimization';
 
 interface Props {
-	blok: SmartopsProject;
+	blok: any;
 }
 
 const { blok } = Astro.props;
@@ -26,7 +26,7 @@ const { blok } = Astro.props;
 	<div class='flex flex-col gap-lg px-sm'>
 		<div class='max-w-normal mx-auto flex flex-wrap gap-sm w-full'>
 			{
-				blok.project_categories.map((category) => (
+				blok.project_categories.map((category: any) => (
 					<TechnologyButton
 						class:list={[
 							'text-white',
@@ -39,7 +39,7 @@ const { blok } = Astro.props;
 			}
 		</div>
 		{
-			blok.project_sections.map((section) => {
+			blok.project_sections.map((section: any) => {
 				if (section.component === 'project_section_text') {
 					return (
 						<div class='max-w-normal mx-auto w-full subtitle font-normal'>
@@ -62,7 +62,7 @@ const { blok } = Astro.props;
 								<div class='project-image-progress w-0 h-[4px] bg-green absolute bottom-0 left-0' />
 							</div>
 							<div class='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-xs'>
-								{section.section_assets.map((asset) => (
+								{section.section_assets.map((asset: any) => (
 									<img
 										class='project-image-preview w-full aspect-[4/3] object-cover cursor-pointer rounded-tl-lg rounded-br-lg'
 										src={resizeImage(asset.filename)}

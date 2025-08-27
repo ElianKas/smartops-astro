@@ -1,9 +1,9 @@
 ---
-import type { Story } from '../../../utils/useSchemas';
 import { projectCategories } from '../../../utils/useLists';
+import { resizeImage } from '../../../utils/useImageOptimization';
 
 interface Props {
-	projects: Story[];
+	projects: any[];
 }
 const { projects } = Astro.props;
 ---
@@ -17,7 +17,7 @@ const { projects } = Astro.props;
 				<img
 					loading='lazy'
 					class='w-full h-full object-cover'
-					src={project.content.project_image.filename}
+					src={resizeImage(project.content.project_image.filename)}
 					alt={project.content.project_image.alt}
 				/>
 				<div class='hidden group-hover:block absolute inset-0 bg-black opacity-30 ' />
@@ -26,7 +26,7 @@ const { projects } = Astro.props;
 					{project.content.project_title}
 				</div>
 				<div class='hidden group-hover:flex gap-xs absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
-					{project.content.project_categories.map((category) => (
+					{project.content.project_categories.map((category: any) => (
 						<div>
 							{project.content.project_categories[project.content.project_categories.length - 1] !==
 							category

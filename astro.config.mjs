@@ -21,6 +21,12 @@ export default defineConfig({
 			components: {
 				smartops_project: 'storyblok/smartops_project',
 				smartops_page: 'storyblok/smartops_page',
+				page_section_text: 'storyblok/page_section_text',
+				page_section_hero: 'storyblok/page_section_hero',
+				page_section_features: 'storyblok/page_section_features',
+				page_section_carousel: 'storyblok/page_section_carousel',
+				page_section_sparring_info: 'storyblok/page_section_sparring_info',
+				page_section_project_references: 'storyblok/page_section_project_references',
 			},
 		}),
 	],

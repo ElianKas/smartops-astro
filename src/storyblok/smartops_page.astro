@@ -1,11 +1,15 @@
 ---
 import type { SmartopsPage } from '../utils/useSchemas';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 
 interface Props {
-	blok: SmartopsPage;
+	blok: any;
 }
 
 const { blok } = Astro.props;
+console.log(blok);
 ---
 
-<div>smartops_page component</div>
+<div class='px-sm sm:px-lg flex flex-col gap-lg'>
+	{blok.page_blocks.map((block: any) => <StoryblokComponent blok={block} />)}
+</div>

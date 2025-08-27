@@ -30,7 +30,9 @@ const { story } = Astro.props;
 ---
 
 <Default>
-	<Landing content={story.content} />
-	<StoryblokComponent blok={story.content} />
-	<Cta story={story} />
+	<div class='flex flex-col gap-lg pb-lg'>
+		<Landing content={story.content} />
+		<StoryblokComponent blok={story.content} />
+		<Cta story={story} />
+	</div>
 </Default>
