@@ -28,7 +28,7 @@ export interface SmartopsProjectTextSection {
 export interface SmartopsPage {
 	page_title: string;
 	page_meta_description: string;
-	page_showcase_project: Array<string>;
+	page_showcase_project: Array<{ content: SmartopsProject; full_slug: string }>;
 	page_blocks: Array<object>;
 }
 

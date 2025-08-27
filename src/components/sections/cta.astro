@@ -1,6 +1,7 @@
 ---
 import type { SmartopsPage } from '../../utils/useSchemas';
 import ContactDark from '../Svg/Icons/ContactDark.astro';
+import ShortArrow from '../Svg/Icons/ShortArrow.astro';
 
 interface Props {
 	story: {
@@ -25,13 +26,11 @@ const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 				Nutzen Sie unsere Expertise, um Ihre Ideen voranzubringen. Kontaktieren Sie uns jetzt und
 				erleben Sie, wie wir gemeinsam zuverlässige Lösungen entwickeln!
 			</div>
-			<span>
-				<a
-					href='/kontakt'
-					class='font-bold'
-					>Kontakt</a
-				>
-			</span>
+			<a
+				href='/kontakt'
+				class='font-bold flex items-center gap-xs self-start'>
+				<span>Kontakt</span><ShortArrow class='rotate-180 h-[20px] w-auto' /></a
+			>
 		</div>
 	</div>
 </aside>

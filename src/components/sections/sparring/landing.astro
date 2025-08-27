@@ -1,0 +1,60 @@
+---
+import type { SmartopsPage } from '../../../utils/useSchemas';
+import TechnologyButton from '../../reusable/TechnologyButton.astro';
+import Camera from '../../Svg/Icons/Camera.astro';
+import ShortArrow from '../../Svg/Icons/ShortArrow.astro';
+import Geo1 from '../../Svg/Background/geo1.astro';
+import Geo2 from '../../Svg/Background/geo2.astro';
+
+interface Props {
+	content: SmartopsPage;
+}
+const { content } = Astro.props;
+---
+
+<section class='min-h-screen bg-dark text-light px-sm sm:px-lg py-md flex relative overflow-hidden'>
+	<Geo1 class='absolute opacity-50 top-[5%] left-[30%] xl:left-[60%] h-[30%] w-auto' />
+	<Geo2 class='absolute opacity-50 bottom-[8%] left-[20%] xl:left-[50%] h-[50%] w-auto' />
+	<div class='max-w-big mx-auto grow flex flex-col justify-end gap-sm z-1'>
+		<div class='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1fr_1.8fr_1fr] grow'>
+			<div class='flex flex-col justify-center gap-md h-full w-full'>
+				<div class='flex gap-sm items-center'>
+					<ShortArrow class='h-[20px] w-auto rotate-270' />
+					<div>Sparring</div>
+				</div>
+				<h1 class='subtitle'>{content.page_title}</h1>
+				<a
+					href={'/' + content.page_showcase_project[0].full_slug}
+					class='flex gap-lg items-center xl:hidden'>
+					<div class='flex gap-sm items-center'>
+						<Camera class='h-[20px] w-auto' />
+						<span>{content.page_showcase_project[0].content.project_title}</span>
+					</div>
+					<ShortArrow class='rotate-180 h-[20px] w-auto' />
+				</a>
+			</div>
+			<img
+				class='w-full aspect-[2/3] my-auto object-cover mask-[url(/masks/mask1.svg)] mask-contain mask-center mask-no-repeat'
+				src={content.page_showcase_project[0].content.project_image.filename}
+				alt={content.page_showcase_project[0].content.project_image.alt}
+			/>
+			<div class='w-full h-full flex items-center max-xl:hidden'>
+				<a
+					href={'/' + content.page_showcase_project[0].full_slug}
+					class='flex gap-lg items-center justify-end grow'>
+					<div class='flex gap-sm items-center'>
+						<Camera class='h-[20px] w-auto' />
+						<span>{content.page_showcase_project[0].content.project_title}</span>
+					</div>
+					<ShortArrow class='rotate-180 h-[20px] w-auto' />
+				</a>
+			</div>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<div>Verfügbare Technologien</div>
+			<div class='flex gap-sm'>
+				<TechnologyButton class='bg-green text-light'>Solar</TechnologyButton>
+			</div>
+		</div>
+	</div>
+</section>
