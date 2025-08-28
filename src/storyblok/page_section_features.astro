@@ -1,6 +1,97 @@
 ---
 import { renderRichText } from '@storyblok/astro';
-const { blok } = Astro.props;
+const { blok, pageTitle } = Astro.props;
+console.log(blok);
 ---
 
-<div class='max-w-normal mx-auto w-full grid grid-cols-1 sm:grid-cols-2 gap-md'></div>
+<div class='features-section max-w-normal mx-auto w-full flex gap-sm flex-col'>
+	<h2 class='font-bold'>{pageTitle}</h2>
+	<div class='grid grid-cols-1 lg:grid-cols-2 gap-md w-full'>
+		<div class='flex flex-col gap-sm subtitle font-normal'>
+			{
+				blok.section_items.map((item: any, index: number) => (
+					<div class='flex flex-col gap-sm'>
+						<div
+							data-index={index}
+							class='features-block-title text-[#F2F2F2] cursor-pointer'>
+							{item.features_item_title}
+						</div>
+						<div class='h-[1px] bg-[#F2F2F2] relative'>
+							<div class='features-block-progress-bar h-[1px] bg-gray absolute inset-0 w-0' />
+						</div>
+					</div>
+				))
+			}
+		</div>
+		{
+			blok.section_items.map((item: any, index: number) => (
+				<div
+					data-index={index}
+					class='feature-section-description flex flex-col gap-xs'
+					set:html={renderRichText(item.features_item_description)}
+				/>
+			))
+		}
+	</div>
+</div>
+<script>
+	import gsap from 'gsap';
+	let index = 0;
+	let anim: any;
+
+	const animateProgressBars = () => {
+		const progressBars = document.querySelectorAll(
+			`.features-section .features-block-progress-bar`
+		);
+		const descriptions = document.querySelectorAll(
+			`.features-section .feature-section-description`
+		);
+		const titles = document.querySelectorAll(`.features-section .features-block-title`);
+		anim = gsap.fromTo(
+			progressBars[index],
+			{ width: '0%' },
+			{
+				width: '100%',
+				duration: 8,
+				ease: 'linear',
+				onStart: () => {
+					descriptions.forEach((description, i) => {
+						if (i !== index) {
+							description.classList.add('hidden');
+						}
+						if (i === index) {
+							description.classList.remove('hidden');
+						}
+					});
+					titles.forEach((title, i) => {
+						if (i !== index) {
+							title.classList.add('text-[#F2F2F2]');
+						}
+						if (i === index) {
+							title.classList.remove('text-[#F2F2F2]');
+						}
+					});
+				},
+				onComplete: () => {
+					anim.revert();
+					index < progressBars.length - 1 ? index++ : (index = 0);
+					animateProgressBars();
+				},
+			}
+		);
+	};
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const titles = document.querySelectorAll(`.features-section .features-block-title`);
+		titles.forEach((title) => {
+			title.addEventListener('click', (event) => {
+				const target = event.currentTarget as HTMLElement;
+				const clickedIndex = target.getAttribute('data-index') as string;
+				index = parseInt(clickedIndex);
+				anim.revert();
+				animateProgressBars();
+			});
+		});
+		animateProgressBars();
+	});
+</script>

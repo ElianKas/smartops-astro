@@ -28,12 +28,17 @@ interface Props {
 }
 
 const { story } = Astro.props;
+const cuttedSlug = story.full_slug.split('/')[0];
+const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 ---
 
 <Default>
 	<div class='flex flex-col gap-lg pb-lg'>
 		<Landing content={story.content} />
 		<StoryblokComponent blok={story.content} />
-		<Cta story={story} />
+		<Cta
+			story={story}
+			slug={slug}
+		/>
 	</div>
 </Default>

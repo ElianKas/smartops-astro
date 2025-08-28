@@ -5,13 +5,11 @@ import ShortArrow from '../Svg/Icons/ShortArrow.astro';
 
 interface Props {
 	story: {
-		full_slug: string;
 		content: SmartopsPage;
 	};
+	slug: string;
 }
-const { story } = Astro.props;
-const cuttedSlug = story.full_slug.split('/')[0];
-const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
+const { story, slug } = Astro.props;
 ---
 
 <aside class='px-sm'>
