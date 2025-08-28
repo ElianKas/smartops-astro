@@ -1,7 +1,38 @@
 ---
 import { resizeImage } from '../utils/useImageOptimization';
-const { blok } = Astro.props;
-console.log(blok);
+const { blok, pageTitle } = Astro.props;
 ---
 
-<div class='max-w-normal mx-auto w-full grid grid-cols-1 sm:grid-cols-2 gap-md sm:gap-lg'></div>
+<div class='max-w-normal mx-auto w-full flex flex-col gap-md'>
+	<div class='grid w-full grid-cols-2 gap-md'>
+		<h2 class='text-right w-full'>Referenz Projekte</h2>
+		<div class='text-left w-full font-bold'>{pageTitle}</div>
+	</div>
+	{
+		blok.section_references.length === 2 && (
+			<div class='grid w-full grid-cols-1 sm:grid-cols-2 gap-md'>
+				{blok.section_references.map((project: any) => (
+					<div class='flex flex-col gap-sm w-full'>
+						<div class='w-full h-full relative'>
+							<img
+								class='w-full h-full object-cover rounded-tl-2xl rounded-br-2xl'
+								src={resizeImage(project.content.project_image.filename)}
+								alt={project.content.project_image.alt}
+							/>
+							<div class='text-white bg-black px-xs absolute left-sm bottom-sm'>
+								{project.content.project_title}
+							</div>
+						</div>
+						<div class='flex gap-sm'>
+							<a
+								href={'/' + project.full_slug}
+								class='border border-dark rounded-full px-md py-xs hover:bg-dark hover:text-light'>
+								Mehr anzeigen
+							</a>
+						</div>
+					</div>
+				))}
+			</div>
+		)
+	}
+</div>

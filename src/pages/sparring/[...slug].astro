@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 	const { data } = await storyblokApi.get('cdn/stories', {
 		starts_with: 'sparring/',
 		resolve_relations:
-			'smartops_page.page_showcase_project,smartops_page.page_section_project_references.section_references',
+			'smartops_page.page_showcase_project,page_section_project_references.section_references',
 	});
 
 	return data.stories.map((story: any) => ({
@@ -28,7 +28,6 @@ interface Props {
 }
 
 const { story } = Astro.props;
-console.log(story.page_blocks);
 ---
 
 <Default>

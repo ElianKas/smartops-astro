@@ -10,5 +10,12 @@ const { blok } = Astro.props;
 ---
 
 <div class='px-sm sm:px-lg flex flex-col gap-lg'>
-	{blok.page_blocks.map((block: any) => <StoryblokComponent blok={block} />)}
+	{
+		blok.page_blocks.map((block: any) => (
+			<StoryblokComponent
+				blok={block}
+				pageTitle={blok.page_title}
+			/>
+		))
+	}
 </div>
