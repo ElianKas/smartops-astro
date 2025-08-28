@@ -1,7 +1,6 @@
 ---
 import { renderRichText } from '@storyblok/astro';
 const { blok, pageTitle } = Astro.props;
-console.log(blok);
 ---
 
 <div class='features-section max-w-normal mx-auto w-full flex gap-sm flex-col'>
@@ -13,10 +12,10 @@ console.log(blok);
 					<div class='flex flex-col gap-sm'>
 						<div
 							data-index={index}
-							class='features-block-title text-[#F2F2F2] cursor-pointer'>
+							class='features-block-title text-light-gray cursor-pointer'>
 							{item.features_item_title}
 						</div>
-						<div class='h-[1px] bg-[#F2F2F2] relative'>
+						<div class='h-[1px] bg-light-gray relative'>
 							<div class='features-block-progress-bar h-[1px] bg-gray absolute inset-0 w-0' />
 						</div>
 					</div>
@@ -65,10 +64,10 @@ console.log(blok);
 					});
 					titles.forEach((title, i) => {
 						if (i !== index) {
-							title.classList.add('text-[#F2F2F2]');
+							title.classList.add('text-light-gray');
 						}
 						if (i === index) {
-							title.classList.remove('text-[#F2F2F2]');
+							title.classList.remove('text-light-gray');
 						}
 					});
 				},

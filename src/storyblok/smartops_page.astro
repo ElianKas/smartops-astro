@@ -9,7 +9,7 @@ interface Props {
 const { blok } = Astro.props;
 ---
 
-<div class='px-sm sm:px-lg flex flex-col gap-lg'>
+<div class='px-sm sm:px-lg flex flex-col gap-lg overflow-hidden'>
 	{
 		blok.page_blocks.map((block: any) => (
 			<StoryblokComponent
