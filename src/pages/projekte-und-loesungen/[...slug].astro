@@ -10,6 +10,8 @@ export async function getStaticPaths() {
 
 	const { data } = await storyblokApi.get('cdn/stories', {
 		starts_with: 'projekte-und-loesungen/',
+		resolve_relations:
+			'smartops_page.page_showcase_project,page_section_project_references.section_references',
 	});
 
 	return data.stories.map((story: any) => ({
@@ -26,10 +28,17 @@ interface Props {
 }
 
 const { story } = Astro.props;
+const cuttedSlug = story.full_slug.split('/')[0];
+const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 ---
 
 <Default>
-	<Landing content={story.content} />
-	<StoryblokComponent blok={story.content} />
-	<Cta story={story} />
+	<div class='flex flex-col gap-lg pb-lg'>
+		<Landing content={story.content} />
+		<StoryblokComponent blok={story.content} />
+		<Cta
+			story={story}
+			slug={slug}
+		/>
+	</div>
 </Default>

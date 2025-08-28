@@ -1,0 +1,46 @@
+---
+import type { SmartopsPage } from '../../../utils/useSchemas';
+import TechnologyButton from '../../reusable/TechnologyButton.astro';
+import CameraDark from '../../Svg/Icons/CameraDark.astro';
+import ShortArrow from '../../Svg/Icons/ShortArrow.astro';
+import { resizeImage } from '../../../utils/useImageOptimization';
+
+interface Props {
+	content: SmartopsPage;
+}
+const { content } = Astro.props;
+---
+
+<section class='min-h-screen px-sm sm:px-lg py-md flex relative overflow-hidden'>
+	<div class='max-w-big mx-auto grow flex flex-col justify-end gap-sm'>
+		<div class='flex max-sm:flex-col sm:gap-lg grow'>
+			<div class='flex flex-col justify-center gap-md sm:h-full w-full'>
+				<div class='flex gap-sm items-center'>
+					<ShortArrow class='h-[20px] w-auto rotate-270' />
+					<div>Projekte & Lösungen</div>
+				</div>
+				<h1 class='subtitle'>{content.page_title}</h1>
+				<a
+					href={'/' + content.page_showcase_project[0].full_slug}
+					class='flex gap-lg items-center'>
+					<div class='flex gap-sm items-center'>
+						<CameraDark class='h-[20px] w-auto' />
+						<span class='shrink-0'>{content.page_showcase_project[0].content.project_title}</span>
+					</div>
+					<ShortArrow class='rotate-180 h-[20px] w-auto' />
+				</a>
+			</div>
+			<img
+				class='grow my-auto object-cover mask-[url(/masks/mask1.svg)] sm:mask-[url(/masks/mask2.svg)] mask-contain mask-center mask-no-repeat'
+				src={resizeImage(content.page_showcase_project[0].content.project_image.filename)}
+				alt={content.page_showcase_project[0].content.project_image.alt}
+			/>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<div>Verfügbare Technologien</div>
+			<div class='flex gap-sm'>
+				<TechnologyButton class='bg-green text-light'>Solar</TechnologyButton>
+			</div>
+		</div>
+	</div>
+</section>
