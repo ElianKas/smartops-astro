@@ -1,0 +1,31 @@
+---
+import { resizeImage } from '../utils/useImageOptimization';
+---
+
+<div class='max-w-big mx-auto w-full relative'>
+	<img
+		class='w-full h-auto'
+		src={resizeImage('https://a.storyblok.com/f/316521/1523x712/0f39cca5ee/sparring_banner.jpg')}
+		alt='sparring, boxen, graffiti'
+	/>
+	<div
+		class='absolute right-0 bottom-0 flex flex-col gap-sm max-w-[450px] bg-dark opacity-50 rounded-2xl p-md'>
+		<h2 class='opacity-0'>Sparring</h2>
+		<p class='opacity-0'>
+			Sparring bedeutet für uns, auf Augenhöhe an Strategien zu arbeiten. Wir geben ehrliches
+			Feedback, hinterfragen kritisch und liefern neue Impulse, damit Sie Ihre Ziele sicher
+			erreichen. So stärken wir Ihre Wettbewerbsfähigkeit mit modernen, unabhängigen und
+			zuverlässigen Lösungen.
+		</p>
+	</div>
+	<div
+		class='absolute right-0 bottom-0 flex flex-col gap-sm max-w-[450px] backdrop-blur text-light rounded-2xl p-md'>
+		<h2 class='font-bold'>Sparring</h2>
+		<p>
+			Sparring bedeutet für uns, auf Augenhöhe an Strategien zu arbeiten. Wir geben ehrliches
+			Feedback, hinterfragen kritisch und liefern neue Impulse, damit Sie Ihre Ziele sicher
+			erreichen. So stärken wir Ihre Wettbewerbsfähigkeit mit modernen, unabhängigen und
+			zuverlässigen Lösungen.
+		</p>
+	</div>
+</div>
