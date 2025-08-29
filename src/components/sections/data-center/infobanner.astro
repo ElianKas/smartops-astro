@@ -1,0 +1,38 @@
+---
+
+---
+
+<div class='bg-lavender px-sm'>
+	<div class='max-w-big mx-auto flex gap-lg flex-wrap py-sm'></div>
+</div>
+<div class='flex flex-col gap-xs text-gray px-sm'>
+	<div class='current-time-locale'>---</div>
+	<div>Marktstammdaten aktuell</div>
+	<div>Energieerzeugung DE in Tsd. MWh</div>
+	<div>smart.de API</div>
+</div>
+<script>
+	function getCurrentTimeLocale() {
+		const now = new Date();
+		const datePart = now.toLocaleDateString('de-DE', {
+			timeZone: 'Europe/Berlin',
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+		});
+		const timePart = now.toLocaleTimeString('de-DE', {
+			timeZone: 'Europe/Berlin',
+			hour: '2-digit',
+			minute: '2-digit',
+		});
+		const displays = document.querySelectorAll('.current-time-locale');
+		if (displays) {
+			displays.forEach((display: any) => {
+				display.innerText = `${timePart} Uhr MEZ ${datePart}`;
+			});
+		}
+	}
+	document.addEventListener('DOMContentLoaded', () => {
+		setInterval(getCurrentTimeLocale, 3000);
+	});
+</script>
