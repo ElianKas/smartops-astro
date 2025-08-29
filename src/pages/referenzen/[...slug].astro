@@ -1,7 +1,7 @@
 ---
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import Default from '../../layouts/Default.astro';
+import DefaultDark from '../../layouts/DefaultDark.astro';
 
 export async function getStaticPaths() {
 	const storyblokApi = useStoryblokApi();
@@ -28,9 +28,9 @@ interface Props {
 const { story, nextStory } = Astro.props;
 ---
 
-<Default>
+<DefaultDark>
 	<StoryblokComponent
 		blok={story.content}
 		nextStory={nextStory}
 	/>
-</Default>
+</DefaultDark>

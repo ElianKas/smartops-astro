@@ -4,6 +4,7 @@ import { useStoryblokApi } from '@storyblok/astro';
 import { projectCategories } from '../../utils/useLists';
 import { resizeImage } from '../../utils/useImageOptimization';
 import ShortArrow from '../Svg/Icons/ShortArrow.astro';
+import Home from '../Svg/Icons/Home.astro';
 
 const storyblokApi = useStoryblokApi();
 const { data: sparring } = await storyblokApi.get('cdn/stories', { starts_with: 'sparring' });
@@ -22,52 +23,64 @@ const technologies = projectCategories.filter((category) => category.group === '
 
 <nav
 	id='smartops-nav-menu'
-	class='fixed min-h-screen bg-white inset-0 pt-sm hidden flex flex-col gap-lg px-sm'>
+	class='fixed min-h-screen overflow-y-auto bg-white inset-0 pt-sm pb-lg hidden flex flex-col gap-lg px-sm'>
 	<div class='flex justify-center items-center gap-md'>
 		<a href='/'>
 			<SmartopsBlack class='w-[250px] h-auto' />
 		</a>
 		<div
 			id='close-menu-button'
-			class='flex items-center w-[40px] aspect-square cursor-pointer relative'>
+			class='flex items-center h-[20px] w-[40px] cursor-pointer relative'>
 			<div class='border border-dark bg-dark border-[2px] w-full -rotate-45'></div>
 			<div class='absolute border border-dark bg-dark border-[2px] w-full rotate-45'></div>
 		</div>
 	</div>
 	<!-- desktop -->
-	<div class='hidden lg:grid grid-cols-6 gap-md max-w-[90%] w-full mx-auto'>
+	<div class='hidden xl:grid grid-cols-6 gap-md max-w-[90%] w-full mx-auto'>
 		<div>
-			<h3><a href='/'>Home</a></h3>
+			<h3>
+				<a
+					class='flex gap-xs items-center'
+					href='/'
+					><Home class='h-[25px] w-auto' />Home</a
+				>
+			</h3>
 		</div>
-		<div class='flex flex-col gap-sm group'>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
 			<h3>Sparring</h3>
 			{
 				sparringStories.map((story: any) => (
 					<a
 						href={`/${story.full_slug}`}
-						class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'>
+						class='opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 group-focus:text-gray text-gray hover:text-dark'>
 						{story.content.page_title}
 					</a>
 				))
 			}
 		</div>
-		<div class='flex flex-col gap-sm group'>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
 			<h3>Projekte & Lösungen</h3>
 			{
 				plStories.map((story: any) => (
 					<a
 						href={`/${story.full_slug}`}
-						class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'>
+						class='opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 group-focus:text-gray text-gray hover:text-dark'>
 						{story.content.page_title}
 					</a>
 				))
 			}
 		</div>
-		<div class='flex flex-col gap-sm group'>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
 			<h3>Information EE</h3>
 			<a
 				href='/datencenter'
-				class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'
+				class='opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 group-focus:text-gray text-gray hover:text-dark'
 				>Data-Center</a
 			>
 		</div>
@@ -79,7 +92,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 	</div>
 	<!-- mobile -->
-	<div class='flex flex-col gap-md'>
+	<div class='flex flex-col gap-md sm:max-w-[90%] mx-auto w-full xl:hidden'>
 		<div>
 			<h3>
 				<a href='/'>Home</a>
@@ -137,9 +150,9 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 	</div>
 	<div class='sm:max-w-[90%] w-full mx-auto flex flex-col gap-md'>
-		<div class='flex gap-sm sm:gap-lg items-end flex-wrap'>
+		<div class='flex gap-sm lg:gap-lg items-end flex-wrap'>
 			<h3 class='subtitle font-normal'><a href='/referenzen'>Referenzen</a></h3>
-			<div class='flex gap-md sm:gap-lg flex-wrap'>
+			<div class='flex gap-md lg:gap-lg flex-wrap'>
 				{technologies.map((tech) => <a href={`/referenzen/?filter=${tech.value}`}>{tech.name}</a>)}
 			</div>
 		</div>
@@ -155,6 +168,20 @@ const technologies = projectCategories.filter((category) => category.group === '
 					</a>
 				))
 			}
+		</div>
+	</div>
+	<div class='max-w-[90%] w-full mx-auto flex justify-end'>
+		<div class='flex gap-md'>
+			<a
+				href='/impressum'
+				class='text-gray'
+				>Impressum</a
+			>
+			<a
+				href='/datenschutz'
+				class='text-gray'
+				>Datenschutz</a
+			>
 		</div>
 	</div>
 </nav>

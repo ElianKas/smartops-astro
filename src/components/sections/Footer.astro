@@ -11,11 +11,18 @@ import Wind from '../Svg/Icons/Wind.astro';
 	id='index-footer'
 	class='gsap-footer-container px-sm py-lg bg-dark text-light relative overflow-hidden min-h-[100vh] flex'>
 	<div class='max-w-big mx-auto w-full flex flex-col justify-between gap-xl'>
-		<a
-			href='/'
-			class='self-center gsap-footer-element z-[1]'>
-			<SmartopsWhite class='w-[300px] h-auto' />
-		</a>
+		<div class='flex items-center gap-md justify-center'>
+			<a
+				href='/'
+				class='self-center gsap-footer-element z-[1]'>
+				<SmartopsWhite class='w-[300px] h-auto' />
+			</a>
+			<div
+				class='open-menu-button-footer gsap-footer-element flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
+				<div class='border border-white bg-white border-[2px] w-full'></div>
+				<div class='border border-white bg-white border-[2px] w-full'></div>
+			</div>
+		</div>
 		<div class='flex flex-col gap-md z-[1]'>
 			<Contact class='gsap-footer-element' />
 			<a
@@ -99,4 +106,14 @@ import Wind from '../Svg/Icons/Wind.astro';
 		}),
 		'<'
 	);
+</script>
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const openButton = document.querySelector('.open-menu-button-footer');
+		const navMenu = document.querySelector('#smartops-nav-menu');
+		openButton?.addEventListener('click', () => {
+			navMenu?.classList.toggle('hidden');
+			document.body.classList.toggle('overflow-hidden');
+		});
+	});
 </script>

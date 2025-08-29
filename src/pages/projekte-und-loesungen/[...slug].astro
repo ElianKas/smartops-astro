@@ -1,9 +1,9 @@
 ---
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import Default from '../../layouts/Default.astro';
 import Landing from '../../components/sections/pl/landing.astro';
 import Cta from '../../components/sections/cta.astro';
+import DefaultDark from '../../layouts/DefaultDark.astro';
 
 export async function getStaticPaths() {
 	const storyblokApi = useStoryblokApi();
@@ -32,7 +32,7 @@ const cuttedSlug = story.full_slug.split('/')[0];
 const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 ---
 
-<Default>
+<DefaultDark>
 	<div class='flex flex-col gap-lg pb-lg'>
 		<Landing content={story.content} />
 		<StoryblokComponent blok={story.content} />
@@ -41,4 +41,4 @@ const slug = cuttedSlug.charAt(0).toUpperCase() + cuttedSlug.slice(1);
 			slug={slug}
 		/>
 	</div>
-</Default>
+</DefaultDark>

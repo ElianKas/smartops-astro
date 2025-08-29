@@ -1,11 +1,26 @@
 ---
 import SmartopsBlack from '../Svg/Logos/SmartopsBlack.astro';
+import Menu from './Menu.astro';
 ---
 
-<header class='absolute top-0 left-0 z-30 flex justify-center w-full pt-sm'>
-	<a
-		href='/'
-		class='flex gap-xs items-center'>
-		<SmartopsBlack class='w-[200px] h-auto' />
+<header class='absolute top-0 left-0 z-30 flex justify-center items-center gap-md w-full pt-sm'>
+	<a href='/'>
+		<SmartopsBlack class='w-[250px] h-auto' />
 	</a>
+	<div
+		class='open-menu-button-header flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
+		<div class='border border-dark bg-dark border-[2px] w-full'></div>
+		<div class='border border-dark bg-dark border-[2px] w-full'></div>
+	</div>
+	<Menu />
 </header>
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const openButton = document.querySelector('.open-menu-button-header');
+		const navMenu = document.querySelector('#smartops-nav-menu');
+		openButton?.addEventListener('click', () => {
+			navMenu?.classList.toggle('hidden');
+			document.body.classList.toggle('overflow-hidden');
+		});
+	});
+</script>
