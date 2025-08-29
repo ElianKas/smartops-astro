@@ -73,3 +73,4 @@ export interface SmartopsPageSectionReferences {
 	component: 'page_section_references';
 	section_references: Array<string>;
 }
+//
