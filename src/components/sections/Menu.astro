@@ -1,0 +1,171 @@
+---
+import SmartopsBlack from '../Svg/Logos/SmartopsBlack.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { projectCategories } from '../../utils/useLists';
+import { resizeImage } from '../../utils/useImageOptimization';
+import ShortArrow from '../Svg/Icons/ShortArrow.astro';
+
+const storyblokApi = useStoryblokApi();
+const { data: sparring } = await storyblokApi.get('cdn/stories', { starts_with: 'sparring' });
+const { data: pl } = await storyblokApi.get('cdn/stories', {
+	starts_with: 'projekte-und-loesungen',
+});
+const { data: references } = await storyblokApi.get('cdn/stories', {
+	starts_with: 'referenzen',
+	per_page: 10,
+});
+const sparringStories = sparring.stories;
+const plStories = pl.stories;
+const refStories = references.stories;
+const technologies = projectCategories.filter((category) => category.group === 'Technologien');
+---
+
+<nav
+	id='smartops-nav-menu'
+	class='fixed min-h-screen bg-white inset-0 pt-sm hidden flex flex-col gap-lg px-sm'>
+	<div class='flex justify-center items-center gap-md'>
+		<a href='/'>
+			<SmartopsBlack class='w-[250px] h-auto' />
+		</a>
+		<div
+			id='close-menu-button'
+			class='flex items-center w-[40px] aspect-square cursor-pointer relative'>
+			<div class='border border-dark bg-dark border-[2px] w-full -rotate-45'></div>
+			<div class='absolute border border-dark bg-dark border-[2px] w-full rotate-45'></div>
+		</div>
+	</div>
+	<!-- desktop -->
+	<div class='hidden lg:grid grid-cols-6 gap-md max-w-[90%] w-full mx-auto'>
+		<div>
+			<h3><a href='/'>Home</a></h3>
+		</div>
+		<div class='flex flex-col gap-sm group'>
+			<h3>Sparring</h3>
+			{
+				sparringStories.map((story: any) => (
+					<a
+						href={`/${story.full_slug}`}
+						class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'>
+						{story.content.page_title}
+					</a>
+				))
+			}
+		</div>
+		<div class='flex flex-col gap-sm group'>
+			<h3>Projekte & Lösungen</h3>
+			{
+				plStories.map((story: any) => (
+					<a
+						href={`/${story.full_slug}`}
+						class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'>
+						{story.content.page_title}
+					</a>
+				))
+			}
+		</div>
+		<div class='flex flex-col gap-sm group'>
+			<h3>Information EE</h3>
+			<a
+				href='/datencenter'
+				class='opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-light-gray hover:text-dark'
+				>Data-Center</a
+			>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<h3><a href='/'>Über uns</a></h3>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<h3><a href='/kontakt'>Kontakt</a></h3>
+		</div>
+	</div>
+	<!-- mobile -->
+	<div class='flex flex-col gap-md'>
+		<div>
+			<h3>
+				<a href='/'>Home</a>
+			</h3>
+		</div>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
+			<h3 class='flex items-center gap-xs'>
+				<ShortArrow class='h-[12px] w-auto rotate-270' />Sparring
+			</h3>
+			{
+				sparringStories.map((story: any) => (
+					<a
+						class='group-focus:block hidden pl-md text-gray'
+						href={`/${story.full_slug}`}>
+						{story.content.page_title}
+					</a>
+				))
+			}
+		</div>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
+			<h3 class='flex items-center gap-xs'>
+				<ShortArrow class='h-[12px] w-auto rotate-270' />Projekte & Lösungen
+			</h3>
+			{
+				plStories.map((story: any) => (
+					<a
+						class='group-focus:block hidden pl-md text-gray'
+						href={`/${story.full_slug}`}>
+						{story.content.page_title}
+					</a>
+				))
+			}
+		</div>
+		<div
+			tabindex='0'
+			class='flex flex-col gap-sm group'>
+			<h3 class='flex items-center gap-xs'>
+				<ShortArrow class='h-[12px] w-auto rotate-270' />Information EE
+			</h3>
+			<a
+				class='group-focus:block hidden pl-md text-gray'
+				href='/datencenter'
+				>Data-Center</a
+			>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<h3><a href='/'>Über uns</a></h3>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<h3><a href='/kontakt'>Kontakt</a></h3>
+		</div>
+	</div>
+	<div class='sm:max-w-[90%] w-full mx-auto flex flex-col gap-md'>
+		<div class='flex gap-sm sm:gap-lg items-end flex-wrap'>
+			<h3 class='subtitle font-normal'><a href='/referenzen'>Referenzen</a></h3>
+			<div class='flex gap-md sm:gap-lg flex-wrap'>
+				{technologies.map((tech) => <a href={`/referenzen/?filter=${tech.value}`}>{tech.name}</a>)}
+			</div>
+		</div>
+		<div class='flex gap-md'>
+			{
+				refStories.map((story: any) => (
+					<a href={`/${story.full_slug}`}>
+						<img
+							class='rounded-tl-2xl rounded-br-2xl w-[300px] aspect-[3/2] object-cover shrink-0'
+							src={resizeImage(story.content.project_image.filename)}
+							alt={story.content.project_image.alt}
+						/>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</nav>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const closeButton = document.querySelector('#close-menu-button');
+		const navMenu = document.querySelector('#smartops-nav-menu');
+		closeButton?.addEventListener('click', () => {
+			navMenu?.classList.toggle('hidden');
+			document.body.classList.toggle('overflow-hidden');
+		});
+	});
+</script>

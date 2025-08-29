@@ -10,22 +10,27 @@ export async function getStaticPaths() {
 		starts_with: 'referenzen/',
 	});
 
-	return data.stories.map((story: any) => ({
+	return data.stories.map((story: any, index: number) => ({
 		params: {
 			slug: story.slug,
 		},
 		props: {
 			story,
+			nextStory: data.stories[index + 1] || null,
 		},
 	}));
 }
 interface Props {
 	story: any;
+	nextStory: any;
 }
 
-const { story } = Astro.props;
+const { story, nextStory } = Astro.props;
 ---
 
 <Default>
-	<StoryblokComponent blok={story.content} />
+	<StoryblokComponent
+		blok={story.content}
+		nextStory={nextStory}
+	/>
 </Default>

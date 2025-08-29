@@ -7,13 +7,15 @@ import { resizeImage } from '../utils/useImageOptimization';
 
 interface Props {
 	blok: any;
+	nextStory: any;
 }
 
-const { blok } = Astro.props;
+const { blok, nextStory } = Astro.props;
+console.log(nextStory);
 ---
 
 <div class='relative flex flex-col gap-sm pb-sm'>
-	<div class='h-screen relative w-full flex items-end px-md pb-[10%]'>
+	<div class='h-screen relative w-full flex items-end px-md pb-xl'>
 		<img
 			class='absolute inset-0 h-screen w-full object-cover z-[-1]'
 			src={resizeImage(blok.project_image.filename)}
@@ -75,16 +77,42 @@ const { blok } = Astro.props;
 				}
 			})
 		}
+
+		{
+			nextStory && (
+				<a
+					href={'/' + nextStory.full_slug}
+					class='hover:mr-md transition-all duration-200 flex flex-col gap-sm sm:w-[60%] ml-auto '>
+					<div class='w-full relative'>
+						<img
+							class='w-full h-auto rounded-tl-2xl rounded-br-2xl'
+							src={resizeImage(nextStory.content.project_image.filename)}
+							alt={nextStory.content.project_image.alt}
+						/>
+						<h2 class='bg-black text-white px-xs absolute bottom-sm left-sm sm:bottom-lg sm:left-lg subtitle font-normal'>
+							{nextStory.content.project_title}
+						</h2>
+					</div>
+					<div class='flex flex-wrap gap-sm'>
+						{nextStory.content.project_categories.map((category: any) => (
+							<TechnologyButton
+								class:list={[
+									'text-white',
+									{ 'bg-green': category.includes('technology') },
+									{ 'bg-dark': !category.includes('technology') },
+								]}>
+								{projectCategories.find((c) => c.value === category)?.name}
+							</TechnologyButton>
+						))}
+					</div>
+				</a>
+			)
+		}
 	</div>
 </div>
 <script>
 	import gsap from 'gsap';
 
-	const imagePreviews = document.querySelectorAll(
-		'.project-image-preview'
-	) as NodeListOf<HTMLImageElement>;
-
-	// todo: instead of imagePreviews.forEach -> loop by sections and collect all previews inside each section loop
 	const imageSections = document.querySelectorAll('.project-image-section');
 	imageSections.forEach((section) => {
 		const previews = section.querySelectorAll(

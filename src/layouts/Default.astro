@@ -6,6 +6,7 @@ import Footer from '../components/sections/Footer.astro';
 import Gsap from '../components/scripts/gsap.astro';
 import ActivateEnergy from '../components/animation/ActivateEnergy.astro';
 import Seo from '../components/scripts/seo.astro';
+import Header from '../components/sections/Header.astro';
 ---
 
 <!doctype html>
@@ -17,6 +18,7 @@ import Seo from '../components/scripts/seo.astro';
 		<Gsap />
 	</head>
 	<body class='relative'>
+		<Header />
 		<ActivateEnergy />
 		<main class='min-h-screen'>
 			<slot />

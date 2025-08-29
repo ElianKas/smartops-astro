@@ -1,15 +1,10 @@
 ---
 import Close from '../../Svg/Icons/Close.astro';
+import { projectCategories } from '../../../utils/useLists';
 let searchInput = Astro.url.searchParams.get('search') || '';
 const filter = Astro.url.searchParams.get('filter') || '';
 
-const technologies = [
-	{ name: 'Solar', filter: 'technology_solar' },
-	{ name: 'Wind', filter: 'technology_wind' },
-	{ name: 'Speicher', filter: 'technology_speicher' },
-	{ name: 'ESYS', filter: 'technology_esys' },
-	{ name: 'eMobil', filter: 'technology_emobil' },
-];
+const technologies = projectCategories.filter((category) => category.group === 'Technologien');
 ---
 
 <div class='flex items-center gap-md xl:gap-lg relative flex-wrap'>
@@ -21,14 +16,14 @@ const technologies = [
 			technologies.map((tech) => (
 				<div class='relative'>
 					<a
-						class:list={[{ 'text-dark': filter === tech.filter }]}
-						href={`/referenzen/?filter=${tech.filter}`}>
+						class:list={[{ 'text-dark': filter === tech.value }]}
+						href={`/referenzen/?filter=${tech.value}`}>
 						{tech.name}
 					</a>
 					<div
 						class:list={[
 							'absolute w-full bottom-0 h-[2px] bg-green',
-							{ hidden: filter !== tech.filter },
+							{ hidden: filter !== tech.value },
 						]}
 					/>
 				</div>
