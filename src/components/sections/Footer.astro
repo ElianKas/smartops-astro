@@ -10,12 +10,21 @@ import Wind from '../Svg/Icons/Wind.astro';
 <footer
 	id='index-footer'
 	class='gsap-footer-container px-sm py-lg bg-dark text-light relative overflow-hidden min-h-[100vh] flex'>
+	<Geo1 class='gsap-footer-svg absolute top-[5%] left-[60%] h-[30%] w-auto' />
+	<div class='absolute bottom-[8%] left-[50%] h-[50%] w-auto'>
+		<Geo2 class='gsap-footer-svg w-full h-full' />
+		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[40%] left-[12%] h-[12%] w-auto' />
+		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[18%] left-[63%] h-[12%] w-auto' />
+		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[38%] left-[75%] h-[12%] w-auto' />
+	</div>
+	<Solar class='max-lg:hidden gsap-footer-svg absolute top-[15%] left-[75%] h-[5%] w-auto' />
+	<Solar class='max-lg:hidden gsap-footer-svg absolute top-[25%] left-[85%] h-[5%] w-auto' />
 	<div class='max-w-big mx-auto w-full flex flex-col justify-between gap-xl'>
 		<div class='flex items-center gap-md justify-center'>
 			<a
 				href='/'
 				class='self-center gsap-footer-element z-[1]'>
-				<SmartopsWhite class='w-[300px] h-auto' />
+				<SmartopsWhite class='w-[250px] h-auto' />
 			</a>
 			<div
 				class='open-menu-button-footer gsap-footer-element flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
@@ -68,15 +77,6 @@ import Wind from '../Svg/Icons/Wind.astro';
 			>Datenschutz</a
 		>
 	</div>
-	<Geo1 class='gsap-footer-svg absolute top-[5%] left-[60%] h-[30%] w-auto' />
-	<div class='absolute bottom-[8%] left-[50%] h-[50%] w-auto'>
-		<Geo2 class='gsap-footer-svg w-full h-full' />
-		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[40%] left-[12%] h-[12%] w-auto' />
-		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[18%] left-[63%] h-[12%] w-auto' />
-		<Wind class='max-lg:hidden gsap-footer-svg absolute top-[38%] left-[75%] h-[12%] w-auto' />
-	</div>
-	<Solar class='max-lg:hidden gsap-footer-svg absolute top-[15%] left-[75%] h-[5%] w-auto' />
-	<Solar class='max-lg:hidden gsap-footer-svg absolute top-[25%] left-[85%] h-[5%] w-auto' />
 </footer>
 
 <script>

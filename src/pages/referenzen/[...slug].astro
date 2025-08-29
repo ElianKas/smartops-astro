@@ -8,6 +8,7 @@ export async function getStaticPaths() {
 
 	const { data } = await storyblokApi.get('cdn/stories', {
 		starts_with: 'referenzen/',
+		sort_by: 'content.project_title:asc',
 	});
 
 	return data.stories.map((story: any, index: number) => ({

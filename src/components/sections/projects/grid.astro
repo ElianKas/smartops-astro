@@ -9,6 +9,7 @@ const { projects } = Astro.props;
 ---
 
 <div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-xs'>
+	{projects.length === 0 && <p class='text-gray'>Keine Projekte gefunden.</p>}
 	{
 		projects.map((project) => (
 			<a
@@ -25,9 +26,9 @@ const { projects } = Astro.props;
 				<div class='absolute left-sm bottom-sm bg-black  px-xs '>
 					{project.content.project_title}
 				</div>
-				<div class='hidden group-hover:flex gap-xs absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
+				<div class='hidden group-hover:flex flex-wrap gap-xs absolute top-[50%] translate-y-[-50%] left-sm right-sm'>
 					{project.content.project_categories.map((category: any) => (
-						<div>
+						<div class='shrink-0'>
 							{project.content.project_categories[project.content.project_categories.length - 1] !==
 							category
 								? projectCategories.find((cat) => cat.value === category)?.name + ' |'
