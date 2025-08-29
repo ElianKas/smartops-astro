@@ -13,6 +13,7 @@ const { blok } = Astro.props;
 		/>
 	</div>
 	<img
+		loading='lazy'
 		class='w-full h-auto'
 		src={resizeImage(blok.section_image.filename)}
 		alt={blok.section_image.alt}
