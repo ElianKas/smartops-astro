@@ -4,24 +4,52 @@ import { resizeImage } from '../utils/useImageOptimization';
 import Infobanner from '../components/sections/data-center/infobanner.astro';
 import Cards from '../components/sections/data-center/cards.astro';
 import DataGermany from '../components/sections/data-center/data-germany.astro';
+import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 ---
 
 <DefaultDark>
-	<div class='flex flex-col gap-md relative py-lg'>
+	<div class='flex flex-col gap-lg relative py-lg'>
 		<img
 			class='w-full min-h-screen object-cover absolute left-0 top-0 z-[-1]'
 			src={resizeImage('https://a.storyblok.com/f/316521/3840x2152/b58326ae7a/windpark_sea.jpg')}
 			alt='Windpark im Meer, Stromerzeugung'
 		/>
 		<div class='flex flex-col gap-xs'>
-			<div class='bg-lavender px-sm'>
-				<div class='max-w-big mx-auto flex gap-lg flex-wrap py-xs'>
-					<h1 class='font-bold'>Data-Center</h1>
-					<a href='#data-center-section-ueberblick'>Überblick</a>
-					<a href='#data-center-section-ueberblick'>Stand / Planung</a>
-					<a href='#data-center-section-ueberblick'>Speicher</a>
-					<a href='#data-center-section-ueberblick'>Komplette Stromerzeugung DE</a>
-					<a href='#data-center-section-ueberblick'>Links</a>
+			<div
+				tabindex='0'
+				class='bg-lavender px-sm group'>
+				<div class='max-w-big mx-auto flex max-lg:flex-col gap-md lg:gap-lg py-xs text-gray'>
+					<h1 class='font-bold text-dark flex items-center gap-xs'>
+						<ShortArrow class='lg:hidden rotate-270 h-[15px] w-auto' />
+						<div class='max-lg:cursor-pointer'>Data-Center</div>
+					</h1>
+					<div class='hidden group-focus:flex lg:flex gap-md flex-wrap'>
+						<a
+							href='#data-center-section-ueberblick'
+							class='hover:text-dark'
+							>Überblick</a
+						>
+						<a
+							href='#data-center-section-planing'
+							class='hover:text-dark'
+							>Stand / Planung</a
+						>
+						<a
+							href='#data-center-section-ueberblick'
+							class='hover:text-dark'
+							>Speicher</a
+						>
+						<a
+							href='#data-center-section-ueberblick'
+							class='hover:text-dark'
+							>Komplette Stromerzeugung DE</a
+						>
+						<a
+							href='#data-center-section-ueberblick'
+							class='hover:text-dark'
+							>Links</a
+						>
+					</div>
 				</div>
 			</div>
 			<Infobanner />
@@ -32,6 +60,8 @@ import DataGermany from '../components/sections/data-center/data-germany.astro';
 		</div>
 		<Cards />
 		<DataGermany />
-		<Infobanner />
+		<div class='flex flex-col gap-xs'>
+			<Infobanner />
+		</div>
 	</div>
 </DefaultDark>
