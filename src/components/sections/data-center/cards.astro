@@ -1,11 +1,25 @@
+---
+const { dailyPercent } = Astro.props;
+---
+
 <section
 	id='data-center-section-ueberblick'
 	class='max-w-normal mx-auto grid grid-cols-1 lg:grid-cols-3 gap-sm w-full px-sm'>
 	<div class='flex flex-col gap-sm'>
 		<h3 class='subtitle'>Deutschland gesamt</h3>
 		<div class='flex max-sm:flex-col lg:flex-col gap-sm'>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 1</div>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 2</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>
+					{(dailyPercent * 100).toFixed(2) + '%'}
+				</div>
+				<div>Leistung in Deutschland aus EE</div>
+			</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>2035</div>
+				<div>Ziel 100% Leistung in Deutschland aus EE</div>
+			</div>
 		</div>
 	</div>
 	<div class='flex flex-col gap-sm'>

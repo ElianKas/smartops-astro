@@ -27,8 +27,8 @@ export interface FilterOutput {
 
 export interface SmardApiValues {
 	filterOutputs: FilterOutput[];
-	dailyGenerationEEPercentage: string;
-	dailyGenerationEE: string;
+	dailyGenerationEEPercentage: number;
+	dailyGenerationEEGwh: number;
 }
 
 import { smardApiFilters } from './useLists';
@@ -54,6 +54,8 @@ export const fetchAllTimeSeriesData = async (region: string, resolution: string)
 			let latestDataPoint;
 			if (resolution === 'day') {
 				latestDataPoint = getLatestActiveDataPoint(timeSeriesData);
+			} else {
+				console.error('Unsupported resolution:', resolution);
 			}
 			filterDataPoints.push({
 				latestDataPoint: latestDataPoint,
@@ -124,8 +126,8 @@ const getFinalValues = (dataPoints: FilterDataPoint[]) => {
 	let totalMwh = 0;
 	let finalValues: SmardApiValues = {
 		filterOutputs: [],
-		dailyGenerationEEPercentage: '',
-		dailyGenerationEE: '',
+		dailyGenerationEEPercentage: 0,
+		dailyGenerationEEGwh: 0,
 	};
 
 	dataPoints.forEach((dp) => {
@@ -147,8 +149,8 @@ const getFinalValues = (dataPoints: FilterDataPoint[]) => {
 		return fo;
 	});
 
-	const { totalRenewablePercentage, totalRenewable } = getEEDaily(dataPoints, totalMwh);
-	finalValues.dailyGenerationEE = totalRenewable;
+	const { totalRenewablePercentage, totalGwhRenewable } = getEEDaily(dataPoints, totalMwh);
+	finalValues.dailyGenerationEEGwh = totalGwhRenewable;
 	finalValues.dailyGenerationEEPercentage = totalRenewablePercentage;
 	return finalValues;
 };
@@ -169,8 +171,7 @@ const getEEDaily = (dataPoints: FilterDataPoint[], totalMwh: number) => {
 			totalMwhRenewable += dp.latestDataPoint[1];
 		}
 	});
-	const totalRenewablePercentage =
-		totalMwhRenewable > 0 ? ((totalMwhRenewable / totalMwh) * 100).toFixed(2) + '%' : '0%';
-	const totalRenewable = (totalMwhRenewable / 1000).toFixed(0) + ' GWh';
-	return { totalRenewablePercentage, totalRenewable };
+	const totalRenewablePercentage = totalMwhRenewable / totalMwh;
+	const totalGwhRenewable = totalMwhRenewable / 1000;
+	return { totalRenewablePercentage, totalGwhRenewable };
 };

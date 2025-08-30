@@ -1,3 +1,13 @@
+---
+const { dailyPercent, daily } = Astro.props;
+const currentDate = new Date().toLocaleDateString('de-DE', {
+	timeZone: 'Europe/Berlin',
+	year: 'numeric',
+	month: '2-digit',
+	day: '2-digit',
+});
+---
+
 <section
 	id='data-center-section-planing'
 	class='max-w-normal mx-auto w-full flex flex-col gap-sm px-sm'>
@@ -5,8 +15,8 @@
 		<h2 class='subtitle'>Deutschland gesamt</h2>
 		<p class='max-w-sm-paragraph'>
 			Wir prognostizieren den geplanten Ausbau von geplanten EE-Anlagen basierend auf den Zielen der
-			Bundesregierung Deutschland zum Zeitpunkt (DATUM). Wir stellen die tatsächliche Entwicklung
-			Tagesaktuell gegenüber.
+			Bundesregierung Deutschland zum Zeitpunkt [{currentDate}]. Wir stellen die tatsächliche
+			Entwicklung Tagesaktuell gegenüber.
 		</p>
 	</div>
 	<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-sm'>
@@ -16,8 +26,20 @@
 			Card 2
 		</div>
 		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 3</div>
-		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 4</div>
-		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 5</div>
+		<div
+			class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col h-full justify-end gap-sm'>
+			<div class='subtitle text-green'>
+				{daily.toFixed(0) + ' GWh'}
+			</div>
+			<div>Heute Leistung aus Erneuerbaren Energien</div>
+		</div>
+		<div
+			class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col h-full justify-end gap-sm'>
+			<div class='subtitle text-green'>
+				{(dailyPercent * 100).toFixed(2) + '%'}
+			</div>
+			<div>Heute Leistung EE von Leistung ges. in Deutschland</div>
+		</div>
 		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 6</div>
 	</div>
 </section>

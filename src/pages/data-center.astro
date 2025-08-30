@@ -9,7 +9,6 @@ import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
 import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
 
 const { finalSmardValues } = await fetchAllTimeSeriesData('DE', 'day');
-console.log(finalSmardValues.dailyGenerationEE);
 ---
 
 <DefaultDark>
@@ -63,8 +62,11 @@ console.log(finalSmardValues.dailyGenerationEE);
 			<div>Information EE</div>
 			<div class='title'>Data-Center</div>
 		</div>
-		<Cards />
-		<DataGermany />
+		<Cards dailyPercent={finalSmardValues.dailyGenerationEEPercentage} />
+		<DataGermany
+			dailyPercent={finalSmardValues.dailyGenerationEEPercentage}
+			daily={finalSmardValues.dailyGenerationEEGwh}
+		/>
 		<BatteryTabs />
 		<div class='flex flex-col gap-xs'>
 			<Infobanner filterOutputs={finalSmardValues.filterOutputs} />
