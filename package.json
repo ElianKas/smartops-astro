@@ -15,7 +15,11 @@
     "@vercel/analytics": "^1.5.0",
     "astro": "^5.10.1",
     "gsap": "^3.12.7",
+    "highcharts": "^12.3.0",
     "lottie-web": "^5.12.2",
     "tailwindcss": "^4.1.4"
-  }
+  }, 
+    "overrides": {
+      "path-to-regexp": "6.3.0"
+    }
 }
