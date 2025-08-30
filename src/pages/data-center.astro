@@ -6,6 +6,10 @@ import Cards from '../components/sections/data-center/cards.astro';
 import DataGermany from '../components/sections/data-center/data-germany.astro';
 import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
+import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
+
+const { filterOutputs } = await fetchAllTimeSeriesData('DE', 'day');
+console.log(filterOutputs);
 ---
 
 <DefaultDark>

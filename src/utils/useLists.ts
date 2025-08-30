@@ -32,3 +32,17 @@ export const projectCategories = [
 	{ group: 'Projekte & Lösungen', name: 'Baubetreuung', value: 'pl_baubetreuung' },
 	{ group: 'Projekte & Lösungen', name: 'Audits & Abnahme', value: 'pl_audits' },
 ];
+
+export const smartApiFilters = [
+	{ id: '1223', name: 'Braunkohle', category: 'conventional' },
+	{ id: '1225', name: 'Wind Offshore', category: 'renewable' },
+	{ id: '1226', name: 'Wasserkraft', category: 'renewable' },
+	{ id: '1227', name: 'Sonstige Konventionelle', category: 'conventional' },
+	{ id: '1228', name: 'Sonstige Erneuerbare', category: 'renewable' },
+	{ id: '4066', name: 'Biomasse', category: 'renewable' },
+	{ id: '4067', name: 'Wind Onshore', category: 'renewable' },
+	{ id: '4068', name: 'Photovoltaik', category: 'renewable' },
+	{ id: '4069', name: 'Steinkohle', category: 'conventional' },
+	{ id: '4070', name: 'Pumpspeicher', category: 'conventional' },
+	{ id: '4071', name: 'Erdgas', category: 'conventional' },
+];
