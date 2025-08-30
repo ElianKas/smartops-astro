@@ -19,13 +19,52 @@ interface FilterDataPoint {
 	filterId: string;
 }
 
-interface FilterOutput {
+export interface FilterOutput {
 	totalPercentage: string;
 	filterId: string;
 	generationMwh: number;
 }
 
-import { smartApiFilters } from './useLists';
+export interface SmardApiValues {
+	filterOutputs: FilterOutput[];
+	dailyGenerationEEPercentage: string;
+	dailyGenerationEE: string;
+}
+
+import { smardApiFilters } from './useLists';
+
+export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
+	let filterDataPoints: FilterDataPoint[] = [];
+
+	await Promise.all(
+		smardApiFilters.map(async (filter) => {
+			const availableTimestamps: Timestamps = await fetchAvailableTimestamps(
+				filter.id,
+				region,
+				resolution
+			);
+			const latestTimestamp =
+				availableTimestamps.timestamps[availableTimestamps.timestamps.length - 1];
+			const timeSeriesData: TimeSeriesData = await fetchTimeSeriesData(
+				filter.id,
+				region,
+				resolution,
+				latestTimestamp
+			);
+			let latestDataPoint;
+			if (resolution === 'day') {
+				latestDataPoint = getLatestActiveDataPoint(timeSeriesData);
+			}
+			filterDataPoints.push({
+				latestDataPoint: latestDataPoint,
+				filterId: filter.id,
+			});
+		})
+	);
+
+	const finalSmardValues = getFinalValues(filterDataPoints);
+	return { finalSmardValues };
+};
 
 const fetchAvailableTimestamps = async (filter: string, region: string, resolution: string) => {
 	try {
@@ -73,39 +112,6 @@ const fetchTimeSeriesData = async (
 	}
 };
 
-export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
-	let filterDataPoints: FilterDataPoint[] = [];
-
-	await Promise.all(
-		smartApiFilters.map(async (filter) => {
-			const availableTimestamps: Timestamps = await fetchAvailableTimestamps(
-				filter.id,
-				region,
-				resolution
-			);
-			const latestTimestamp =
-				availableTimestamps.timestamps[availableTimestamps.timestamps.length - 1];
-			const timeSeriesData: TimeSeriesData = await fetchTimeSeriesData(
-				filter.id,
-				region,
-				resolution,
-				latestTimestamp
-			);
-			let latestDataPoint;
-			if (resolution === 'day') {
-				latestDataPoint = getLatestActiveDataPoint(timeSeriesData);
-			}
-			filterDataPoints.push({
-				latestDataPoint: latestDataPoint,
-				filterId: filter.id,
-			});
-		})
-	);
-
-	const filterOutputs = getDailyPercentages(filterDataPoints);
-	return { filterOutputs };
-};
-
 const getLatestActiveDataPoint = (data: TimeSeriesData) => {
 	const series = data.series;
 	const currentTimestamp = new Date().setHours(0, 0, 0, 0);
@@ -114,15 +120,19 @@ const getLatestActiveDataPoint = (data: TimeSeriesData) => {
 	return latestDataPoint;
 };
 
-const getDailyPercentages = (dataPoints: FilterDataPoint[]) => {
+const getFinalValues = (dataPoints: FilterDataPoint[]) => {
 	let totalMwh = 0;
-	let filterOutput: FilterOutput[] = [];
+	let finalValues: SmardApiValues = {
+		filterOutputs: [],
+		dailyGenerationEEPercentage: '',
+		dailyGenerationEE: '',
+	};
 
 	dataPoints.forEach((dp) => {
 		if (dp.latestDataPoint && dp.latestDataPoint[1] !== null) {
 			const valueMwh = dp.latestDataPoint[1];
 			totalMwh += valueMwh;
-			filterOutput.push({
+			finalValues.filterOutputs.push({
 				totalPercentage: '',
 				generationMwh: valueMwh,
 				filterId: dp.filterId,
@@ -132,10 +142,35 @@ const getDailyPercentages = (dataPoints: FilterDataPoint[]) => {
 		}
 	});
 
-	filterOutput = filterOutput.map((fo) => {
+	finalValues.filterOutputs = finalValues.filterOutputs.map((fo) => {
 		fo.totalPercentage = ((fo.generationMwh / totalMwh) * 100).toFixed(2) + '%';
 		return fo;
 	});
 
-	return filterOutput;
+	const { totalRenewablePercentage, totalRenewable } = getEEDaily(dataPoints, totalMwh);
+	finalValues.dailyGenerationEE = totalRenewable;
+	finalValues.dailyGenerationEEPercentage = totalRenewablePercentage;
+	return finalValues;
+};
+
+const getEEDaily = (dataPoints: FilterDataPoint[], totalMwh: number) => {
+	let totalMwhRenewable = 0;
+	const renewableDataPoints = dataPoints.filter((dp) => {
+		const filter = smardApiFilters.find((f) => f.id === dp.filterId);
+		return (
+			filter &&
+			filter.category === 'renewable' &&
+			dp.latestDataPoint &&
+			dp.latestDataPoint[1] !== null
+		);
+	});
+	renewableDataPoints.forEach((dp) => {
+		if (dp.latestDataPoint && dp.latestDataPoint[1] !== null) {
+			totalMwhRenewable += dp.latestDataPoint[1];
+		}
+	});
+	const totalRenewablePercentage =
+		totalMwhRenewable > 0 ? ((totalMwhRenewable / totalMwh) * 100).toFixed(2) + '%' : '0%';
+	const totalRenewable = (totalMwhRenewable / 1000).toFixed(0) + ' GWh';
+	return { totalRenewablePercentage, totalRenewable };
 };

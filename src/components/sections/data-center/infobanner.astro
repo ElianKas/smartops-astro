@@ -1,9 +1,32 @@
 ---
-
+import { smardApiFilters } from '../../../utils/useLists';
+import type { FilterOutput } from '../../../utils/useSmardApi';
+interface Props {
+	filterOutputs: FilterOutput[];
+}
+const { filterOutputs } = Astro.props;
 ---
 
 <div class='bg-lavender px-sm'>
-	<div class='max-w-big mx-auto flex gap-lg flex-wrap py-sm'></div>
+	<div class='max-w-big mx-auto flex gap-sm sm:gap-md flex-wrap py-sm'>
+		{
+			smardApiFilters
+				.filter((filter) => filter.category === 'renewable')
+				.map((filter) => {
+					const output = filterOutputs.find((f: FilterOutput) => f.filterId === filter.id);
+					return (
+						<div class='flex gap-xs items-center'>
+							<div
+								class={`shrink-0 h-sm aspect-square rounded-full`}
+								style={`background-color: ${filter.color}`}
+							/>
+							<div>{filter.name}</div>
+							<div>{output ? output.totalPercentage : '0%'}</div>
+						</div>
+					);
+				})
+		}
+	</div>
 </div>
 <div class='flex flex-col gap-xs text-gray px-sm'>
 	<div class='current-time-locale'>---</div>

@@ -33,16 +33,16 @@ export const projectCategories = [
 	{ group: 'Projekte & Lösungen', name: 'Audits & Abnahme', value: 'pl_audits' },
 ];
 
-export const smartApiFilters = [
-	{ id: '1223', name: 'Braunkohle', category: 'conventional' },
-	{ id: '1225', name: 'Wind Offshore', category: 'renewable' },
-	{ id: '1226', name: 'Wasserkraft', category: 'renewable' },
-	{ id: '1227', name: 'Sonstige Konventionelle', category: 'conventional' },
-	{ id: '1228', name: 'Sonstige Erneuerbare', category: 'renewable' },
-	{ id: '4066', name: 'Biomasse', category: 'renewable' },
-	{ id: '4067', name: 'Wind Onshore', category: 'renewable' },
-	{ id: '4068', name: 'Photovoltaik', category: 'renewable' },
-	{ id: '4069', name: 'Steinkohle', category: 'conventional' },
-	{ id: '4070', name: 'Pumpspeicher', category: 'conventional' },
-	{ id: '4071', name: 'Erdgas', category: 'conventional' },
+export const smardApiFilters = [
+	{ id: '4066', name: 'Biomasse', category: 'renewable', color: '#7BAD66' },
+	{ id: '1223', name: 'Braunkohle', category: 'conventional', color: '' },
+	{ id: '4071', name: 'Erdgas', category: 'conventional', color: '' },
+	{ id: '4068', name: 'Photovoltaik', category: 'renewable', color: '#FBF37B' },
+	{ id: '4070', name: 'Pumpspeicher', category: 'conventional', color: '' },
+	{ id: '1228', name: 'Sonstige Erneuerbare', category: 'renewable', color: '#A2C976' },
+	{ id: '1227', name: 'Sonstige Konventionelle', category: 'conventional', color: '' },
+	{ id: '4069', name: 'Steinkohle', category: 'conventional', color: '' },
+	{ id: '1226', name: 'Wasserkraft', category: 'renewable', color: '#BCDFF9' },
+	{ id: '1225', name: 'Wind Offshore', category: 'renewable', color: '#7ED0F6' },
+	{ id: '4067', name: 'Wind Onshore', category: 'renewable', color: '#5D67ED' },
 ];

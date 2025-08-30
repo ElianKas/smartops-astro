@@ -8,14 +8,14 @@ import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
 import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
 
-const { filterOutputs } = await fetchAllTimeSeriesData('DE', 'day');
-console.log(filterOutputs);
+const { finalSmardValues } = await fetchAllTimeSeriesData('DE', 'day');
+console.log(finalSmardValues.dailyGenerationEE);
 ---
 
 <DefaultDark>
 	<div class='flex flex-col gap-lg relative py-lg'>
 		<img
-			class='w-full min-h-screen object-cover absolute left-0 top-0 z-[-1]'
+			class='w-full min-h-screen object-cover fixed left-0 top-0 z-[-1] opacity-50'
 			src={resizeImage('https://a.storyblok.com/f/316521/3840x2152/b58326ae7a/windpark_sea.jpg')}
 			alt='Windpark im Meer, Stromerzeugung'
 		/>
@@ -57,7 +57,7 @@ console.log(filterOutputs);
 					</nav>
 				</div>
 			</div>
-			<Infobanner />
+			<Infobanner filterOutputs={finalSmardValues.filterOutputs} />
 		</div>
 		<div class='text-center py-lg'>
 			<div>Information EE</div>
@@ -67,7 +67,7 @@ console.log(filterOutputs);
 		<DataGermany />
 		<BatteryTabs />
 		<div class='flex flex-col gap-xs'>
-			<Infobanner />
+			<Infobanner filterOutputs={finalSmardValues.filterOutputs} />
 		</div>
 	</div>
 </DefaultDark>
