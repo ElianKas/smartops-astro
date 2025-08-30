@@ -118,8 +118,16 @@ const getLatestActiveDataPoint = (data: TimeSeriesData) => {
 	const series = data.series;
 	const currentTimestamp = new Date().setHours(0, 0, 0, 0);
 	const latestDataPointIndex = series.findIndex((point) => point[0] === currentTimestamp);
-	const latestDataPoint = series[latestDataPointIndex - 1]; // index -1 if resolution is day because of late daily updates
-	return latestDataPoint;
+	const latestDataPoint = series[latestDataPointIndex - 1];
+	// index -1 if "resolution" is "day" because of late daily updates
+	// Time data for the previous day does not arrive until 00:00.
+	// This means we have to use -2 here until the data arrives.
+	if (latestDataPoint[1] === null) {
+		// If the value is null, we use -2
+		return series[latestDataPointIndex - 2];
+	} else {
+		return latestDataPoint;
+	}
 };
 
 const getFinalValues = (dataPoints: FilterDataPoint[]) => {
