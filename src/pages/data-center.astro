@@ -66,6 +66,9 @@ const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'ye
 		</div>
 		<Cards dailyPercent={dailySmard.resGenerationEEPercentage} />
 		<DataGermany
+			targetDayPercentages={dailySmard.targetPercentagesEE}
+			targetMonthPercentages={monthlySmard.targetPercentagesEE}
+			targetYearPercentages={yearlySmard.targetPercentagesEE}
 			dayPercentages={dailySmard.pastPercentagesEE}
 			monthPercentages={monthlySmard.pastPercentagesEE}
 			yearPercentages={yearlySmard.pastPercentagesEE}

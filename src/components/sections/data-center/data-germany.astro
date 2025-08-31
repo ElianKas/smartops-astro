@@ -1,5 +1,14 @@
 ---
-const { dailyPercent, daily, dayPercentages, monthPercentages, yearPercentages } = Astro.props;
+const {
+	dailyPercent,
+	daily,
+	dayPercentages,
+	monthPercentages,
+	yearPercentages,
+	targetDayPercentages,
+	targetMonthPercentages,
+	targetYearPercentages,
+} = Astro.props;
 const currentDate = new Date().toLocaleDateString('de-DE', {
 	timeZone: 'Europe/Berlin',
 	year: 'numeric',
@@ -23,6 +32,29 @@ const monthEEPercentages = monthPercentages.map((month: any) => [
 	parseFloat((month[1] * 100).toFixed(2)),
 ]);
 const yearEEPercentages = yearPercentages.map((year: any) => [
+	new Date(year[0]).toLocaleDateString('de-DE', {
+		timeZone: 'Europe/Berlin',
+		year: 'numeric',
+	}),
+	parseFloat((year[1] * 100).toFixed(2)),
+]);
+const targetDayEEPercentages = targetDayPercentages.map((day: any) => [
+	new Date(day[0]).toLocaleDateString('de-DE', {
+		timeZone: 'Europe/Berlin',
+		month: '2-digit',
+		day: '2-digit',
+	}),
+	parseFloat((day[1] * 100).toFixed(2)),
+]);
+const targetMonthEEPercentages = targetMonthPercentages.map((month: any) => [
+	new Date(month[0]).toLocaleDateString('de-DE', {
+		timeZone: 'Europe/Berlin',
+		year: 'numeric',
+		month: '2-digit',
+	}),
+	parseFloat((month[1] * 100).toFixed(2)),
+]);
+const targetYearEEPercentages = targetYearPercentages.map((year: any) => [
 	new Date(year[0]).toLocaleDateString('de-DE', {
 		timeZone: 'Europe/Berlin',
 		year: 'numeric',
@@ -74,7 +106,16 @@ const yearEEPercentages = yearPercentages.map((year: any) => [
 		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 6</div>
 	</div>
 </section>
-<script define:vars={{ dayEEPercentages, monthEEPercentages, yearEEPercentages }}>
+<script
+	define:vars={{
+		dayEEPercentages,
+		monthEEPercentages,
+		yearEEPercentages,
+		targetDayEEPercentages,
+		targetMonthEEPercentages,
+		targetYearEEPercentages,
+	}}
+>
 	document.addEventListener('DOMContentLoaded', () => {
 		const chartDaily = document.getElementById('generation-chart-daily');
 		const chartQuarterly = document.getElementById('generation-chart-quarterly');
@@ -82,14 +123,15 @@ const yearEEPercentages = yearPercentages.map((year: any) => [
 
 		if (!chartDaily || !chartQuarterly || !chartYearly)
 			return console.error('Chart element not found');
-		createChart(chartDaily, dayEEPercentages, 'Tag');
-		createChart(chartQuarterly, monthEEPercentages, 'Monat');
-		createChart(chartYearly, yearEEPercentages, 'Jahr');
+		createChart(chartDaily, dayEEPercentages, targetDayEEPercentages, 'Tag');
+		createChart(chartQuarterly, monthEEPercentages, targetMonthEEPercentages, 'Monat');
+		createChart(chartYearly, yearEEPercentages, targetYearEEPercentages, 'Jahr');
 	});
 
-	const createChart = (domEl, chartData, title) => {
+	const createChart = (domEl, chartData, targetChartData, title) => {
 		const x = [...chartData.map((item) => item[0])];
 		const y = [...chartData.map((item) => item[1])];
+		const targetY = [...targetChartData.map((item) => item[1])];
 
 		Highcharts.chart({
 			chart: {
@@ -137,7 +179,7 @@ const yearEEPercentages = yearPercentages.map((year: any) => [
 				}, //highcharts bug (only if ts active): not recognizing default typing https://www.highcharts.com/docs/advanced-chart-features/highcharts-typescript-declarations#debugging
 				{
 					name: 'erwartete Leistung',
-					data: [0, 0, 0],
+					data: targetY,
 				},
 			],
 		});

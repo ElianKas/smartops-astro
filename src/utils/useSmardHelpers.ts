@@ -1,47 +1,56 @@
 import type { FilterDataPoint } from './useSmardApi';
 import { smardApiFilters } from './useLists';
 
-export const calcTargetValue = (
-	totalToday: number,
-	eeToday: number,
-	eeShareToday: number,
-	currentDate: Date,
-	targetDate: Date
-) => {
-	const t0 = new Date(currentDate); // heute
-	const tEnd = new Date(targetDate); // Ziel
-	const share0 = eeShareToday; // Anteil heute (Dezimal, z.B. 0.58)
+// Target configuration
+const TARGET_CONFIG = {
+	targetYear: 2035,
+	targetEEPercentage: 1.0, // 100% renewable energy
+} as const;
 
-	// Hilfsfunktion: lineare Interpolation Soll-Anteil
-	function targetShare(date: Date) {
-		const d0 = t0.getTime();
-		const d1 = tEnd.getTime();
-		const d = new Date(date).getTime();
-		const ratio = (d - d0) / (d1 - d0);
-		return Math.max(0, Math.min(1, share0 + (1 - share0) * ratio));
+export const calcTargetValues = (
+	pastPercentages: [number, number][],
+	currentEEPercentage: number,
+	resolution: string
+): [number, number][] => {
+	if (pastPercentages.length === 0) {
+		return [];
 	}
 
-	// Array für die letzten 7 Tage
-	const result = [];
-	for (let i = 6; i >= 0; i--) {
-		const d = new Date(t0);
-		d.setDate(d.getDate() - i);
-		result.push([d.getTime(), targetShare(d)]);
-	}
+	const currentDate = new Date();
+	const targetDate = new Date(TARGET_CONFIG.targetYear, 11, 31); // December 31, 2035
+	const currentShare = currentEEPercentage;
 
-	return result;
+	// Linear interpolation function to calculate target share for any date
+	const calculateTargetShare = (timestamp: number): number => {
+		const date = new Date(timestamp);
+		const currentTime = currentDate.getTime();
+		const targetTime = targetDate.getTime();
+		const dateTime = date.getTime();
+
+		// If date is in the past relative to current date, calculate what the target should have been
+		const ratio = (dateTime - currentTime) / (targetTime - currentTime);
+		const targetShare = Math.max(
+			0,
+			Math.min(1, currentShare + (TARGET_CONFIG.targetEEPercentage - currentShare) * ratio)
+		);
+
+		return targetShare;
+	};
+
+	// Calculate target values for each timestamp in pastPercentages
+	return pastPercentages.map(([timestamp, _]) => [timestamp, calculateTargetShare(timestamp)]);
 };
 
 export const getPastPercentages = (dataPoints: FilterDataPoint[]) => {
-	// Calculate total for each day across all filters
-	const dayTotals: { [timestamp: number]: number } = {};
+	// Calculate total for each timestamp across all filters
+	const timestampTotals: { [timestamp: number]: number } = {};
 
-	// Calculate totals for each day
+	// Calculate totals for each timestamp
 	dataPoints.forEach((dp) => {
 		dp.pastDataPoints.forEach((point) => {
 			const [timestamp, value] = point;
 			if (value !== null) {
-				dayTotals[timestamp] = (dayTotals[timestamp] || 0) + value;
+				timestampTotals[timestamp] = (timestampTotals[timestamp] || 0) + value;
 			}
 		});
 	});
@@ -52,24 +61,25 @@ export const getPastPercentages = (dataPoints: FilterDataPoint[]) => {
 		return filter && filter.category === 'renewable';
 	});
 
-	// Calculate renewable percentage for each day
+	// Calculate renewable percentage for each timestamp
 	const pastPercentages: [number, number][] = [];
 
-	Object.entries(dayTotals).forEach(([timestamp, totalForDay]) => {
+	Object.entries(timestampTotals).forEach(([timestamp, totalForTimestamp]) => {
 		const ts = parseInt(timestamp);
-		let renewableTotalForDay = 0;
+		let renewableTotalForTimestamp = 0;
 
 		renewableDataPoints.forEach((rdp) => {
-			const dayPoint = rdp.pastDataPoints.find((p) => p[0] === ts);
-			if (dayPoint && dayPoint[1] !== null) {
-				renewableTotalForDay += dayPoint[1];
+			const dataPoint = rdp.pastDataPoints.find((p) => p[0] === ts);
+			if (dataPoint && dataPoint[1] !== null) {
+				renewableTotalForTimestamp += dataPoint[1];
 			}
 		});
 
-		if (totalForDay > 0) {
-			const percentage = renewableTotalForDay / totalForDay;
+		if (totalForTimestamp > 0) {
+			const percentage = renewableTotalForTimestamp / totalForTimestamp;
 			pastPercentages.push([ts, percentage]);
 		}
 	});
+
 	return pastPercentages.sort((a, b) => a[0] - b[0]);
 };

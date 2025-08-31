@@ -7,7 +7,7 @@
 // for time series data
 
 import { smardApiFilters } from './useLists';
-import { calcTargetValue, getPastPercentages } from './useSmardHelpers';
+import { calcTargetValues, getPastPercentages } from './useSmardHelpers';
 
 interface Timestamps {
 	timestamps: string[];
@@ -35,6 +35,7 @@ export interface SmardApiValues {
 	resGenerationEEPercentage: number;
 	resGenerationEEGwh: number;
 	pastPercentagesEE: [number, number][];
+	targetPercentagesEE: [number, number][];
 }
 
 // Resolution configuration
@@ -76,7 +77,7 @@ export const fetchAllTimeSeriesData = async (region: string, resolution: string)
 		})
 	);
 
-	const finalSmardValues = getFinalValues(filterDataPoints);
+	const finalSmardValues = getFinalValues(filterDataPoints, resolution);
 	return { finalSmardValues };
 };
 
@@ -182,12 +183,13 @@ const getLatestActiveDataPoint = (data: TimeSeriesData, resolution: string) => {
 	return { latestDataPoint, pastDataPoints };
 };
 
-const getFinalValues = (dataPoints: FilterDataPoint[]): SmardApiValues => {
+const getFinalValues = (dataPoints: FilterDataPoint[], resolution: string): SmardApiValues => {
 	const finalValues: SmardApiValues = {
 		filterOutputs: [],
 		resGenerationEEPercentage: 0,
 		resGenerationEEGwh: 0,
 		pastPercentagesEE: getPastPercentages(dataPoints),
+		targetPercentagesEE: [], // Will be calculated below
 	};
 
 	// Calculate total MWh and create filter outputs
@@ -221,6 +223,13 @@ const getFinalValues = (dataPoints: FilterDataPoint[]): SmardApiValues => {
 	);
 	finalValues.resGenerationEEGwh = totalGwhRenewable;
 	finalValues.resGenerationEEPercentage = totalRenewablePercentage;
+
+	// Calculate target values based on current EE percentage and past data
+	finalValues.targetPercentagesEE = calcTargetValues(
+		finalValues.pastPercentagesEE,
+		totalRenewablePercentage,
+		resolution
+	);
 
 	// Log invalid data points for debugging
 	const invalidDataPoints = dataPoints.filter(
