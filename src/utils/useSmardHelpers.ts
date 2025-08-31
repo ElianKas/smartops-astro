@@ -1,54 +1,46 @@
 import type { FilterDataPoint } from './useSmardApi';
 import { smardApiFilters } from './useLists';
+import { RESOLUTION_CONFIG } from './useSmardApi';
 
-// Target configuration
-const TARGET_CONFIG = {
-	targetYear: 2035,
-	targetEEPercentage: 1.0, // 100% renewable energy
-} as const;
+const TARGET_YEAR = 2035;
 
 export const calcTargetValues = (
 	pastPercentages: [number, number][],
 	currentEEPercentage: number,
 	resolution: string
 ): [number, number][] => {
-	if (pastPercentages.length === 0) {
-		return [];
-	}
+	if (pastPercentages.length === 0) return [];
 
+	const config = RESOLUTION_CONFIG[resolution as keyof typeof RESOLUTION_CONFIG];
 	const currentDate = new Date();
-	const targetDate = new Date(TARGET_CONFIG.targetYear, 11, 31); // December 31, 2035
-	const currentShare = currentEEPercentage;
+	const targetDate = new Date(TARGET_YEAR, 11, 31);
 
-	// Linear interpolation function to calculate target share for any date
-	const calculateTargetShare = (timestamp: number): number => {
-		const date = new Date(timestamp);
-		const currentTime = currentDate.getTime();
-		const targetTime = targetDate.getTime();
-		const dateTime = date.getTime();
+	// Calculate baseline date based on resolution
+	const baselineDate = new Date(currentDate);
+	if (resolution === 'day') baselineDate.setDate(baselineDate.getDate() - config.dataPointScale);
+	if (resolution === 'month')
+		baselineDate.setMonth(baselineDate.getMonth() - config.dataPointScale);
+	if (resolution === 'year')
+		baselineDate.setFullYear(baselineDate.getFullYear() - config.dataPointScale);
 
-		// If date is in the past relative to current date, calculate what the target should have been
-		const ratio = (dateTime - currentTime) / (targetTime - currentTime);
-		const targetShare = Math.max(
-			0,
-			Math.min(1, currentShare + (TARGET_CONFIG.targetEEPercentage - currentShare) * ratio)
-		);
+	const baselineTime = baselineDate.getTime();
+	const targetTime = targetDate.getTime();
+	const totalDuration = targetTime - baselineTime;
 
-		return targetShare;
-	};
-
-	// Calculate target values for each timestamp in pastPercentages
-	return pastPercentages.map(([timestamp, _]) => [timestamp, calculateTargetShare(timestamp)]);
+	return pastPercentages.map(([timestamp, _]) => {
+		const progressRatio = (timestamp - baselineTime) / totalDuration;
+		const targetShare = currentEEPercentage + (1.0 - currentEEPercentage) * progressRatio;
+		return [timestamp, Math.max(0, Math.min(1, targetShare))];
+	});
 };
 
 export const getPastPercentages = (dataPoints: FilterDataPoint[]) => {
-	// Calculate total for each timestamp across all filters
 	const timestampTotals: { [timestamp: number]: number } = {};
+	const pastPercentages: [number, number][] = [];
 
-	// Calculate totals for each timestamp
+	// Calculate totals
 	dataPoints.forEach((dp) => {
-		dp.pastDataPoints.forEach((point) => {
-			const [timestamp, value] = point;
+		dp.pastDataPoints.forEach(([timestamp, value]) => {
 			if (value !== null) {
 				timestampTotals[timestamp] = (timestampTotals[timestamp] || 0) + value;
 			}
@@ -58,26 +50,19 @@ export const getPastPercentages = (dataPoints: FilterDataPoint[]) => {
 	// Filter renewable data points
 	const renewableDataPoints = dataPoints.filter((dp) => {
 		const filter = smardApiFilters.find((f) => f.id === dp.filterId);
-		return filter && filter.category === 'renewable';
+		return filter?.category === 'renewable';
 	});
 
-	// Calculate renewable percentage for each timestamp
-	const pastPercentages: [number, number][] = [];
-
-	Object.entries(timestampTotals).forEach(([timestamp, totalForTimestamp]) => {
+	// Calculate percentages
+	Object.entries(timestampTotals).forEach(([timestamp, total]) => {
 		const ts = parseInt(timestamp);
-		let renewableTotalForTimestamp = 0;
+		const renewable = renewableDataPoints.reduce((sum, rdp) => {
+			const point = rdp.pastDataPoints.find((p) => p[0] === ts);
+			return sum + (point?.[1] || 0);
+		}, 0);
 
-		renewableDataPoints.forEach((rdp) => {
-			const dataPoint = rdp.pastDataPoints.find((p) => p[0] === ts);
-			if (dataPoint && dataPoint[1] !== null) {
-				renewableTotalForTimestamp += dataPoint[1];
-			}
-		});
-
-		if (totalForTimestamp > 0) {
-			const percentage = renewableTotalForTimestamp / totalForTimestamp;
-			pastPercentages.push([ts, percentage]);
+		if (total > 0) {
+			pastPercentages.push([ts, renewable / total]);
 		}
 	});
 

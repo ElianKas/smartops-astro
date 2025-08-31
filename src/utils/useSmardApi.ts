@@ -38,14 +38,13 @@ export interface SmardApiValues {
 	targetPercentagesEE: [number, number][];
 }
 
-// Resolution configuration
-const RESOLUTION_CONFIG = {
+export const RESOLUTION_CONFIG = {
 	day: { timestampCount: 9, dataPointScale: 9 },
 	month: { timestampCount: 13, dataPointScale: 13 },
 	year: { timestampCount: 10, dataPointScale: 10 },
 } as const;
 
-type Resolution = keyof typeof RESOLUTION_CONFIG;
+export type Resolution = keyof typeof RESOLUTION_CONFIG;
 
 export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
 	if (!isValidResolution(resolution)) {
@@ -230,17 +229,6 @@ const getFinalValues = (dataPoints: FilterDataPoint[], resolution: string): Smar
 		totalRenewablePercentage,
 		resolution
 	);
-
-	// Log invalid data points for debugging
-	const invalidDataPoints = dataPoints.filter(
-		(dp) => !dp.latestDataPoint || dp.latestDataPoint[1] === null
-	);
-	if (invalidDataPoints.length > 0) {
-		console.warn(
-			'Invalid data points found:',
-			invalidDataPoints.map((dp) => dp.filterId)
-		);
-	}
 
 	return finalValues;
 };
