@@ -7,20 +7,21 @@
 // for time series data
 
 import { smardApiFilters } from './useLists';
-import { calcTargetValue, getWeekPercentage } from './useSmardHelpers';
+import { calcTargetValue, getPastPercentages } from './useSmardHelpers';
 
 interface Timestamps {
 	timestamps: string[];
 }
 
 interface TimeSeriesData {
-	series: [number, number | null][];
+	series: [number, number][];
 }
 
 export interface FilterDataPoint {
-	latestDataPoint: [number, number | null] | undefined;
-	weekDataPoints: [number, number | null][];
+	latestDataPoint: [number, number] | undefined;
+	pastDataPoints: [number, number][];
 	filterId: string;
+	filterResolution: string;
 }
 
 export interface FilterOutput {
@@ -31,39 +32,47 @@ export interface FilterOutput {
 
 export interface SmardApiValues {
 	filterOutputs: FilterOutput[];
-	dailyGenerationEEPercentage: number;
-	dailyGenerationEEGwh: number;
-	WeekGenerationEEPercentage: [number, number][];
+	resGenerationEEPercentage: number;
+	resGenerationEEGwh: number;
+	pastPercentagesEE: [number, number][];
 }
 
-export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
-	let filterDataPoints: FilterDataPoint[] = [];
+// Resolution configuration
+const RESOLUTION_CONFIG = {
+	day: { timestampCount: 9, dataPointScale: 9 },
+	month: { timestampCount: 13, dataPointScale: 13 },
+	year: { timestampCount: 10, dataPointScale: 10 },
+} as const;
 
-	await Promise.all(
+type Resolution = keyof typeof RESOLUTION_CONFIG;
+
+export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
+	if (!isValidResolution(resolution)) {
+		throw new Error(`Unsupported resolution: ${resolution}`);
+	}
+
+	const filterDataPoints = await Promise.all(
 		smardApiFilters.map(async (filter) => {
-			const availableTimestamps: Timestamps = await fetchAvailableTimestamps(
-				filter.id,
-				region,
-				resolution
-			);
-			const latestTimestamp =
-				availableTimestamps.timestamps[availableTimestamps.timestamps.length - 1];
-			const timeSeriesData: TimeSeriesData = await fetchTimeSeriesData(
+			const availableTimestamps = await fetchAvailableTimestamps(filter.id, region, resolution);
+			const timestampStack = getTimestampStack(availableTimestamps, resolution);
+			const timeSeriesData = await fetchTimeSeriesData(
 				filter.id,
 				region,
 				resolution,
-				latestTimestamp
+				timestampStack
 			);
-			if (resolution === 'day') {
-				const { latestDataPoint, weekDataPoints } = getLatestActiveDataPoint(timeSeriesData);
-				filterDataPoints.push({
-					latestDataPoint: latestDataPoint,
-					weekDataPoints: weekDataPoints,
-					filterId: filter.id,
-				});
-			} else {
-				console.error('Unsupported resolution:', resolution);
-			}
+
+			const { latestDataPoint, pastDataPoints } = getLatestActiveDataPoint(
+				timeSeriesData,
+				resolution
+			);
+
+			return {
+				latestDataPoint,
+				pastDataPoints,
+				filterId: filter.id,
+				filterResolution: resolution,
+			};
 		})
 	);
 
@@ -71,21 +80,41 @@ export const fetchAllTimeSeriesData = async (region: string, resolution: string)
 	return { finalSmardValues };
 };
 
-const fetchAvailableTimestamps = async (filter: string, region: string, resolution: string) => {
+const isValidResolution = (resolution: string): resolution is Resolution => {
+	return resolution in RESOLUTION_CONFIG;
+};
+
+const getTimestampStack = (availableTimestamps: Timestamps, resolution: Resolution): string[] => {
+	const config = RESOLUTION_CONFIG[resolution];
+	const timestamps = availableTimestamps.timestamps;
+	const latestTimestampStack: string[] = [];
+
+	for (let i = 1; i <= config.timestampCount; i++) {
+		const timestamp = timestamps[timestamps.length - i];
+		if (timestamp) {
+			latestTimestampStack.push(timestamp);
+		}
+	}
+
+	return latestTimestampStack;
+};
+
+const fetchAvailableTimestamps = async (
+	filter: string,
+	region: string,
+	resolution: string
+): Promise<Timestamps> => {
 	try {
-		const response = await fetch(
-			`https://www.smard.de/app/chart_data/${filter}/${region}/index_${resolution}.json`
-		);
+		const url = `https://www.smard.de/app/chart_data/${filter}/${region}/index_${resolution}.json`;
+		const response = await fetch(url);
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			throw new Error(`Failed to fetch timestamps: ${response.status} ${response.statusText}`);
 		}
 
-		const data = await response.json();
-
-		return data;
+		return await response.json();
 	} catch (error) {
-		console.error('Error fetching available timestamps:', error);
+		console.error(`Error fetching available timestamps for filter ${filter}:`, error);
 		throw error;
 	}
 };
@@ -94,100 +123,131 @@ const fetchTimeSeriesData = async (
 	filter: string,
 	region: string,
 	resolution: string,
-	timestamp: string
-) => {
-	try {
-		// filterCopy and regionCopy must match filter and region (API design requirement)
-		const filterCopy = filter;
-		const regionCopy = region;
+	timestamps: string[]
+): Promise<TimeSeriesData> => {
+	if (timestamps.length === 0) {
+		throw new Error('No timestamps provided for fetching time series data');
+	}
 
-		const response = await fetch(
-			`https://www.smard.de/app/chart_data/${filter}/${region}/${filterCopy}_${regionCopy}_${resolution}_${timestamp}.json`
+	try {
+		const responses = await Promise.all(
+			timestamps.map((timestamp) => {
+				const url = `https://www.smard.de/app/chart_data/${filter}/${region}/${filter}_${region}_${resolution}_${timestamp}.json`;
+				return fetch(url);
+			})
 		);
 
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+		// Check for failed responses
+		const failedResponses = responses.filter((response) => !response.ok);
+		if (failedResponses.length > 0) {
+			throw new Error(`Failed to fetch ${failedResponses.length} time series requests`);
 		}
 
-		const data = await response.json();
-		return data;
+		const allData = await Promise.all(responses.map((response) => response.json()));
+
+		// Combine all series data
+		return {
+			...allData[0],
+			series: allData.flatMap((data) => data.series || []),
+		};
 	} catch (error) {
-		console.error('Error fetching time series data:', error);
+		console.error(`Error fetching time series data for filter ${filter}:`, error);
 		throw error;
 	}
 };
 
-const getLatestActiveDataPoint = (data: TimeSeriesData) => {
-	const series = data.series;
-	const currentTimestamp = new Date().setHours(0, 0, 0, 0);
-	const latestDataPointIndex = series.findIndex((point) => point[0] === currentTimestamp);
-	const latestDataPoint = series[latestDataPointIndex - 1];
-	//get dataPoints of one week
-	let weekDataPoints = [];
-	// Time data for the previous day does not arrive until 00:00.
-	// This means we have to use -2 here until the data arrives.
-	if (latestDataPoint[1] === null) {
-		const latestDataPoint = series[latestDataPointIndex - 2];
-		weekDataPoints = series.slice(latestDataPointIndex - 9, latestDataPointIndex - 1);
-		return { latestDataPoint, weekDataPoints };
-	} else {
-		weekDataPoints = series.slice(latestDataPointIndex - 8, latestDataPointIndex);
-		return { latestDataPoint, weekDataPoints };
+const getLatestActiveDataPoint = (data: TimeSeriesData, resolution: string) => {
+	if (!data.series || data.series.length === 0) {
+		return { latestDataPoint: undefined, pastDataPoints: [] };
 	}
+
+	const series = data.series;
+	let latestDataPointIndex = series.findIndex((point) => point[1] === null);
+
+	// If no null values found, use the last available data point
+	if (latestDataPointIndex === -1) {
+		latestDataPointIndex = series.length;
+	}
+
+	const latestDataPoint = series[latestDataPointIndex - 1];
+
+	if (!isValidResolution(resolution)) {
+		return { latestDataPoint, pastDataPoints: [] };
+	}
+
+	const config = RESOLUTION_CONFIG[resolution];
+	const startIndex = Math.max(0, latestDataPointIndex - config.dataPointScale);
+	const pastDataPoints = series.slice(startIndex, latestDataPointIndex);
+
+	return { latestDataPoint, pastDataPoints };
 };
 
-const getFinalValues = (dataPoints: FilterDataPoint[]) => {
-	let totalMwh = 0;
-	let finalValues: SmardApiValues = {
+const getFinalValues = (dataPoints: FilterDataPoint[]): SmardApiValues => {
+	const finalValues: SmardApiValues = {
 		filterOutputs: [],
-		dailyGenerationEEPercentage: 0,
-		dailyGenerationEEGwh: 0,
-		WeekGenerationEEPercentage: getWeekPercentage(dataPoints),
+		resGenerationEEPercentage: 0,
+		resGenerationEEGwh: 0,
+		pastPercentagesEE: getPastPercentages(dataPoints),
 	};
 
-	dataPoints.forEach((dp) => {
-		if (dp.latestDataPoint && dp.latestDataPoint[1] !== null) {
-			const valueMwh = dp.latestDataPoint[1];
-			totalMwh += valueMwh;
-			finalValues.filterOutputs.push({
-				totalPercentage: '',
-				generationMwh: valueMwh,
-				filterId: dp.filterId,
-			});
-		} else {
-			console.log(`No valid data point for filter ID: ${dp.filterId}`);
-		}
+	// Calculate total MWh and create filter outputs
+	let totalMwh = 0;
+	const validDataPoints = dataPoints.filter(
+		(dp) => dp.latestDataPoint && dp.latestDataPoint[1] !== null
+	);
+
+	validDataPoints.forEach((dp) => {
+		const valueMwh = dp.latestDataPoint![1];
+		totalMwh += valueMwh;
+
+		finalValues.filterOutputs.push({
+			totalPercentage: '', // Will be calculated below
+			generationMwh: valueMwh,
+			filterId: dp.filterId,
+		});
 	});
 
-	finalValues.filterOutputs = finalValues.filterOutputs.map((fo) => {
-		fo.totalPercentage = ((fo.generationMwh / totalMwh) * 100).toFixed(2) + '%';
-		return fo;
-	});
+	// Calculate percentages
+	finalValues.filterOutputs = finalValues.filterOutputs.map((output) => ({
+		...output,
+		totalPercentage:
+			totalMwh > 0 ? `${((output.generationMwh / totalMwh) * 100).toFixed(2)}%` : '0%',
+	}));
 
-	const { totalRenewablePercentage, totalGwhRenewable } = getEEDaily(dataPoints, totalMwh);
-	finalValues.dailyGenerationEEGwh = totalGwhRenewable;
-	finalValues.dailyGenerationEEPercentage = totalRenewablePercentage;
+	// Calculate renewable energy statistics
+	const { totalRenewablePercentage, totalGwhRenewable } = calculateRenewableStats(
+		dataPoints,
+		totalMwh
+	);
+	finalValues.resGenerationEEGwh = totalGwhRenewable;
+	finalValues.resGenerationEEPercentage = totalRenewablePercentage;
+
+	// Log invalid data points for debugging
+	const invalidDataPoints = dataPoints.filter(
+		(dp) => !dp.latestDataPoint || dp.latestDataPoint[1] === null
+	);
+	if (invalidDataPoints.length > 0) {
+		console.warn(
+			'Invalid data points found:',
+			invalidDataPoints.map((dp) => dp.filterId)
+		);
+	}
 
 	return finalValues;
 };
 
-const getEEDaily = (dataPoints: FilterDataPoint[], totalMwh: number) => {
-	let totalMwhRenewable = 0;
+const calculateRenewableStats = (dataPoints: FilterDataPoint[], totalMwh: number) => {
 	const renewableDataPoints = dataPoints.filter((dp) => {
 		const filter = smardApiFilters.find((f) => f.id === dp.filterId);
-		return (
-			filter &&
-			filter.category === 'renewable' &&
-			dp.latestDataPoint &&
-			dp.latestDataPoint[1] !== null
-		);
+		return filter?.category === 'renewable' && dp.latestDataPoint && dp.latestDataPoint[1] !== null;
 	});
-	renewableDataPoints.forEach((dp) => {
-		if (dp.latestDataPoint && dp.latestDataPoint[1] !== null) {
-			totalMwhRenewable += dp.latestDataPoint[1];
-		}
-	});
-	const totalRenewablePercentage = totalMwhRenewable / totalMwh;
+
+	const totalMwhRenewable = renewableDataPoints.reduce((sum, dp) => {
+		return sum + (dp.latestDataPoint![1] || 0);
+	}, 0);
+
+	const totalRenewablePercentage = totalMwh > 0 ? totalMwhRenewable / totalMwh : 0;
 	const totalGwhRenewable = totalMwhRenewable / 1000;
+
 	return { totalRenewablePercentage, totalGwhRenewable };
 };

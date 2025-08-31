@@ -8,7 +8,9 @@ import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
 import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
 
-const { finalSmardValues } = await fetchAllTimeSeriesData('DE', 'day');
+const { finalSmardValues: dailySmard } = await fetchAllTimeSeriesData('DE', 'day');
+const { finalSmardValues: monthlySmard } = await fetchAllTimeSeriesData('DE', 'month');
+const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'year');
 ---
 
 <DefaultDark>
@@ -56,21 +58,23 @@ const { finalSmardValues } = await fetchAllTimeSeriesData('DE', 'day');
 					</nav>
 				</div>
 			</div>
-			<Infobanner filterOutputs={finalSmardValues.filterOutputs} />
+			<Infobanner filterOutputs={dailySmard.filterOutputs} />
 		</div>
 		<div class='text-center py-lg'>
 			<div>Information EE</div>
 			<div class='title'>Data-Center</div>
 		</div>
-		<Cards dailyPercent={finalSmardValues.dailyGenerationEEPercentage} />
+		<Cards dailyPercent={dailySmard.resGenerationEEPercentage} />
 		<DataGermany
-			weekPercentages={finalSmardValues.WeekGenerationEEPercentage}
-			dailyPercent={finalSmardValues.dailyGenerationEEPercentage}
-			daily={finalSmardValues.dailyGenerationEEGwh}
+			dayPercentages={dailySmard.pastPercentagesEE}
+			monthPercentages={monthlySmard.pastPercentagesEE}
+			yearPercentages={yearlySmard.pastPercentagesEE}
+			dailyPercent={dailySmard.resGenerationEEPercentage}
+			daily={dailySmard.resGenerationEEGwh}
 		/>
 		<BatteryTabs />
 		<div class='flex flex-col gap-xs'>
-			<Infobanner filterOutputs={finalSmardValues.filterOutputs} />
+			<Infobanner filterOutputs={dailySmard.filterOutputs} />
 		</div>
 	</div>
 </DefaultDark>

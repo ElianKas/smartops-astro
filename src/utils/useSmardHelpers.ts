@@ -32,13 +32,13 @@ export const calcTargetValue = (
 	return result;
 };
 
-export const getWeekPercentage = (dataPoints: FilterDataPoint[]) => {
+export const getPastPercentages = (dataPoints: FilterDataPoint[]) => {
 	// Calculate total for each day across all filters
 	const dayTotals: { [timestamp: number]: number } = {};
 
 	// Calculate totals for each day
 	dataPoints.forEach((dp) => {
-		dp.weekDataPoints.forEach((point) => {
+		dp.pastDataPoints.forEach((point) => {
 			const [timestamp, value] = point;
 			if (value !== null) {
 				dayTotals[timestamp] = (dayTotals[timestamp] || 0) + value;
@@ -53,14 +53,14 @@ export const getWeekPercentage = (dataPoints: FilterDataPoint[]) => {
 	});
 
 	// Calculate renewable percentage for each day
-	const weekPercentages: [number, number][] = [];
+	const pastPercentages: [number, number][] = [];
 
 	Object.entries(dayTotals).forEach(([timestamp, totalForDay]) => {
 		const ts = parseInt(timestamp);
 		let renewableTotalForDay = 0;
 
 		renewableDataPoints.forEach((rdp) => {
-			const dayPoint = rdp.weekDataPoints.find((p) => p[0] === ts);
+			const dayPoint = rdp.pastDataPoints.find((p) => p[0] === ts);
 			if (dayPoint && dayPoint[1] !== null) {
 				renewableTotalForDay += dayPoint[1];
 			}
@@ -68,8 +68,8 @@ export const getWeekPercentage = (dataPoints: FilterDataPoint[]) => {
 
 		if (totalForDay > 0) {
 			const percentage = renewableTotalForDay / totalForDay;
-			weekPercentages.push([ts, percentage]);
+			pastPercentages.push([ts, percentage]);
 		}
 	});
-	return weekPercentages.sort((a, b) => a[0] - b[0]);
+	return pastPercentages.sort((a, b) => a[0] - b[0]);
 };
