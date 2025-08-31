@@ -64,6 +64,7 @@ const { finalSmardValues } = await fetchAllTimeSeriesData('DE', 'day');
 		</div>
 		<Cards dailyPercent={finalSmardValues.dailyGenerationEEPercentage} />
 		<DataGermany
+			weekPercentages={finalSmardValues.WeekGenerationEEPercentage}
 			dailyPercent={finalSmardValues.dailyGenerationEEPercentage}
 			daily={finalSmardValues.dailyGenerationEEGwh}
 		/>

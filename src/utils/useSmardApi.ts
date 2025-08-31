@@ -6,6 +6,9 @@
 // https://www.smard.de/app/chart_data/{filter}/{region}/{filterCopy}_{regionCopy}_{resolution}_{timestamp}.json
 // for time series data
 
+import { smardApiFilters } from './useLists';
+import { calcTargetValue, getWeekPercentage } from './useSmardHelpers';
+
 interface Timestamps {
 	timestamps: string[];
 }
@@ -14,8 +17,9 @@ interface TimeSeriesData {
 	series: [number, number | null][];
 }
 
-interface FilterDataPoint {
+export interface FilterDataPoint {
 	latestDataPoint: [number, number | null] | undefined;
+	weekDataPoints: [number, number | null][];
 	filterId: string;
 }
 
@@ -29,9 +33,8 @@ export interface SmardApiValues {
 	filterOutputs: FilterOutput[];
 	dailyGenerationEEPercentage: number;
 	dailyGenerationEEGwh: number;
+	WeekGenerationEEPercentage: [number, number][];
 }
-
-import { smardApiFilters } from './useLists';
 
 export const fetchAllTimeSeriesData = async (region: string, resolution: string) => {
 	let filterDataPoints: FilterDataPoint[] = [];
@@ -51,16 +54,16 @@ export const fetchAllTimeSeriesData = async (region: string, resolution: string)
 				resolution,
 				latestTimestamp
 			);
-			let latestDataPoint;
 			if (resolution === 'day') {
-				latestDataPoint = getLatestActiveDataPoint(timeSeriesData);
+				const { latestDataPoint, weekDataPoints } = getLatestActiveDataPoint(timeSeriesData);
+				filterDataPoints.push({
+					latestDataPoint: latestDataPoint,
+					weekDataPoints: weekDataPoints,
+					filterId: filter.id,
+				});
 			} else {
 				console.error('Unsupported resolution:', resolution);
 			}
-			filterDataPoints.push({
-				latestDataPoint: latestDataPoint,
-				filterId: filter.id,
-			});
 		})
 	);
 
@@ -119,14 +122,17 @@ const getLatestActiveDataPoint = (data: TimeSeriesData) => {
 	const currentTimestamp = new Date().setHours(0, 0, 0, 0);
 	const latestDataPointIndex = series.findIndex((point) => point[0] === currentTimestamp);
 	const latestDataPoint = series[latestDataPointIndex - 1];
-	// index -1 if "resolution" is "day" because of late daily updates
+	//get dataPoints of one week
+	let weekDataPoints = [];
 	// Time data for the previous day does not arrive until 00:00.
 	// This means we have to use -2 here until the data arrives.
 	if (latestDataPoint[1] === null) {
-		// If the value is null, we use -2
-		return series[latestDataPointIndex - 2];
+		const latestDataPoint = series[latestDataPointIndex - 2];
+		weekDataPoints = series.slice(latestDataPointIndex - 9, latestDataPointIndex - 1);
+		return { latestDataPoint, weekDataPoints };
 	} else {
-		return latestDataPoint;
+		weekDataPoints = series.slice(latestDataPointIndex - 8, latestDataPointIndex);
+		return { latestDataPoint, weekDataPoints };
 	}
 };
 
@@ -136,6 +142,7 @@ const getFinalValues = (dataPoints: FilterDataPoint[]) => {
 		filterOutputs: [],
 		dailyGenerationEEPercentage: 0,
 		dailyGenerationEEGwh: 0,
+		WeekGenerationEEPercentage: getWeekPercentage(dataPoints),
 	};
 
 	dataPoints.forEach((dp) => {
@@ -160,6 +167,7 @@ const getFinalValues = (dataPoints: FilterDataPoint[]) => {
 	const { totalRenewablePercentage, totalGwhRenewable } = getEEDaily(dataPoints, totalMwh);
 	finalValues.dailyGenerationEEGwh = totalGwhRenewable;
 	finalValues.dailyGenerationEEPercentage = totalRenewablePercentage;
+
 	return finalValues;
 };
 

@@ -1,11 +1,19 @@
 ---
-const { dailyPercent, daily } = Astro.props;
+const { dailyPercent, daily, weekPercentages } = Astro.props;
 const currentDate = new Date().toLocaleDateString('de-DE', {
 	timeZone: 'Europe/Berlin',
 	year: 'numeric',
 	month: '2-digit',
 	day: '2-digit',
 });
+const weekEEPercentages = weekPercentages.map((day: any) => [
+	new Date(day[0]).toLocaleDateString('de-DE', {
+		timeZone: 'Europe/Berlin',
+		month: '2-digit',
+		day: '2-digit',
+	}),
+	day[1] * 100,
+]);
 ---
 
 <section
@@ -51,9 +59,7 @@ const currentDate = new Date().toLocaleDateString('de-DE', {
 		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 6</div>
 	</div>
 </section>
-<script>
-	import Highcharts from 'highcharts';
-
+<script define:vars={{ weekEEPercentages }}>
 	document.addEventListener('DOMContentLoaded', () => {
 		const chartDaily = document.getElementById('generation-chart-daily');
 		const chartQuarterly = document.getElementById('generation-chart-quarterly');
@@ -61,12 +67,15 @@ const currentDate = new Date().toLocaleDateString('de-DE', {
 
 		if (!chartDaily || !chartQuarterly || !chartYearly)
 			return console.error('Chart element not found');
-		createChart(chartDaily, {}, 'Tag');
-		createChart(chartYearly, {}, 'Jahr');
-		createChart(chartQuarterly, {}, 'Quartal');
+		createChart(chartDaily, weekEEPercentages, 'Tag');
+		createChart(chartYearly, weekEEPercentages, 'Jahr');
+		createChart(chartQuarterly, weekEEPercentages, 'Quartal');
 	});
 
-	const createChart = (domEl: HTMLElement, chartData: any, title: string) => {
+	const createChart = (domEl, chartData, title) => {
+		const x = [...chartData.map((item) => item[0])];
+		const y = [...chartData.map((item) => item[1])];
+
 		Highcharts.chart({
 			chart: {
 				type: 'column',
@@ -95,7 +104,7 @@ const currentDate = new Date().toLocaleDateString('de-DE', {
 				},
 			},
 			xAxis: {
-				categories: ['Apples', 'Bananas', 'Oranges'],
+				categories: x,
 				labels: {
 					y: 15,
 				},
@@ -108,13 +117,13 @@ const currentDate = new Date().toLocaleDateString('de-DE', {
 			},
 			series: [
 				{
-					name: 'Jane',
-					data: [1, 0, 4],
-				} as Highcharts.SeriesLineOptions, //highcharts bug: not recognizing default typing https://www.highcharts.com/docs/advanced-chart-features/highcharts-typescript-declarations#debugging
+					name: 'realisierte Leistung',
+					data: y,
+				}, //highcharts bug (only if ts active): not recognizing default typing https://www.highcharts.com/docs/advanced-chart-features/highcharts-typescript-declarations#debugging
 				{
-					name: 'John',
-					data: [5, 7, 3],
-				} as Highcharts.SeriesLineOptions,
+					name: 'erwartete Leistung',
+					data: [0, 0, 0],
+				},
 			],
 		});
 	};
