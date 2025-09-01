@@ -1,0 +1,40 @@
+---
+import ShortArrow from '../../Svg/Icons/ShortArrow.astro';
+---
+
+<section
+	id='links'
+	class='grid grid-cols-1 sm:grid-cols-2 gap-md max-w-normal mx-auto w-full px-sm'>
+	<div class='flex flex-col gap-sm justify-between'>
+		<div class='flex flex-col gap-xs'>
+			<h3>smard.de</h3>
+			<div class='subtitle'>Stromerzeugung und -verbrauch in Deutschland</div>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<div class='w-full aspect-[3/2] border'></div>
+			<a
+				target='_blank'
+				class='flex gap-sm items-center self-start'
+				href='https://www.smard.de/home/marktdaten?marketDataAttributes=%7B%22resolution%22:%22day%22,%22from%22:1748728800000,%22to%22:1756677599999,%22moduleIds%22:%5B%5D,%22selectedCategory%22:null,%22activeChart%22:true,%22style%22:%22color%22,%22categoriesModuleOrder%22:%5B%5D,%22region%22:%22DE%22%7D'>
+				<span class='font-bold'>In neuem Fenster öffnen</span>
+				<ShortArrow class='rotate-180 h-[20px] w-auto' />
+			</a>
+		</div>
+	</div>
+	<div class='flex flex-col gap-sm justify-between'>
+		<div class='flex flex-col gap-xs'>
+			<h3>app.electricitymaps.com</h3>
+			<div class='subtitle'>Weltweite Energieerzeugung Map</div>
+		</div>
+		<div class='flex flex-col gap-sm'>
+			<div class='w-full aspect-[3/2] border'></div>
+			<a
+				target='_blank'
+				class='flex gap-sm items-center self-start'
+				href='https://app.electricitymaps.com/map/72h/hourly'>
+				<span class='font-bold'>In neuem Fenster öffnen</span>
+				<ShortArrow class='rotate-180 h-[20px] w-auto' />
+			</a>
+		</div>
+	</div>
+</section>

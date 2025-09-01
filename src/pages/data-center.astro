@@ -6,6 +6,7 @@ import Cards from '../components/sections/data-center/cards.astro';
 import DataGermany from '../components/sections/data-center/data-germany.astro';
 import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
+import Links from '../components/sections/data-center/links.astro';
 import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
 
 const { finalSmardValues: dailySmard } = await fetchAllTimeSeriesData('DE', 'day');
@@ -31,27 +32,22 @@ const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'ye
 					</h1>
 					<nav class='hidden group-focus:flex lg:flex gap-md flex-wrap'>
 						<a
-							href='#data-center-section-ueberblick'
+							href='#ueberblick'
 							class='hover:text-dark'
 							>Überblick</a
 						>
 						<a
-							href='#data-center-section-planing'
+							href='#planung'
 							class='hover:text-dark'
 							>Stand / Planung</a
 						>
 						<a
-							href='#data-center-section-ueberblick'
+							href='#speicher'
 							class='hover:text-dark'
 							>Speicher</a
 						>
 						<a
-							href='#data-center-section-ueberblick'
-							class='hover:text-dark'
-							>Komplette Stromerzeugung DE</a
-						>
-						<a
-							href='#data-center-section-ueberblick'
+							href='#links'
 							class='hover:text-dark'
 							>Links</a
 						>
@@ -76,6 +72,7 @@ const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'ye
 			daily={dailySmard.resGenerationEEGwh}
 		/>
 		<BatteryTabs />
+		<Links />
 		<div class='flex flex-col gap-xs'>
 			<Infobanner filterOutputs={dailySmard.filterOutputs} />
 		</div>
