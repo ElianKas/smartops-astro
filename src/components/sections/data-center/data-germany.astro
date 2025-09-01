@@ -61,6 +61,11 @@ const targetYearEEPercentages = targetYearPercentages.map((year: any) => [
 	}),
 	parseFloat((year[1] * 100).toFixed(2)),
 ]);
+const deviationMonthlyFromTargetPercentage = (
+	(monthPercentages[monthPercentages.length - 1][1] -
+		targetMonthPercentages[monthPercentages.length - 1][1]) *
+	100
+).toFixed(2);
 ---
 
 <section
@@ -103,7 +108,20 @@ const targetYearEEPercentages = targetYearPercentages.map((year: any) => [
 			</div>
 			<div>Heute Leistung EE von Leistung ges. in Deutschland</div>
 		</div>
-		<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 6</div>
+		<div
+			class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col h-full justify-end gap-sm'>
+			<div
+				class='subtitle'
+				style={{
+					color:
+						parseInt(deviationMonthlyFromTargetPercentage) >= 0
+							? 'var(--color-green)'
+							: 'var(--color-red)',
+				}}>
+				{deviationMonthlyFromTargetPercentage}%
+			</div>
+			<div>Abweichung vom Ziel letzten Monat</div>
+		</div>
 	</div>
 </section>
 <script

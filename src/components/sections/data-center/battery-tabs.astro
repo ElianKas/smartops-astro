@@ -31,9 +31,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Speicherkapazität in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -48,9 +49,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Zubau Speicherkapazität in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -67,9 +69,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Speicherleistung in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -84,9 +87,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Zubau Speicherleistung in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -103,9 +107,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Anzahl der Batteriespeicher in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -120,9 +125,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Zubau Anzahl der Batteriespeicher in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -130,7 +136,7 @@
 	<div class='hidden battery-section flex flex-col gap-lg'>
 		<div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-sm'>
 			<div class='flex flex-col gap-xs'>
-				<h3 class='subtitle'>Geplante Batteriespeicherkapazität</h3>
+				<h3 class='subtitle'>Geplante Speicherkapazität</h3>
 				<p>
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias eligendi ipsam rem
 					unde est, at nostrum quidem dicta, quod maiores nulla ea accusantium delectus
@@ -139,15 +145,16 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Geplante Batteriespeicherkapazität in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
 		<div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-sm'>
 			<div class='flex flex-col gap-xs'>
-				<h3 class='subtitle'>Geplante Batteriekapazität</h3>
+				<h3 class='subtitle'>Geplante Speicherleistung</h3>
 				<p>
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias eligendi ipsam rem
 					unde est, at nostrum quidem dicta, quod maiores nulla ea accusantium delectus
@@ -156,9 +163,10 @@
 			</div>
 			<div class='col-span-2 w-full'>
 				<iframe
+					title='Geplante Batteriekapazität in Deutschland aus allen Batterietechnologien'
 					loading='lazy'
 					src=''
-					class='battery-iframe w-full aspect-video'
+					class='battery-iframe w-full aspect-video rounded-2xl'
 				></iframe>
 			</div>
 		</div>
@@ -183,19 +191,18 @@
 			iframe.src = sources[index];
 		});
 
-		tabs.forEach((tab, index) => {
+		tabs.forEach((tab, tabIndex) => {
 			tab.addEventListener('click', () => {
-				const sectionIframes = sections[index].querySelectorAll('.battery-iframe');
+				const sectionIframes = sections[tabIndex].querySelectorAll('.battery-iframe');
 				const sectionIndicator = tab.querySelector('.indicator');
 
-				sectionIframes.forEach((iframe: any) => {
-					if (iframe.src === sources[index]) return;
-					iframe.src = sources[index];
-					console.log(sources[index]);
+				sectionIframes.forEach((iframe: any, iframeIndex) => {
+					if (iframe.src === sources[iframeIndex + tabIndex * 2]) return;
+					iframe.src = sources[iframeIndex + tabIndex * 2];
 				});
 
 				sections.forEach((section) => section.classList.add('hidden'));
-				sections[index].classList.remove('hidden');
+				sections[tabIndex].classList.remove('hidden');
 
 				tabs.forEach((t) => t.querySelector('.indicator')?.classList.add('opacity-0'));
 				sectionIndicator?.classList.remove('opacity-0');
