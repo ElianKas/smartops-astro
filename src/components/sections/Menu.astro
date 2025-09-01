@@ -18,6 +18,7 @@ const { data: references } = await storyblokApi.get('cdn/stories', {
 const sparringStories = sparring.stories;
 const plStories = pl.stories;
 const refStories = references.stories;
+const refStoriesMobile = references.stories.slice(0, 4);
 const technologies = projectCategories.filter((category) => category.group === 'Technologien');
 ---
 
@@ -158,12 +159,31 @@ const technologies = projectCategories.filter((category) => category.group === '
 				{technologies.map((tech) => <a href={`/referenzen/?filter=${tech.value}`}>{tech.name}</a>)}
 			</div>
 		</div>
-		<div class='flex gap-md'>
+		<!-- desktop -->
+		<div class='hidden sm:flex gap-md overflow-x-hidden'>
 			{
 				refStories.map((story: any) => (
-					<a href={`/${story.full_slug}`}>
+					<a
+						href={`/${story.full_slug}`}
+						class='flex'>
 						<img
-							class='rounded-tl-2xl rounded-br-2xl w-[300px] aspect-[3/2] object-cover shrink-0'
+							class='rounded-tl-2xl rounded-br-2xl w-[120px] sm:w-[200px] lg:w-[250px] aspect-[3/2] object-cover shrink-0'
+							src={resizeImage(story.content.project_image.filename)}
+							alt={story.content.project_image.alt}
+						/>
+					</a>
+				))
+			}
+		</div>
+		<!-- mobile -->
+		<div class='sm:hidden flex gap-md overflow-x-hidden'>
+			{
+				refStoriesMobile.map((story: any) => (
+					<a
+						href={`/${story.full_slug}`}
+						class='flex'>
+						<img
+							class='rounded-tl-2xl rounded-br-2xl w-[120px] sm:w-[200px] lg:w-[250px] aspect-[3/2] object-cover shrink-0'
 							src={resizeImage(story.content.project_image.filename)}
 							alt={story.content.project_image.alt}
 						/>
