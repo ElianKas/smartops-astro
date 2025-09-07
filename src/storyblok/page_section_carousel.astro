@@ -1,4 +1,5 @@
 ---
+import { resizeImage } from '../utils/useImageOptimization';
 const { blok } = Astro.props;
 ---
 
@@ -10,7 +11,7 @@ const { blok } = Astro.props;
 				class='carousel-item w-full shrink-0 flex flex-col gap-sm cursor-pointer transition-all duration-200'>
 				<img
 					loading='lazy'
-					src={item.carousel_item_image.filename}
+					src={resizeImage(item.carousel_item_image.filename)}
 					alt={item.carousel_item_image.alt}
 					class='w-full aspect-[3/2] object-cover'
 				/>
@@ -28,6 +29,13 @@ const { blok } = Astro.props;
 	import gsap from 'gsap';
 	let index = 0;
 	let anim: any;
+
+	// Touch/swipe variables
+	let startX = 0;
+	let startY = 0;
+	let endX = 0;
+	let endY = 0;
+	const minSwipeDistance = 50; // minimum distance for a swipe
 
 	const animateProgressBars = () => {
 		const items = document.querySelectorAll(`.carousel-section .carousel-item`);
@@ -53,17 +61,75 @@ const { blok } = Astro.props;
 		);
 	};
 
+	const goToSlide = (newIndex: number) => {
+		const progressBars = document.querySelectorAll(`.carousel-section .item-progress-bar`);
+		if (newIndex >= 0 && newIndex < progressBars.length) {
+			index = newIndex;
+			anim.revert();
+			animateProgressBars();
+		}
+	};
+
+	const handleSwipe = () => {
+		const deltaX = endX - startX;
+		const deltaY = endY - startY;
+
+		// Check if horizontal swipe is more significant than vertical
+		if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+			if (deltaX > 0) {
+				// Swipe right - go to previous slide
+				const newIndex =
+					index > 0 ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
+				goToSlide(newIndex);
+			} else {
+				// Swipe left - go to next slide
+				const newIndex =
+					index < document.querySelectorAll('.carousel-item').length - 1 ? index + 1 : 0;
+				goToSlide(newIndex);
+			}
+		}
+	};
+
 	document.addEventListener('DOMContentLoaded', () => {
+		const carouselSection = document.querySelector('.carousel-section');
 		const items = document.querySelectorAll(`.carousel-section .carousel-item`);
+
+		// Click events
 		items.forEach((item) => {
 			item.addEventListener('click', (event) => {
 				const target = event.currentTarget as HTMLElement;
 				const clickedIndex = target.getAttribute('data-index') as string;
-				index = parseInt(clickedIndex);
-				anim.revert();
-				animateProgressBars();
+				goToSlide(parseInt(clickedIndex));
 			});
 		});
+
+		// Touch events for swipe
+		carouselSection?.addEventListener(
+			'touchstart',
+			(e) => {
+				const touchEvent = e as TouchEvent;
+				startX = touchEvent.touches[0].clientX;
+				startY = touchEvent.touches[0].clientY;
+			},
+			{ passive: true }
+		);
+
+		carouselSection?.addEventListener(
+			'touchend',
+			(e) => {
+				const touchEvent = e as TouchEvent;
+				endX = touchEvent.changedTouches[0].clientX;
+				endY = touchEvent.changedTouches[0].clientY;
+				handleSwipe();
+			},
+			{ passive: true }
+		);
+
+		// Prevent default touch behavior to avoid scrolling conflicts
+		carouselSection?.addEventListener('touchmove', (e) => {
+			e.preventDefault();
+		});
+
 		animateProgressBars();
 	});
 </script>
