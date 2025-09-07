@@ -8,10 +8,13 @@ import ShortArrow from '../components/Svg/Icons/ShortArrow.astro';
 import BatteryTabs from '../components/sections/data-center/battery-tabs.astro';
 import Links from '../components/sections/data-center/links.astro';
 import { fetchAllTimeSeriesData } from '../utils/useSmardApi';
+import { fetchSumMastr } from '../utils/useMastrApi';
 
 const { finalSmardValues: dailySmard } = await fetchAllTimeSeriesData('DE', 'day');
 const { finalSmardValues: monthlySmard } = await fetchAllTimeSeriesData('DE', 'month');
 const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'year');
+
+const finalMastrValues = await fetchSumMastr();
 ---
 
 <DefaultDark>
@@ -60,7 +63,10 @@ const { finalSmardValues: yearlySmard } = await fetchAllTimeSeriesData('DE', 'ye
 			<div>Information EE</div>
 			<div class='title'>Data-Center</div>
 		</div>
-		<Cards dailyPercent={dailySmard.resGenerationEEPercentage} />
+		<Cards
+			dailyPercent={dailySmard.resGenerationEEPercentage}
+			mastrValues={finalMastrValues}
+		/>
 		<DataGermany
 			targetDayPercentages={dailySmard.targetPercentagesEE}
 			targetMonthPercentages={monthlySmard.targetPercentagesEE}

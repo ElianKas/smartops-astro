@@ -1,5 +1,5 @@
 ---
-const { dailyPercent } = Astro.props;
+const { dailyPercent, mastrValues } = Astro.props;
 ---
 
 <section
@@ -25,15 +25,39 @@ const { dailyPercent } = Astro.props;
 	<div class='flex flex-col gap-sm'>
 		<h3 class='subtitle'>Privat</h3>
 		<div class='flex max-sm:flex-col lg:flex-col gap-sm'>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 1</div>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 2</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>
+					{(mastrValues.privatPercentage * 100).toFixed(2) + '%'}
+				</div>
+				<div>Leistung EE in Deutschland aus Privaten Haushalten</div>
+			</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>
+					{(mastrValues.privatPercentagePlanned * 100).toFixed(2) + '%'}
+				</div>
+				<div>Geplante Leistung EE in Deutschland aus Privaten Haushalten</div>
+			</div>
 		</div>
 	</div>
 	<div class='flex flex-col lg:flex-col gap-sm'>
 		<h3 class='subtitle'>Industrie</h3>
 		<div class='flex max-sm:flex-col lg:flex-col gap-sm'>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 1</div>
-			<div class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl'>Card 2</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>
+					{(mastrValues.industryPercentage * 100).toFixed(2) + '%'}
+				</div>
+				<div>Leistung EE in Deutschland aus Industrie</div>
+			</div>
+			<div
+				class='bg-lavender p-md w-full aspect-[3/2] rounded-2xl flex flex-col justify-end gap-sm'>
+				<div class='subtitle'>
+					{(mastrValues.industryPercentagePlanned * 100).toFixed(2) + '%'}
+				</div>
+				<div>Geplante Leistung EE in Deutschland aus Industrie</div>
+			</div>
 		</div>
 	</div>
 </section>
