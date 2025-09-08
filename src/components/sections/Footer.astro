@@ -5,6 +5,7 @@ import Contact from '../Svg/Icons/Contact.astro';
 import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
 import Solar from '../Svg/Icons/Solar.astro';
 import Wind from '../Svg/Icons/Wind.astro';
+import GsapMenuAnim from '../scripts/gsapMenuAnim.astro';
 ---
 
 <footer
@@ -27,7 +28,7 @@ import Wind from '../Svg/Icons/Wind.astro';
 				<SmartopsWhite class='w-[250px] h-auto' />
 			</a>
 			<div
-				class='open-menu-button-footer gsap-footer-element flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
+				class='open-menu-button gsap-footer-element flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
 				<div class='border border-white bg-white border-[2px] w-full'></div>
 				<div class='border border-white bg-white border-[2px] w-full'></div>
 			</div>
@@ -107,22 +108,4 @@ import Wind from '../Svg/Icons/Wind.astro';
 		'<'
 	);
 </script>
-<script>
-	import gsap from 'gsap';
-
-	const anim = gsap.fromTo(
-		'.nav-menu-gsap-item',
-		{ y: 20, opacity: 0 },
-		{ y: 0, opacity: 1, duration: 0.5, stagger: 0.1, paused: true }
-	);
-
-	document.addEventListener('DOMContentLoaded', () => {
-		const openButton = document.querySelector('.open-menu-button-footer');
-		const navMenu = document.querySelector('#smartops-nav-menu');
-		openButton?.addEventListener('click', () => {
-			navMenu?.classList.toggle('hidden');
-			anim.restart();
-			document.body.classList.toggle('overflow-hidden');
-		});
-	});
-</script>
+<GsapMenuAnim />

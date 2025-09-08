@@ -1,35 +1,17 @@
 ---
 import SmartopsWhite from '../Svg/Logos/SmartopsWhite.astro';
 import Menu from './Menu.astro';
+import GsapMenuAnim from '../scripts/gsapMenuAnim.astro';
 ---
 
 <header class='absolute top-0 left-0 z-30 flex justify-center items-center gap-md w-full pt-sm'>
 	<a href='/'>
 		<SmartopsWhite class='w-[250px] h-auto' />
 	</a>
-	<div
-		class='open-menu-button-header flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
+	<div class='open-menu-button flex flex-col justify-between w-[40px] h-[15px] cursor-pointer'>
 		<div class='border border-white bg-white border-[2px] w-full'></div>
 		<div class='border border-white bg-white border-[2px] w-full'></div>
 	</div>
 	<Menu />
 </header>
-<script>
-	import gsap from 'gsap';
-
-	const anim = gsap.fromTo(
-		'.nav-menu-gsap-item',
-		{ y: 20, opacity: 0 },
-		{ y: 0, opacity: 1, duration: 0.5, stagger: 0.1, paused: true }
-	);
-
-	document.addEventListener('DOMContentLoaded', () => {
-		const openButton = document.querySelector('.open-menu-button-header');
-		const navMenu = document.querySelector('#smartops-nav-menu');
-		openButton?.addEventListener('click', () => {
-			navMenu?.classList.toggle('hidden');
-			anim.restart();
-			document.body.classList.toggle('overflow-hidden');
-		});
-	});
-</script>
+<GsapMenuAnim />
