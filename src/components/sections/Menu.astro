@@ -29,7 +29,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		<a href='/'>
 			<SmartopsBlack class='w-[250px] h-auto' />
 		</a>
-		<div class='w-[40px]'>
+		<div class='w-[40px] nav-menu-gsap-item'>
 			<div
 				id='close-menu-button'
 				class='flex items-center h-[20px] w-[40px] cursor-pointer relative'>
@@ -40,7 +40,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 	</div>
 	<!-- desktop -->
 	<div class='hidden xl:grid grid-cols-6 gap-md max-w-[90%] w-full mx-auto'>
-		<div>
+		<div class='nav-menu-gsap-item'>
 			<h3>
 				<a
 					class='flex gap-xs items-center'
@@ -51,7 +51,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3>Sparring</h3>
 			{
 				sparringStories.map((story: any) => (
@@ -65,7 +65,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3>Projekte & Lösungen</h3>
 			{
 				plStories.map((story: any) => (
@@ -79,7 +79,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3>Information EE</h3>
 			<a
 				href='/data-center'
@@ -90,20 +90,20 @@ const technologies = projectCategories.filter((category) => category.group === '
 		<!-- <div class='flex flex-col gap-sm'>
 			<h3><a href='/'>Über uns</a></h3>
 		</div> -->
-		<div class='flex flex-col gap-sm'>
+		<div class='flex flex-col gap-sm nav-menu-gsap-item'>
 			<h3><a href='/kontakt'>Kontakt</a></h3>
 		</div>
 	</div>
 	<!-- mobile -->
 	<div class='flex flex-col gap-md sm:max-w-[90%] mx-auto w-full xl:hidden'>
-		<div>
+		<div class='nav-menu-gsap-item'>
 			<h3>
 				<a href='/'>Home</a>
 			</h3>
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3 class='flex items-center gap-xs'>
 				<ShortArrow class='h-[12px] w-auto rotate-270' />Sparring
 			</h3>
@@ -119,7 +119,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3 class='flex items-center gap-xs'>
 				<ShortArrow class='h-[12px] w-auto rotate-270' />Projekte & Lösungen
 			</h3>
@@ -135,7 +135,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 		</div>
 		<div
 			tabindex='0'
-			class='flex flex-col gap-sm group'>
+			class='flex flex-col gap-sm group nav-menu-gsap-item'>
 			<h3 class='flex items-center gap-xs'>
 				<ShortArrow class='h-[12px] w-auto rotate-270' />Information EE
 			</h3>
@@ -148,15 +148,23 @@ const technologies = projectCategories.filter((category) => category.group === '
 		<!-- <div class='flex flex-col gap-sm'>
 			<h3><a href='/'>Über uns</a></h3>
 		</div> -->
-		<div class='flex flex-col gap-sm'>
+		<div class='flex flex-col gap-sm nav-menu-gsap-item'>
 			<h3><a href='/kontakt'>Kontakt</a></h3>
 		</div>
 	</div>
 	<div class='sm:max-w-[90%] w-full mx-auto flex flex-col gap-md'>
 		<div class='flex gap-sm lg:gap-lg items-end flex-wrap'>
-			<h3 class='subtitle font-normal'><a href='/referenzen'>Referenzen</a></h3>
+			<h3 class='subtitle font-normal nav-menu-gsap-item'><a href='/referenzen'>Referenzen</a></h3>
 			<div class='flex gap-md lg:gap-lg flex-wrap'>
-				{technologies.map((tech) => <a href={`/referenzen/?filter=${tech.value}`}>{tech.name}</a>)}
+				{
+					technologies.map((tech) => (
+						<a
+							class='nav-menu-gsap-item'
+							href={`/referenzen/?filter=${tech.value}`}>
+							{tech.name}
+						</a>
+					))
+				}
 			</div>
 		</div>
 		<!-- desktop -->
@@ -165,7 +173,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 				refStories.map((story: any) => (
 					<a
 						href={`/${story.full_slug}`}
-						class='flex'>
+						class='flex nav-menu-gsap-item'>
 						<img
 							class='rounded-tl-2xl rounded-br-2xl w-[120px] sm:w-[200px] lg:w-[250px] aspect-[3/2] object-cover shrink-0'
 							src={resizeImage(story.content.project_image.filename)}
@@ -181,7 +189,7 @@ const technologies = projectCategories.filter((category) => category.group === '
 				refStoriesMobile.map((story: any) => (
 					<a
 						href={`/${story.full_slug}`}
-						class='flex'>
+						class='flex nav-menu-gsap-item'>
 						<img
 							class='rounded-tl-2xl rounded-br-2xl w-[120px] sm:w-[200px] lg:w-[250px] aspect-[3/2] object-cover shrink-0'
 							src={resizeImage(story.content.project_image.filename)}
@@ -196,12 +204,12 @@ const technologies = projectCategories.filter((category) => category.group === '
 		<div class='flex gap-md'>
 			<a
 				href='/impressum'
-				class='text-gray'
+				class='text-gray nav-menu-gsap-item'
 				>Impressum</a
 			>
 			<a
 				href='/datenschutz'
-				class='text-gray'
+				class='text-gray nav-menu-gsap-item'
 				>Datenschutz</a
 			>
 		</div>

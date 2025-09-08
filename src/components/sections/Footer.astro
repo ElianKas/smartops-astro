@@ -108,11 +108,20 @@ import Wind from '../Svg/Icons/Wind.astro';
 	);
 </script>
 <script>
+	import gsap from 'gsap';
+
+	const anim = gsap.fromTo(
+		'.nav-menu-gsap-item',
+		{ y: 20, opacity: 0 },
+		{ y: 0, opacity: 1, duration: 0.5, stagger: 0.1, paused: true }
+	);
+
 	document.addEventListener('DOMContentLoaded', () => {
 		const openButton = document.querySelector('.open-menu-button-footer');
 		const navMenu = document.querySelector('#smartops-nav-menu');
 		openButton?.addEventListener('click', () => {
 			navMenu?.classList.toggle('hidden');
+			anim.restart();
 			document.body.classList.toggle('overflow-hidden');
 		});
 	});
